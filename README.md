@@ -1,8 +1,17 @@
 # Filester
 A simple file uploader for Android.
 
-## Download
-Follow the instructions.
+## Build
+1. Click the **Code** button, which brings up a dialog.
+2. In the dialog, click the **Download ZIP** button to save the project to your computer. Wait for the download to complete.
+3. Locate the file on your computer (likely in the **Downloads** folder).
+4. Double-click the ZIP file to unpack it. This creates a new folder that contains the project files.
+5. Start Android Studio.
+6. In the **Welcome to Android Studio** window, click **Open an existing Android Studio project**.
+7. In the **Import Project** dialog, navigate to where the unzipped project folder is located.
+8. Double-click on that project folder.
+9. Wait for Android Studio to open the project.
+10. Click the **Make Project** button to build the app.
 
 ## Contributers
 * [Ahoora Fakhrian](https://linktr.ee/ahoora) (logo design)
