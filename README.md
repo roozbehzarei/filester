@@ -9,7 +9,7 @@ Follow the instructions.
 * [Artin Fakhrian](https://linktr.ee/artin_fakhrian) (logo design)
 
 ## License
-Filester is licensed under [GPLv3](LICENSE.md).
+Filester is licensed under [GPLv3](LICENSE).
 
 ## Code of Conduct
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
