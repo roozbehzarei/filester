@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Filester" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <!-- Theme customization -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Filester.Body2</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Filester.Dialog.Alert</item>
+        <item name="materialButtonStyle">@style/Widget.Filester.Button</item>
+        <item name="tabStyle">@style/Widget.Filester.TabLayout</item>
+    </style>
+
+    <!-- TextView (Body2) -->
+    <style name="TextAppearance.Filester.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/design_default_color_on_primary</item>
+    </style>
+
+    <!-- TabLayout -->
+    <style name="Widget.Filester.TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
+        <item name="tabIndicatorColor">@color/secondaryColor</item>
+    </style>
+
+    <!-- MaterialAlertDialog -->
+    <style name="ThemeOverlay.Filester.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/secondaryColor</item>
+    </style>
+
+    <!-- Button -->
+    <style name="Widget.Filester.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/secondaryColor</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+    </style>
+
+</resources>
