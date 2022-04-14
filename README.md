@@ -1,5 +1,11 @@
-# Filester
-A simple file uploader for Android.
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+
+Welcome to **Filester**! Uplading files has never been easier.
+ * Free for use.
+ * No-logs policy.
+ * All formats supported.
+ * No size limitations.
 
 ## Build
 1. Click the **Code** button, which brings up a dialog.
@@ -18,7 +24,4 @@ A simple file uploader for Android.
 * [Artin Fakhrian](https://linktr.ee/artin_fakhrian) (logo design)
 
 ## License
-Filester is licensed under [GPLv3](LICENSE).
-
-## Code of Conduct
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+Filester is licensed under [GNU General Public License v3.0](LICENSE).
