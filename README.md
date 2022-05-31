@@ -19,7 +19,7 @@ Welcome to **Filester**! Uplading files has never been easier.
 9. Wait for Android Studio to open the project.
 10. Click the **Make Project** button to build the app.
 
-## Contributers
+## Contributors
 * [Ahoora Fakhrian](https://linktr.ee/ahoora) (logo design)
 * [Artin Fakhrian](https://linktr.ee/artin_fakhrian) (logo design)
 
