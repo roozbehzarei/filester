@@ -2,10 +2,17 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
 Welcome to **Filester**! Uplading files has never been easier.
- * Free for use.
- * No-logs policy.
- * All formats supported.
- * No size limitations.
+ * Free for use
+ * No-logs policy
+ * All formats supported
+ * No size limitations
+ * No permissions required
+ * Runs on Android 5.0+
+
+![screenshots](https://user-images.githubusercontent.com/55883200/171685472-5f1d42e5-a7b5-4ec0-ab0a-b264d1ab64bf.png)
+
+## Download
+<a href="https://f-droid.org/" target="_blank"><img src="https://user-images.githubusercontent.com/55883200/171685675-a32b3580-9ee1-4f86-859a-2d94c8375acb.png" alt="Get it on F-Droid" width="200"></a>
 
 ## Build
 1. Click the **Code** button, which brings up a dialog.
