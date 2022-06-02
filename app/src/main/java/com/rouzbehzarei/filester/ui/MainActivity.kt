@@ -1,5 +1,9 @@
 package com.rouzbehzarei.filester.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.rouzbehzarei.filester.CHANNEL_ID
 import com.rouzbehzarei.filester.R
 import com.rouzbehzarei.filester.databinding.ActivityMainBinding
 
@@ -34,6 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the app bar for use with the NavController
         binding.appBar.setupWithNavController(navController)
+
+        createNotificationChannel()
     }
 
     /**
@@ -47,15 +54,30 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_about -> {
-                val action =
-                    ViewPagerFragmentDirections.actionViewPagerFragmentToAboutFragment()
-                navController.navigate(action)
+                navController.navigate(R.id.aboutFragment)
                 true
             }
             else -> {
                 super.onOptionsItemSelected(item)
                 true
             }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 

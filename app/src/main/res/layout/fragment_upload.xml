@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.rouzbehzarei.filester.model.UploadViewModel" />
+            type="com.rouzbehzarei.filester.viewmodel.FilesterViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

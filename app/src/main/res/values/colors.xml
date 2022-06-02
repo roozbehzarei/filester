@@ -8,4 +8,5 @@
     <color name="secondaryLightColor">#ffad42</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
+    <color name="grey">#9E9E9E</color>
 </resources>
