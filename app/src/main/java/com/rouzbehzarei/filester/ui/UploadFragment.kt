@@ -10,20 +10,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.work.WorkInfo
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.rouzbehzarei.filester.BaseApplication
 import com.rouzbehzarei.filester.R
 import com.rouzbehzarei.filester.databinding.FragmentUploadBinding
+import com.rouzbehzarei.filester.viewmodel.FilesterViewModel
+import com.rouzbehzarei.filester.viewmodel.FilesterViewModelFactory
 import com.rouzbehzarei.filester.viewmodel.KEY_FILE_URI
-import com.rouzbehzarei.filester.viewmodel.UploadViewModel
 
 class UploadFragment : Fragment() {
 
-    private val viewModel: UploadViewModel by viewModels()
+    private val viewModel: FilesterViewModel by activityViewModels {
+        FilesterViewModelFactory(
+            (activity?.application as BaseApplication).database.fileDao(),
+            requireActivity().application
+        )
+    }
 
     // Binding object instance with access to the views in the fragment_history.xml layout
     private lateinit var binding: FragmentUploadBinding
@@ -31,7 +39,7 @@ class UploadFragment : Fragment() {
     private val fileSelector =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
-                viewModel.startUniqueWork(uri)
+                viewModel.startUploadWork(uri)
             }
         }
 
@@ -52,9 +60,6 @@ class UploadFragment : Fragment() {
         // Assign the component to a property in the binding class
         binding.viewModel = viewModel
 
-        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
-        binding.lifecycleOwner = this
-
         binding.buttonUpload.setOnClickListener {
             fileSelector.launch("*/*")
         }
@@ -72,17 +77,22 @@ class UploadFragment : Fragment() {
             val workInfo = it[0]
             val fileUrl = workInfo.outputData.getString(KEY_FILE_URI)
             if (!workInfo.state.isFinished) {
+                isButtonEnabled(false)
                 Snackbar.make(
                     binding.root,
                     resources.getString(R.string.snackbar_uploading),
-                    Snackbar.LENGTH_LONG)
+                    Snackbar.LENGTH_LONG
+                )
                     .show()
             } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                 showUploadFinished(true, fileUrl)
                 viewModel.clearWorkQueue()
+                isButtonEnabled(true)
+
             } else {
                 showUploadFinished(false, null)
                 viewModel.clearWorkQueue()
+                isButtonEnabled(true)
             }
         }
     }
@@ -116,6 +126,18 @@ class UploadFragment : Fragment() {
         }
             .setCancelable(false)
             .show()
+    }
+
+    private fun isButtonEnabled(state: Boolean) {
+        binding.buttonUpload.apply {
+            if (state) {
+                isEnabled = true
+                setBackgroundColor(ContextCompat.getColor(context, R.color.secondaryColor))
+            } else {
+                isEnabled = false
+                setBackgroundColor(ContextCompat.getColor(context, R.color.grey))
+            }
+        }
     }
 
 }

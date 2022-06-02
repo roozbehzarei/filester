@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Filester</string>
     <string name="app_description" translatable="false">Simple File Uploader</string>
-    <string name="app_version" translatable="false">version: 1.0.0-alpha</string>
+    <string name="app_version" translatable="false">Version: 1.0.0</string>
     <string name="app_copyleft">Copyleft © 2022 by Rouzbeh Zarei.</string>
     <string name="menu_about">About</string>
     <string name="tab_upload">Upload</string>
@@ -13,11 +13,20 @@
     <string name="dialog_button_copy">Copy Link</string>
     <string name="dialog_button_close">Close</string>
     <string name="dialog_title_error">Upload failed!</string>
-    <string name="dialog_message_error">Oops, something went wrong. Please try again later.</string>
+    <string name="dialog_message_error">Oops, something went wrong. Please try again.</string>
     <string name="toast_clipboard">Link copied to clipboard.</string>
     <string name="snackbar_uploading">Uploading file, please wait.</string>
     <string name="upload_description">Files will be stored for 14 days.\nPowered by transfer.sh</string>
     <string name="upload_button">START UPLOADING</string>
     <string name="about_page_title">About</string>
     <string name="about_description">Filester is a free, open source file uploader for Android. This application is based on the popular transfer.sh service and licensed under GNU General Public License, version 3 (GPLv3).</string>
+    <string name="text_empty_history">You have no files uploaded yet.\nTry uploading files first.</string>
+    <string name="channel_name">Upload progress status</string>
+    <string name="channel_description">Notify when upload is in progress, successful or failed.</string>
+    <string name="notification_title_in_progress">Upload in progress</string>
+    <string name="notification_description_in_progress">Please wait</string>
+    <string name="notification_title_unsuccessful">Upload failed</string>
+    <string name="notification_description_unsuccessful">Please try again.</string>
+    <string name="notification_title_successful">Upload successful</string>
+    <string name="notification_description_successful">Your link is ready!</string>
 </resources>
