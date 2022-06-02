@@ -1,0 +1,10 @@
+<i>Filester</i> is a simple file uploader for Android. Uplading files has never been easier!
+
+Using <i>Filester,</i> users can share files with everyone by uploading them and sharing the link. Similar to Google Drive and Microsoft OneDrive, except there is no requirement for signing up and there are no storage limits. Files are uploaded onto <a href='https://transfer.sh/' target='_blank' rel='nofollow'>Transfer.sh</a> cloud storage which is open-source and everyone can create their own instance using the code on <a href='https://github.com/dutchcoders/transfer.sh/' target='_blank' rel='nofollow'>GitHub</a>.
+
+<b>Features:</b>
+
+* Free for use.
+* No-logs policy.
+* All formats supported.
+* No size limitations.
