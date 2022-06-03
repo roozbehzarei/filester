@@ -8,7 +8,6 @@ Filester lets you share files with everyone, everywhere, whenever you want! Imag
  * No-logs policy
  * All formats supported
  * No size limitations
- * No permissions required
  * Runs on Android 5.0 and later
 
 ![screenshots](https://user-images.githubusercontent.com/55883200/171685472-5f1d42e5-a7b5-4ec0-ab0a-b264d1ab64bf.png)
