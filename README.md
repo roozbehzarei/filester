@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn't show ads, collect your data nor require creating an account! With Filester, you're always 1 click away from uploading infinite huge files to the internet and share them with the world.
+Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn't show ads, collect your data nor require creating an account! With Filester, you're always one click away from uploading infinite huge files to the internet and share them with the world.
 
 **Features:**
  * Free for use
