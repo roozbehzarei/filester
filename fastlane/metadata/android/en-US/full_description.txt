@@ -1,0 +1,10 @@
+Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn't show ads, collect your data nor require creating an account! With Filester, you're always 1 click away from uploading infinite huge files to the internet and share them with the world.
+
+<b>Features</b>
+
+• Free for use
+• No-logs policy
+• All formats supported
+• No size limitations
+• No permissions required
+• Runs on Android 5.0 and later
