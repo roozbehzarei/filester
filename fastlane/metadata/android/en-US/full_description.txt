@@ -8,4 +8,5 @@ Filester lets you share files with everyone, everywhere, whenever you want! Imag
  * No size limitations
  * Runs on Android 5.0 and later
  
- AntiFeatures: NonFreeNet - the application contains a feature that uses a Non-Free network service ( transfer.sh ) which is impossible, or not easy to replace.
+ <b>Disclaimer:</b>
+ * This app relies on transfer.sh free, open-source cloud service and does not function otherwise. Please refer [here](https://f-droid.org/docs/Anti-Features/#NonFreeNet) for more info.
