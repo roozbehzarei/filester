@@ -9,4 +9,5 @@ Filester lets you share files with everyone, everywhere, whenever you want! Imag
  * Runs on Android 5.0 and later
  
  <b>Disclaimer:</b>
+ 
  * This app relies on transfer.sh free, open-source cloud service and does not function otherwise. Please refer [here](https://f-droid.org/docs/Anti-Features/#NonFreeNet) for more info.
