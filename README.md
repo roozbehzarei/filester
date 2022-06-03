@@ -1,13 +1,15 @@
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Welcome to **Filester**! Uplading files has never been easier.
+Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn't show ads, collect your data nor require creating an account! With Filester, you're always 1 click away from uploading infinite huge files to the internet and share them with the world.
+
+**Features:**
  * Free for use
  * No-logs policy
  * All formats supported
  * No size limitations
  * No permissions required
- * Runs on Android 5.0+
+ * Runs on Android 5.0 and later
 
 ![screenshots](https://user-images.githubusercontent.com/55883200/171685472-5f1d42e5-a7b5-4ec0-ab0a-b264d1ab64bf.png)
 
