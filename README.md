@@ -1,3 +1,6 @@
+Filester
+--------
+
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
@@ -13,7 +16,12 @@ Filester lets you share files with everyone, everywhere, whenever you want! Imag
 ![screenshots](https://user-images.githubusercontent.com/55883200/171685472-5f1d42e5-a7b5-4ec0-ab0a-b264d1ab64bf.png)
 
 ## Download
-<a href="https://f-droid.org/" target="_blank"><img src="https://user-images.githubusercontent.com/55883200/171685675-a32b3580-9ee1-4f86-859a-2d94c8375acb.png" alt="Get it on F-Droid" width="200"></a>
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.rouzbehzarei.filester/)
+
+or get the apk from the [GitHub release section](https://github.com/roozbehzarei/filester/releases).
 
 ## Build
 1. Click the **Code** button, which brings up a dialog.
