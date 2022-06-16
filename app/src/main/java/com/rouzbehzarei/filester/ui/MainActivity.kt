@@ -6,9 +6,11 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,47 +23,41 @@ import com.rouzbehzarei.filester.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         // Inflate the layout XML file using Binding object instance
-        val binding: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        // Set as the app bar for the activity
+        setSupportActionBar(binding.appBar)
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.app_bar, menu)
+            }
 
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_about -> {
+                        navController.navigate(R.id.action_global_aboutFragment)
+                        true
+                    }
+                    else -> true
+                }
+            }
+        })
         // Retrieve NavController from the NavHostFragment
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
-        // Set as the app bar for the activity
-        setSupportActionBar(binding.appBar)
-
         // Set up the app bar for use with the NavController
         binding.appBar.setupWithNavController(navController)
 
+        setContentView(binding.root)
+
         createNotificationChannel()
-    }
-
-    /**
-     * Initializes the contents of the specified options menu.
-     */
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_bar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_about -> {
-                navController.navigate(R.id.aboutFragment)
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-                true
-            }
-        }
     }
 
     private fun createNotificationChannel() {

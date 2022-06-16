@@ -2,21 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/viewPagerFragment">
+    app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.rouzbehzarei.filester.ui.AboutFragment"
         android:label="@string/about_page_title" />
     <fragment
-        android:id="@+id/uploadsFragment"
-        android:name="com.rouzbehzarei.filester.ui.UploadFragment"
-        android:label="UploadsFragment" />
-    <fragment
-        android:id="@+id/historyFragment"
-        android:name="com.rouzbehzarei.filester.ui.HistoryFragment"
-        android:label="HistoryFragment" />
-    <fragment
-        android:id="@+id/viewPagerFragment"
-        android:name="com.rouzbehzarei.filester.ui.ViewPagerFragment"
+        android:id="@+id/mainFragment"
+        android:name="com.rouzbehzarei.filester.ui.MainFragment"
         android:label="@string/app_name" />
+    <action
+        android:id="@+id/action_global_aboutFragment"
+        app:destination="@id/aboutFragment" />
 </navigation>

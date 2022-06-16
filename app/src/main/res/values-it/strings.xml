@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_about">About</string>
+    <string name="link_donate"><u>Sostieni questo progetto</u></string>
+    <string name="link_website"><u>Sito del progetto</u></string>
+    <string name="fab_title">UPLOAD</string>
+    <string name="notification_description_successful">Il tuo link e\' pronto!</string>
+    <string name="dialog_title_success">Il tuo link e\' pronto!</string>
+    <string name="notification_title_unsuccessful">Upload fallito</string>
+    <string name="dialog_title_error">Upload fallito!</string>
+    <string name="dialog_message_error">Oops, qualcosa e\' andato storto! Ritentare perfavore.</string>
+    <string name="dialog_button_copy">Copia Link</string>
+    <string name="dialog_button_close">Chiudi</string>
+    <string name="snackbar_uploading">Upload in corso, attendere prego.</string>
+    <string name="toast_clipboard">Link copiato.</string>
+    <string name="about_page_title">About</string>
+    <string name="about_page_description">Filester ti permette di condividere file con tutti, ovunque e quando vuoi! Immagina un applicazione cloud storage senza pubblicita\', che non raccoglie i tuoi dati, e che non richiede la creazione di un account! Da ora in poi, sarai sempre ad un click dal caricare file di tutte le grandezze online e di condividerle col mondo.</string>
+    <string name="text_empty_history">Nessun file trovato.\nTentare l\'upload di un file prima.</string>
+    <string name="channel_name">Stato avanzamento dell\'upload.</string>
+    <string name="notification_title_in_progress">Upload in corso</string>
+    <string name="notification_description_in_progress">Attendere prego</string>
+    <string name="notification_description_unsuccessful">Ritentare perfavore.</string>
+    <string name="notification_title_successful">Upload completato</string>
+    <string name="channel_description">Notify when upload is in progress, successful or failed.</string>
+    <string name="app_version">versione: 2.0.0</string>
+    <string name="app_name">Filester</string>
+    <string name="app_description">Simple File Uploader</string>
+</resources>

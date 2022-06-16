@@ -1,14 +1,12 @@
 <resources>
-    <string name="app_name" translatable="false">Filester</string>
-    <string name="app_description" translatable="false">Simple File Uploader</string>
-    <string name="app_version" translatable="false">Version: 1.0.0</string>
-    <string name="app_copyleft">Copyleft © 2022 by Rouzbeh Zarei.</string>
+    <string name="app_name">Filester</string>
+    <string name="app_description">Simple File Uploader</string>
+    <string name="app_version">Version: 2.0.0</string>
+    <string name="app_copyleft" translatable="false">Copyleft © 2022 by Roozbeh Zarei.</string>
     <string name="menu_about">About</string>
-    <string name="tab_upload">Upload</string>
-    <string name="tab_history">History</string>
-    <string name="link_transfer"><u>transfer.sh</u></string>
+    <string name="link_transfer" translatable="false"><u>transfer.sh</u></string>
     <string name="link_donate"><u>Support This Project</u></string>
-    <string name="link_website"><u>Visit Website</u></string>
+    <string name="link_website"><u>Project Website</u></string>
     <string name="dialog_title_success">Your link is ready!</string>
     <string name="dialog_button_copy">Copy Link</string>
     <string name="dialog_button_close">Close</string>
@@ -16,10 +14,8 @@
     <string name="dialog_message_error">Oops, something went wrong. Please try again.</string>
     <string name="toast_clipboard">Link copied to clipboard.</string>
     <string name="snackbar_uploading">Uploading file, please wait.</string>
-    <string name="upload_description">Files will be stored for 14 days.\nPowered by transfer.sh</string>
-    <string name="upload_button">START UPLOADING</string>
     <string name="about_page_title">About</string>
-    <string name="about_description">Filester is a free, open source file uploader for Android. This application is based on the popular transfer.sh service and licensed under GNU General Public License, version 3 (GPLv3).</string>
+    <string name="about_page_description">Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn\'t show ads, collect your data nor require creating an account! From now on, you\'re always one click away from uploading infinite huge files to the internet and share them with the world.</string>
     <string name="text_empty_history">You have no files uploaded yet.\nTry uploading files first.</string>
     <string name="channel_name">Upload progress status</string>
     <string name="channel_description">Notify when upload is in progress, successful or failed.</string>
@@ -29,4 +25,6 @@
     <string name="notification_description_unsuccessful">Please try again.</string>
     <string name="notification_title_successful">Upload successful</string>
     <string name="notification_description_successful">Your link is ready!</string>
+    <string name="fab_title">UPLOAD</string>
+    <string name="settings">Settings</string>
 </resources>

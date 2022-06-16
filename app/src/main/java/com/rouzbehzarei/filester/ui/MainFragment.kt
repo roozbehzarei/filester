@@ -19,12 +19,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.rouzbehzarei.filester.BaseApplication
 import com.rouzbehzarei.filester.R
-import com.rouzbehzarei.filester.databinding.FragmentUploadBinding
+import com.rouzbehzarei.filester.databinding.FragmentMainBinding
 import com.rouzbehzarei.filester.viewmodel.FilesterViewModel
 import com.rouzbehzarei.filester.viewmodel.FilesterViewModelFactory
 import com.rouzbehzarei.filester.viewmodel.KEY_FILE_URI
 
-class UploadFragment : Fragment() {
+class MainFragment : Fragment() {
+
+    // Binding object instance with access to the views in the fragment_upload.xml layout
+    private lateinit var binding: FragmentMainBinding
 
     private val viewModel: FilesterViewModel by activityViewModels {
         FilesterViewModelFactory(
@@ -32,9 +35,6 @@ class UploadFragment : Fragment() {
             requireActivity().application
         )
     }
-
-    // Binding object instance with access to the views in the fragment_history.xml layout
-    private lateinit var binding: FragmentUploadBinding
 
     private val fileSelector =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -48,24 +48,40 @@ class UploadFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         // Inflate the layout XML file and return a binding object instance
-        binding = FragmentUploadBinding.inflate(inflater, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+        val adapter = HistoryListAdapter { file ->
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("file url", file.fileUrl)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(
+                context,
+                getString(R.string.toast_clipboard),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        binding.fileListView.adapter = adapter
+        viewModel.files.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+        viewModel.files.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                binding.textNoUploads.visibility = View.VISIBLE
+            } else {
+                binding.textNoUploads.visibility = View.GONE
+            }
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Assign the component to a property in the binding class
-        binding.viewModel = viewModel
-
-        binding.buttonUpload.setOnClickListener {
+        binding.fab.setOnClickListener {
             fileSelector.launch("*/*")
         }
-
         viewModel.outputWorkInfo.observe(viewLifecycleOwner, workInfoObserver())
-
     }
 
     private fun workInfoObserver(): Observer<List<WorkInfo>> {
@@ -77,7 +93,7 @@ class UploadFragment : Fragment() {
             val workInfo = it[0]
             val fileUrl = workInfo.outputData.getString(KEY_FILE_URI)
             if (!workInfo.state.isFinished) {
-                isButtonEnabled(false)
+                isFabEnabled(false)
                 Snackbar.make(
                     binding.root,
                     resources.getString(R.string.snackbar_uploading),
@@ -87,12 +103,12 @@ class UploadFragment : Fragment() {
             } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                 showUploadFinished(true, fileUrl)
                 viewModel.clearWorkQueue()
-                isButtonEnabled(true)
+                isFabEnabled(true)
 
             } else {
                 showUploadFinished(false, null)
                 viewModel.clearWorkQueue()
-                isButtonEnabled(true)
+                isFabEnabled(true)
             }
         }
     }
@@ -128,14 +144,14 @@ class UploadFragment : Fragment() {
             .show()
     }
 
-    private fun isButtonEnabled(state: Boolean) {
-        binding.buttonUpload.apply {
+    private fun isFabEnabled(state: Boolean) {
+        binding.fab.apply {
             if (state) {
                 isEnabled = true
-                setBackgroundColor(ContextCompat.getColor(context, R.color.secondaryColor))
+                setBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_light_primary))
             } else {
                 isEnabled = false
-                setBackgroundColor(ContextCompat.getColor(context, R.color.grey))
+                setBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_light_outline))
             }
         }
     }

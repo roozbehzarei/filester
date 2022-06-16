@@ -1,5 +1,23 @@
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+<h1 align="center">
+     Filester
+</h1>
+<p align="center">
+     A simple file uploader for android
+</p>
+<p align="center">
+     <a style="text-decoration:none" href="LICENSE">
+          <img src="https://img.shields.io/github/license/roozbehzarei/filester" alt="License" />
+     </a>
+     <a style="text-decoration:none" href="CODE_OF_CONDUCT.md">
+          <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct" />
+     </a>
+     <a style="text-decoration:none" href="https://github.com/roozbehzarei/filester/releases">
+          <img src="https://img.shields.io/github/v/release/roozbehzarei/filester?label=latest%20version" alt="GitHub release (latest by date)">
+     </a>
+     <a style="text-decoration:none" href="#">
+          <img src="https://img.shields.io/github/downloads/roozbehzarei/filester/total" alt="GitHub all releases">
+     </a>
+</p>
 
 Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn't show ads, collect your data nor require creating an account! With Filester, you're always one click away from uploading infinite huge files to the internet and share them with the world.
 
@@ -13,7 +31,12 @@ Filester lets you share files with everyone, everywhere, whenever you want! Imag
 ![screenshots](https://user-images.githubusercontent.com/55883200/171685472-5f1d42e5-a7b5-4ec0-ab0a-b264d1ab64bf.png)
 
 ## Download
-<a href="https://f-droid.org/" target="_blank"><img src="https://user-images.githubusercontent.com/55883200/171685675-a32b3580-9ee1-4f86-859a-2d94c8375acb.png" alt="Get it on F-Droid" width="200"></a>
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.rouzbehzarei.filester/)
+
+or get the apk directly from the [releases section](https://github.com/roozbehzarei/filester/releases).
 
 ## Build
 1. Click the **Code** button, which brings up a dialog.
@@ -30,6 +53,7 @@ Filester lets you share files with everyone, everywhere, whenever you want! Imag
 ## Contributors
 * [Ahoora Fakhrian](https://linktr.ee/ahoora) (logo design)
 * [Artin Fakhrian](https://linktr.ee/artin_fakhrian) (logo design)
+* [Open source community](https://github.com/roozbehzarei/filester/graphs/contributors)
 
 ## License
 Filester is licensed under [GNU General Public License v3.0](LICENSE).

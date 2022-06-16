@@ -13,13 +13,12 @@ class HistoryListAdapter(private val onItemClicked: (File) -> Unit) :
 
     private lateinit var binding: HistoryItemViewBinding
 
-    class FileViewHolder(val binding: HistoryItemViewBinding) :
+    class FileViewHolder(private val binding: HistoryItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: File) {
             binding.apply {
                 textName.text = item.fileName
                 textSize.text = item.fileSize.toString() + " MB"
-                executePendingBindings()
             }
         }
     }
