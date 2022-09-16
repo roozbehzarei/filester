@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ShapeableImageView -->
+    <style name="SoftCurve" parent="">
+        <item name="cornerSize">25%</item>
+    </style>
+
+    <style name="SharpCurve" parent="">
+        <item name="cornerSize">12%</item>
+    </style>
+
+    <!-- Typography -->
+    <style name="TextAppearance.Filester.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/roboto_serif_medium</item>
+    </style>
+
+    <style name="TextAppearance.Filester.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/roboto_serif_medium</item>
+    </style>
+
+    <style name="TextAppearance.Filester.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/roboto_serif_regular</item>
+    </style>
+
+    <style name="TextAppearance.Filester.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/roboto_serif_medium</item>
+    </style>
+
+    <style name="TextAppearance.Filester.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/roboto_serif_medium</item>
+    </style>
+
+    <style name="TextAppearance.Filester.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/roboto_serif_medium</item>
+    </style>
+
+</resources>
