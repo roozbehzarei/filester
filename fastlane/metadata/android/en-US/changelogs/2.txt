@@ -1,0 +1,5 @@
+- Complete visual overhaul. Filester is now faster and easier to use.
+- From now on, uploaded files will be named identical to the ones picked.
+- Fixed various bugs.
+
+IMPORTANT: Please manually uninstall the previous version before installing the new one.

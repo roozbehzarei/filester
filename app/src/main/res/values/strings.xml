@@ -1,30 +1,26 @@
 <resources>
     <string name="app_name">Filester</string>
     <string name="app_description">Simple File Uploader</string>
-    <string name="app_version">Version: 2.0.0</string>
-    <string name="app_copyleft" translatable="false">Copyleft © 2022 by Roozbeh Zarei.</string>
+    <string name="app_version">Version: %1$s</string>
+    <string name="app_copyleft" translatable="false">Copyleft © 2022 by Roozbeh Zarei</string>
     <string name="menu_about">About</string>
-    <string name="link_transfer" translatable="false"><u>transfer.sh</u></string>
-    <string name="link_donate"><u>Support This Project</u></string>
-    <string name="link_website"><u>Project Website</u></string>
-    <string name="dialog_title_success">Your link is ready!</string>
+    <string name="link_transfer" translatable="false">transfer.sh</string>
+    <string name="link_donate">Donate</string>
+    <string name="link_website">GitHub Repo</string>
+    <string name="title_upload_success">Upload successful</string>
+    <string name="message_upload_success">Your uploaded file will be available on the internet for the next 14 days.</string>
     <string name="dialog_button_copy">Copy Link</string>
     <string name="dialog_button_close">Close</string>
-    <string name="dialog_title_error">Upload failed!</string>
-    <string name="dialog_message_error">Oops, something went wrong. Please try again.</string>
-    <string name="toast_clipboard">Link copied to clipboard.</string>
+    <string name="title_upload_error">Upload failed</string>
+    <string name="message_upload_error">Something went wrong. Please try again.</string>
+    <string name="toast_clipboard">Link copied to clipboard</string>
     <string name="snackbar_uploading">Uploading file, please wait.</string>
-    <string name="about_page_title">About</string>
-    <string name="about_page_description">Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage app that doesn\'t show ads, collect your data nor require creating an account! From now on, you\'re always one click away from uploading infinite huge files to the internet and share them with the world.</string>
-    <string name="text_empty_history">You have no files uploaded yet.\nTry uploading files first.</string>
+    <string name="app_info_title">App info</string>
+    <string name="text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
     <string name="channel_name">Upload progress status</string>
     <string name="channel_description">Notify when upload is in progress, successful or failed.</string>
     <string name="notification_title_in_progress">Upload in progress</string>
     <string name="notification_description_in_progress">Please wait</string>
-    <string name="notification_title_unsuccessful">Upload failed</string>
-    <string name="notification_description_unsuccessful">Please try again.</string>
-    <string name="notification_title_successful">Upload successful</string>
-    <string name="notification_description_successful">Your link is ready!</string>
-    <string name="fab_title">UPLOAD</string>
+    <string name="fab_label">Upload a file</string>
     <string name="settings">Settings</string>
 </resources>

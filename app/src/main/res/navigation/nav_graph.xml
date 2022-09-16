@@ -5,13 +5,14 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.rouzbehzarei.filester.ui.AboutFragment"
-        android:label="@string/about_page_title" />
+        android:name="com.roozbehzarei.filester.ui.AboutFragment"
+        android:label="@string/app_info_title" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.rouzbehzarei.filester.ui.MainFragment"
-        android:label="@string/app_name" />
-    <action
-        android:id="@+id/action_global_aboutFragment"
-        app:destination="@id/aboutFragment" />
+        android:name="com.roozbehzarei.filester.ui.MainFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/action_mainFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+    </fragment>
 </navigation>
