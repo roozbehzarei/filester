@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Inflate the layout XML file using Binding object instance
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         /**
          * Display content edge-to-edge
@@ -78,8 +79,6 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the app bar for use with the NavController
         binding.appBar.setupWithNavController(navController)
-
-        setContentView(binding.root)
 
         createNotificationChannel()
     }
