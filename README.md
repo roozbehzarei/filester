@@ -38,10 +38,10 @@ world.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"
-height="80">](https://f-droid.org/packages/com.rouzbehzarei.filester/)
+height="80">](https://f-droid.org/packages/com.roozbehzarei.filester/)
 
 or get the apk directly from
-the [releases section](https://github.com/roozbehzarei/filester/releases).
+the [releases section](https://github.com/roozbehzarei/filester/releases/latest).
 
 ## Build
 
