@@ -32,16 +32,16 @@ world.
 * No size limitations
 * Runs on Android 5.0 and later
 
-![screenshots](https://user-images.githubusercontent.com/55883200/171685472-5f1d42e5-a7b5-4ec0-ab0a-b264d1ab64bf.png)
+![screenshots](https://user-images.githubusercontent.com/55883200/190531625-88746a7e-bf8b-4feb-840f-dc4d6f6d8480.png)
 
 ## Download
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"
-height="80">](https://f-droid.org/packages/com.rouzbehzarei.filester/)
+height="80">](https://f-droid.org/packages/com.roozbehzarei.filester/)
 
 or get the apk directly from
-the [releases section](https://github.com/roozbehzarei/filester/releases).
+the [releases section](https://github.com/roozbehzarei/filester/releases/latest).
 
 ## Build
 
