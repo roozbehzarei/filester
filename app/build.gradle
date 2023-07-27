@@ -42,6 +42,9 @@ android {
             jvmTarget = '1.8'
         }
     }
+    androidResources {
+        generateLocaleConfig true
+    }
     namespace 'com.roozbehzarei.filester'
 }
 
