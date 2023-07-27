@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">فایلستر</string>
+    <string name="app_description">بارگذاری آسان فایل</string>
+    <string name="app_version">نسخه: %1$s</string>
+    <string name="app_copyleft">کپی‌لفت © 2023 توسط روزبه زارعی</string>
+    <string name="menu_about">درباره</string>
+    <string name="link_donate">حمایت مالی</string>
+    <string name="link_website">وبسایت</string>
+    <string name="title_upload_success">بارگذاری انجام شد</string>
+    <string name="message_upload_success">فایل آپلود شده برای 14 روز آینده در دسترس خواهد بود.</string>
+    <string name="dialog_button_copy">کپی نشانی</string>
+    <string name="dialog_button_close">بستن</string>
+    <string name="title_upload_error">بارگذاری انجام نشد</string>
+    <string name="message_upload_error">خطایی رخ داده است. لطفا دوباره تلاش نمایید.</string>
+    <string name="toast_clipboard">نشانی کپی شد</string>
+    <string name="snackbar_uploading">در حال بارگذاری فایل، لطفا صبر نمایید.</string>
+    <string name="app_info_title">اطلاعات برنامه</string>
+    <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>
+    <string name="channel_name">اطلاع رسانی درباره وضعیت بارگذاری</string>
+    <string name="channel_description">اطلاع رسانی درباره موفقیت آمیز بودن و یا با خطا مواجه شدن بارگذاری</string>
+    <string name="notification_title_in_progress">در حال بارگذاری</string>
+    <string name="notification_description_in_progress">لطفا صبر نمایید</string>
+    <string name="fab_label">بارگذاری فایل</string>
+    <string name="settings">تنظیمات</string>
+</resources>
