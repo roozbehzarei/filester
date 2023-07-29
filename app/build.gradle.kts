@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-    val navVersion = "2.6.0"
+    val navVersion = "2.5.3"
     val activityVersion = "1.7.2"
     val fragmentVersion = "1.6.1"
     val lifecycleVersion = "2.6.1"
