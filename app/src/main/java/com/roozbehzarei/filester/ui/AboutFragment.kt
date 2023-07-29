@@ -11,7 +11,7 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentAboutBinding
 
-private const val GITHUB_URL = "https://github.com/roozbehzarei"
+private const val GITHUB_URL = "https://roozbehzarei.me/project/filester/"
 private const val DONATE_URL = "https://www.buymeacoffee.com/roozbehzarei/"
 private const val TRANSFER_URL = "https://transfer.sh/"
 
@@ -44,16 +44,6 @@ class AboutFragment : Fragment() {
         binding.linkTransfer.setOnClickListener {
             openLink(TRANSFER_URL)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().actionBar?.setDisplayShowTitleEnabled(false)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        requireActivity().actionBar?.setDisplayShowTitleEnabled(true)
     }
 
     /**

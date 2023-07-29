@@ -15,7 +15,6 @@
     <string name="message_upload_error">خطایی رخ داده است. لطفا دوباره تلاش نمایید.</string>
     <string name="snackbar_clipboard">نشانی کپی شد</string>
     <string name="snackbar_uploading">در حال بارگذاری فایل، لطفا صبر نمایید.</string>
-    <string name="app_info_title">اطلاعات برنامه</string>
     <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>
     <string name="channel_name">اطلاع رسانی درباره وضعیت بارگذاری</string>
     <string name="channel_description">اطلاع رسانی درباره موفقیت آمیز بودن و یا با خطا مواجه شدن بارگذاری</string>

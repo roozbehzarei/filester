@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.roozbehzarei.filester.ui.AboutFragment"
-        android:label="@string/app_info_title" />
+        android:label="@string/empty" />
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.roozbehzarei.filester.ui.MainFragment"
