@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
-import com.roozbehzarei.filester.CHANNEL_ID
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.ActivityMainBinding
 
@@ -54,8 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Change the color of the navigation bars
-        val windowInsetsController =
-            WindowCompat.getInsetsController(window, binding.root)
+        val windowInsetsController = WindowCompat.getInsetsController(window, binding.root)
         val currentNightMode =
             applicationContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         when (currentNightMode) {
@@ -63,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 windowInsetsController.isAppearanceLightNavigationBars = true
                 windowInsetsController.isAppearanceLightStatusBars = true
             }
+
             Configuration.UI_MODE_NIGHT_YES -> {
                 windowInsetsController.isAppearanceLightNavigationBars = false
                 windowInsetsController.isAppearanceLightStatusBars = false
@@ -89,8 +88,10 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val channel = NotificationChannel(
+                getString(R.string.notification_channel_id), name, importance
+            ).apply {
                 description = descriptionText
             }
             // Register the channel with the system

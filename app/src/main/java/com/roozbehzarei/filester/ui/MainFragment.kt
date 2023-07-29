@@ -1,13 +1,23 @@
 package com.roozbehzarei.filester.ui
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.*
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.documentfile.provider.DocumentFile
@@ -32,6 +42,8 @@ class MainFragment : Fragment() {
     // Binding object instance with access to the views in the fragment_upload.xml layout
     private lateinit var binding: FragmentMainBinding
 
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
     private val viewModel: FilesterViewModel by activityViewModels {
         FilesterViewModelFactory(
             (activity?.application as BaseApplication).database.fileDao(),
@@ -47,10 +59,16 @@ class MainFragment : Fragment() {
             }
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
+                fileSelector.launch("*/*")
+            }
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout XML file and return a binding object instance
         binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -74,10 +92,8 @@ class MainFragment : Fragment() {
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip: ClipData = ClipData.newPlainText("file url", file.fileUrl)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(
-                context,
-                getString(R.string.toast_clipboard),
-                Toast.LENGTH_SHORT
+            Snackbar.make(
+                binding.snackbarLayout, getString(R.string.snackbar_clipboard), Snackbar.LENGTH_SHORT
             ).show()
         }
         binding.fileListView.adapter = adapter
@@ -100,7 +116,11 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fab.setOnClickListener {
-            fileSelector.launch("*/*")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                checkNotificationPermission()
+            } else {
+                fileSelector.launch("*/*")
+            }
         }
         viewModel.outputWorkInfo.observe(viewLifecycleOwner, workInfoObserver())
     }
@@ -108,7 +128,7 @@ class MainFragment : Fragment() {
     private fun workInfoObserver(): Observer<List<WorkInfo>> {
         return Observer {
             // If there are no matching work info, do nothing
-            if (it.isNullOrEmpty()) {
+            if (it.isEmpty()) {
                 return@Observer
             }
             val workInfo = it[0]
@@ -116,11 +136,10 @@ class MainFragment : Fragment() {
             if (!workInfo.state.isFinished) {
                 isUploadInProgress(true)
                 Snackbar.make(
-                    binding.root,
+                    binding.snackbarLayout,
                     resources.getString(R.string.snackbar_uploading),
                     Snackbar.LENGTH_LONG
-                )
-                    .show()
+                ).show()
             } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                 showDialog(true, fileUrl)
                 viewModel.clearWorkQueue()
@@ -145,10 +164,10 @@ class MainFragment : Fragment() {
                         activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip: ClipData = ClipData.newPlainText("file url", fileUrl)
                     clipboard.setPrimaryClip(clip)
-                    Toast.makeText(
-                        context,
-                        getString(R.string.toast_clipboard),
-                        Toast.LENGTH_SHORT
+                    Snackbar.make(
+                        binding.snackbarLayout,
+                        getString(R.string.snackbar_clipboard),
+                        Snackbar.LENGTH_SHORT
                     ).show()
                 }
                 .setNegativeButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
@@ -160,9 +179,7 @@ class MainFragment : Fragment() {
                 .setPositiveButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
                     dialog.dismiss()
                 }
-        }
-            .setCancelable(false)
-            .show()
+        }.setCancelable(false).show()
     }
 
     private fun isUploadInProgress(state: Boolean) {
@@ -175,4 +192,19 @@ class MainFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun checkNotificationPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED -> requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
+            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                // Explain to the user why the app needs this permission
+                // To be implemented in future releases
+            }
+
+            else -> fileSelector.launch("*/*")
+        }
+    }
 }
