@@ -19,8 +19,8 @@
     <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>
     <string name="channel_name">اطلاع رسانی درباره وضعیت بارگذاری</string>
     <string name="channel_description">اطلاع رسانی درباره موفقیت آمیز بودن و یا با خطا مواجه شدن بارگذاری</string>
-    <string name="notification_title_in_progress">در حال بارگذاری</string>
-    <string name="notification_description_in_progress">لطفا صبر نمایید</string>
     <string name="fab_label">بارگذاری فایل</string>
     <string name="settings">تنظیمات</string>
+    <string name="notification_title_start">در حال آماده سازی بارگذاری…</string>
+    <string name="notification_title_in_progress">در حال بارگذاری…</string>
 </resources>

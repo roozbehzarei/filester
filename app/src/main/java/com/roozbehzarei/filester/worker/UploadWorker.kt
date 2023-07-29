@@ -1,14 +1,23 @@
 package com.roozbehzarei.filester.worker
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.net.Uri
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.roozbehzarei.filester.BaseApplication
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.network.TransferApi
-import com.roozbehzarei.filester.showNotification
+import com.roozbehzarei.filester.ui.MainActivity
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_NAME
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_URI
 import okhttp3.MediaType
@@ -19,23 +28,26 @@ import java.io.File
 class UploadWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
 
+    private val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val resolver = context.contentResolver
     private val fileDao = BaseApplication().database.fileDao()
 
     override suspend fun doWork(): Result {
-        return try {
-            showNotification(
-                context = applicationContext,
-                title = applicationContext.getString(R.string.notification_title_in_progress),
-                description = applicationContext.getString(R.string.notification_description_in_progress),
-                notificationId = 1,
-                showProgress = true
+
+        setForeground(
+            createForegroundInfo(
+                context.getString(R.string.notification_title_start)
             )
-            val resourceUri = Uri.parse(inputData.getString(KEY_FILE_URI))
-            val fileName = inputData.getString(KEY_FILE_NAME)
-            val mediaType = MediaType.parse(resolver.getType(resourceUri)!!)
-            val inputStream = resolver.openInputStream(resourceUri)
-            val file = File(context.cacheDir, fileName!!)
+        )
+
+        val resourceUri = Uri.parse(inputData.getString(KEY_FILE_URI))
+        val fileName = inputData.getString(KEY_FILE_NAME)
+        val mediaType = MediaType.parse(resolver.getType(resourceUri)!!)
+        val inputStream = resolver.openInputStream(resourceUri)
+        val file = File(context.cacheDir, fileName!!)
+
+        return try {
             inputStream.use { input ->
                 file.outputStream().use { output ->
                     input?.copyTo(output)
@@ -45,9 +57,12 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
             inputStream?.close()
             file.length()
             val filePart = MultipartBody.Part.createFormData(
-                "files",
-                file.name,
-                RequestBody.create(mediaType, file)
+                "files", file.name, RequestBody.create(mediaType, file)
+            )
+            setForeground(
+                createForegroundInfo(
+                    context.getString(R.string.notification_title_in_progress)
+                )
             )
             val apiResponse = TransferApi.retrofitService.sendFile(filePart)
             val responseBody = apiResponse.body()
@@ -59,33 +74,48 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                     fileSize = file.length() / 1024 / 1024
                 )
                 fileDao.insert(newFileEntry)
-                showNotification(
-                    context = applicationContext,
-                    title = applicationContext.getString(R.string.title_upload_success),
-                    description = applicationContext.getString(R.string.message_upload_success),
-                    notificationId = 1,
-                    showProgress = false
+                notificationManager.notify(
+                    1, createNotification(context.getString(R.string.title_upload_success))
                 )
                 Result.success(outputData)
             } else {
-                showNotification(
-                    context = applicationContext,
-                    title = applicationContext.getString(R.string.title_upload_error),
-                    description = applicationContext.getString(R.string.message_upload_error),
-                    notificationId = 1,
-                    showProgress = false
+                notificationManager.notify(
+                    1, createNotification(context.getString(R.string.title_upload_error))
                 )
                 Result.failure()
             }
         } catch (e: Exception) {
-            showNotification(
-                context = applicationContext,
-                title = applicationContext.getString(R.string.title_upload_error),
-                description = applicationContext.getString(R.string.message_upload_error),
-                notificationId = 1,
-                showProgress = false
+            notificationManager.notify(
+                1, createNotification(context.getString(R.string.title_upload_error))
             )
             Result.failure()
         }
+    }
+
+    private fun createForegroundInfo(progress: String): ForegroundInfo {
+        val notificationChannelId = context.getString(R.string.notification_channel_id)
+        val notification =
+            NotificationCompat.Builder(context, notificationChannelId).setContentTitle(progress)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setOngoing(true)
+                .setProgress(0, 0, true).build()
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ForegroundInfo(0, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+        } else {
+            ForegroundInfo(0, notification)
+        }
+    }
+
+    private fun createNotification(progress: String): Notification {
+        val notificationChannelId = context.getString(R.string.notification_channel_id)
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE
+        )
+        return NotificationCompat.Builder(applicationContext, notificationChannelId)
+            .setContentTitle(progress).setSmallIcon(R.drawable.ic_notification)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setAutoCancel(true)
+            .setContentIntent(pendingIntent).build()
     }
 }
