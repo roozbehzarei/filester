@@ -13,7 +13,7 @@
     <string name="dialog_button_close">بستن</string>
     <string name="title_upload_error">بارگذاری انجام نشد</string>
     <string name="message_upload_error">خطایی رخ داده است. لطفا دوباره تلاش نمایید.</string>
-    <string name="toast_clipboard">نشانی کپی شد</string>
+    <string name="snackbar_clipboard">نشانی کپی شد</string>
     <string name="snackbar_uploading">در حال بارگذاری فایل، لطفا صبر نمایید.</string>
     <string name="app_info_title">اطلاعات برنامه</string>
     <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>

@@ -14,7 +14,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -93,7 +92,9 @@ class MainFragment : Fragment() {
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip: ClipData = ClipData.newPlainText("file url", file.fileUrl)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(context, getString(R.string.toast_clipboard), Toast.LENGTH_SHORT).show()
+            Snackbar.make(
+                binding.snackbarLayout, getString(R.string.snackbar_clipboard), Snackbar.LENGTH_SHORT
+            ).show()
         }
         binding.fileListView.adapter = adapter
         viewModel.files.observe(viewLifecycleOwner) {
@@ -135,7 +136,7 @@ class MainFragment : Fragment() {
             if (!workInfo.state.isFinished) {
                 isUploadInProgress(true)
                 Snackbar.make(
-                    binding.root,
+                    binding.snackbarLayout,
                     resources.getString(R.string.snackbar_uploading),
                     Snackbar.LENGTH_LONG
                 ).show()
@@ -163,8 +164,10 @@ class MainFragment : Fragment() {
                         activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip: ClipData = ClipData.newPlainText("file url", fileUrl)
                     clipboard.setPrimaryClip(clip)
-                    Toast.makeText(
-                        context, getString(R.string.toast_clipboard), Toast.LENGTH_SHORT
+                    Snackbar.make(
+                        binding.snackbarLayout,
+                        getString(R.string.snackbar_clipboard),
+                        Snackbar.LENGTH_SHORT
                     ).show()
                 }
                 .setNegativeButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
