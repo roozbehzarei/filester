@@ -1,0 +1,5 @@
+- Fixed a bug causing the app to crash if it was closed while uploading a file.
+- Improved notification behavior significantly.
+- Add Persian language.
+- Implemented automatic bug report and performance monitoring.
+- Minor user experience and design improvements.
