@@ -24,4 +24,11 @@
     <string name="notification_channel_id" translatable="false">filester_notification_id</string>
     <string name="notification_title_start">Initializing upload…</string>
     <string name="notification_title_in_progress">Uploading…</string>
+    <string name="english">English</string>
+    <string name="persian">Persian</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="system_default">System default</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
 </resources>

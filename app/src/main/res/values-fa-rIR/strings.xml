@@ -22,4 +22,12 @@
     <string name="settings">تنظیمات</string>
     <string name="notification_title_start">در حال آماده سازی بارگذاری…</string>
     <string name="notification_title_in_progress">در حال بارگذاری…</string>
+    <string name="english">انگلیسی</string>
+    <string name="persian">پارسی</string>
+    <string name="dark">تاریک</string>
+    <string name="light">روشن</string>
+    <string name="system_default">پیش فرض سیستم</string>
+    <string name="language">زبان</string>
+    <string name="theme">حالت نمایش</string>
+
 </resources>

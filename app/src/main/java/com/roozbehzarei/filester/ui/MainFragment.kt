@@ -82,6 +82,7 @@ class MainFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.action_about -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutFragment())
+                    R.id.action_settings -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
                 }
                 return true
             }
@@ -93,7 +94,9 @@ class MainFragment : Fragment() {
             val clip: ClipData = ClipData.newPlainText("file url", file.fileUrl)
             clipboard.setPrimaryClip(clip)
             Snackbar.make(
-                binding.snackbarLayout, getString(R.string.snackbar_clipboard), Snackbar.LENGTH_SHORT
+                binding.snackbarLayout,
+                getString(R.string.snackbar_clipboard),
+                Snackbar.LENGTH_SHORT
             ).show()
         }
         binding.fileListView.adapter = adapter
