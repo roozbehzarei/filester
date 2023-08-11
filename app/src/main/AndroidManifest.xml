@@ -15,6 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Filester.Starting">
 
+        <receiver
+            android:name=".FilesterBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="FILESTER_STOP_UPLOAD" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"

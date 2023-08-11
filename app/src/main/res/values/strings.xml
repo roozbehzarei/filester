@@ -13,6 +13,8 @@
     <string name="dialog_button_close">Close</string>
     <string name="title_upload_error">Upload failed</string>
     <string name="message_upload_error">Something went wrong. Please try again.</string>
+    <string name="title_upload_cancelled">Upload cancelled</string>
+    <string name="message_upload_cancelled">You have cancelled the upload process.</string>
     <string name="snackbar_clipboard">Link copied to clipboard</string>
     <string name="snackbar_uploading">Uploading file, please wait.</string>
     <string name="text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
@@ -31,4 +33,5 @@
     <string name="system_default">System default</string>
     <string name="language">Language</string>
     <string name="theme">Theme</string>
+    <string name="cancel">Cancel</string>
 </resources>

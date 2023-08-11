@@ -13,6 +13,8 @@
     <string name="dialog_button_close">بستن</string>
     <string name="title_upload_error">بارگذاری انجام نشد</string>
     <string name="message_upload_error">خطایی رخ داده است. لطفا دوباره تلاش نمایید.</string>
+    <string name="title_upload_cancelled">بارگذاری لغو شد</string>
+    <string name="message_upload_cancelled">شما فرآیند بارگذاری فایل را لغو کردید.</string>
     <string name="snackbar_clipboard">نشانی کپی شد</string>
     <string name="snackbar_uploading">در حال بارگذاری فایل، لطفا صبر نمایید.</string>
     <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>
@@ -29,5 +31,6 @@
     <string name="system_default">پیش فرض سیستم</string>
     <string name="language">زبان</string>
     <string name="theme">حالت نمایش</string>
+    <string name="cancel">لغو</string>
 
 </resources>

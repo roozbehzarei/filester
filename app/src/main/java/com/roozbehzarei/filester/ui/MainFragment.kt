@@ -142,46 +142,65 @@ class MainFragment : Fragment() {
                     binding.snackbarLayout,
                     resources.getString(R.string.snackbar_uploading),
                     Snackbar.LENGTH_LONG
-                ).show()
+                ).setAction(R.string.cancel) {
+                    viewModel.cancelUploadWork()
+                }.show()
             } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                showDialog(true, fileUrl)
+                showResultDialog(1, fileUrl)
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
 
+            } else if (workInfo.state == WorkInfo.State.CANCELLED) {
+                showResultDialog(0, null)
+                viewModel.clearWorkQueue()
+                isUploadInProgress(false)
             } else {
-                showDialog(false, null)
+                showResultDialog(-1, null)
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
             }
         }
     }
 
-    private fun showDialog(isUploadSuccessful: Boolean, fileUrl: String?) {
+    private fun showResultDialog(status: Int, fileUrl: String?) {
         val context = requireContext()
         val alertDialog = MaterialAlertDialogBuilder(context)
-        if (isUploadSuccessful) {
-            alertDialog.setTitle(resources.getString(R.string.title_upload_success))
-                .setMessage(getString(R.string.message_upload_success))
-                .setPositiveButton(resources.getString(R.string.dialog_button_copy)) { _, _ ->
-                    val clipboard =
-                        activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip: ClipData = ClipData.newPlainText("file url", fileUrl)
-                    clipboard.setPrimaryClip(clip)
-                    Snackbar.make(
-                        binding.snackbarLayout,
-                        getString(R.string.snackbar_clipboard),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-                .setNegativeButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-        } else {
-            alertDialog.setTitle(resources.getString(R.string.title_upload_error))
-                .setMessage(getString(R.string.message_upload_error))
-                .setPositiveButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
-                    dialog.dismiss()
-                }
+        when (status) {
+            0 -> {
+                alertDialog.setTitle(resources.getString(R.string.title_upload_cancelled))
+                    .setMessage(getString(R.string.message_upload_cancelled))
+                    .setPositiveButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+            }
+
+            1 -> {
+                alertDialog.setTitle(resources.getString(R.string.title_upload_success))
+                    .setMessage(getString(R.string.message_upload_success))
+                    .setPositiveButton(resources.getString(R.string.dialog_button_copy)) { _, _ ->
+                        val clipboard =
+                            activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip: ClipData = ClipData.newPlainText("file url", fileUrl)
+                        clipboard.setPrimaryClip(clip)
+                        Snackbar.make(
+                            binding.snackbarLayout,
+                            getString(R.string.snackbar_clipboard),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    .setNegativeButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+            }
+
+            else -> {
+                alertDialog.setTitle(resources.getString(R.string.title_upload_error))
+                    .setMessage(getString(R.string.message_upload_error))
+                    .setPositiveButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+            }
+
         }.setCancelable(false).show()
     }
 
