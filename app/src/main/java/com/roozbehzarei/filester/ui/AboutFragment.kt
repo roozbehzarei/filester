@@ -12,7 +12,7 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentAboutBinding
 
 private const val GITHUB_URL = "https://roozbehzarei.me/project/filester/"
-private const val DONATE_URL = "https://www.buymeacoffee.com/roozbehzarei/"
+private const val DONATE_URL = "https://roozbehzarei.me/donate/"
 private const val TRANSFER_URL = "https://transfer.sh/"
 
 class AboutFragment : Fragment() {
