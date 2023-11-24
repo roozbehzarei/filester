@@ -34,4 +34,6 @@
     <string name="language">Language</string>
     <string name="theme">Theme</string>
     <string name="cancel">Cancel</string>
+    <string name="file_hosting_service">File hosting service</string>
+
 </resources>

@@ -18,6 +18,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val screen = preferenceManager.createPreferenceScreen(context)
         val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
 
+        val fileHostingServicePreference = ListPreference(context)
+        with(fileHostingServicePreference) {
+            key = "file_hosting_service"
+            title = getString(R.string.file_hosting_service)
+            dialogTitle = getString(R.string.file_hosting_service)
+            entries = arrayOf(getString(R.string.link_transfer))
+            entryValues = arrayOf(getString(R.string.link_transfer))
+            setDefaultValue(getString(R.string.link_transfer))
+            summary = getString(R.string.link_transfer)
+        }
+
         val languagePreference = ListPreference(context)
         with(languagePreference) {
             key = "language"
@@ -65,8 +76,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        screen.addPreference(languagePreference)
-        screen.addPreference(themePreference)
-        preferenceScreen = screen
+        with(screen) {
+            addPreference(fileHostingServicePreference)
+            addPreference(languagePreference)
+            addPreference(themePreference)
+            preferenceScreen = this
+        }
     }
 }

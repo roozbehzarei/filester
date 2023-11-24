@@ -32,5 +32,6 @@
     <string name="language">زبان</string>
     <string name="theme">حالت نمایش</string>
     <string name="cancel">لغو</string>
+    <string name="file_hosting_service">سرویس میزبانی فایل</string>
 
 </resources>
