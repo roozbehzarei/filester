@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">Filester</string>
     <string name="app_description">Simple File Uploader</string>
-    <string name="app_version">Version: %1$s</string>
+    <string name="app_version">Version %1$s</string>
     <string name="app_copyleft">Copyleft © 2023 by Roozbeh Zarei</string>
     <string name="menu_about">About</string>
     <string name="link_transfer" translatable="false">transfer.sh</string>
     <string name="link_donate">Donate</string>
     <string name="link_website">Website</string>
+    <string name="link_privacy_policy">Privacy Policy</string>
     <string name="title_upload_success">Upload successful</string>
     <string name="message_upload_success">Your uploaded file will be available for the next 14 days.</string>
     <string name="dialog_button_copy">Copy Link</string>

@@ -2,11 +2,12 @@
 <resources>
     <string name="app_name">فایلستر</string>
     <string name="app_description">بارگذاری آسان فایل</string>
-    <string name="app_version">نسخه: %1$s</string>
+    <string name="app_version">نسخه %1$s</string>
     <string name="app_copyleft">کپی‌لفت © 2023 توسط روزبه زارعی</string>
     <string name="menu_about">درباره</string>
     <string name="link_donate">حمایت مالی</string>
     <string name="link_website">وبسایت</string>
+    <string name="link_privacy_policy">سیاست حفظ حریم خصوصی</string>
     <string name="title_upload_success">بارگذاری انجام شد</string>
     <string name="message_upload_success">فایل آپلود شده برای 14 روز آینده در دسترس خواهد بود.</string>
     <string name="dialog_button_copy">کپی نشانی</string>

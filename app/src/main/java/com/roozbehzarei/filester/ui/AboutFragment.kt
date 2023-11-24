@@ -11,9 +11,9 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentAboutBinding
 
-private const val GITHUB_URL = "https://roozbehzarei.me/project/filester/"
-private const val DONATE_URL = "https://roozbehzarei.me/donate/"
-private const val TRANSFER_URL = "https://transfer.sh/"
+private const val WEBSITE_URL = "https://roozbehzarei.me/project/filester"
+private const val DONATE_URL = "https://roozbehzarei.me/donate"
+private const val PRIVACY_POLICY_URL = "https://roozbehzarei.me/filester/privacy-policy"
 
 class AboutFragment : Fragment() {
 
@@ -21,9 +21,7 @@ class AboutFragment : Fragment() {
     private lateinit var binding: FragmentAboutBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout XML file and return a binding object instance
         binding = FragmentAboutBinding.inflate(inflater, container, false)
@@ -35,15 +33,19 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.linkDonation.setOnClickListener {
+
+        binding.websiteViewHolder.setOnClickListener {
+            openLink(WEBSITE_URL)
+        }
+
+        binding.donateViewHolder.setOnClickListener {
             openLink(DONATE_URL)
         }
-        binding.linkWebsite.setOnClickListener {
-            openLink(GITHUB_URL)
+
+        binding.privacyPolicyViewHolder.setOnClickListener {
+            openLink(PRIVACY_POLICY_URL)
         }
-        binding.linkTransfer.setOnClickListener {
-            openLink(TRANSFER_URL)
-        }
+
     }
 
     /**
@@ -51,8 +53,7 @@ class AboutFragment : Fragment() {
      */
     private fun openLink(url: String) {
         val intent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(url)
+            Intent.ACTION_VIEW, Uri.parse(url)
         )
         startActivity(intent)
     }
