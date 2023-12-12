@@ -1,18 +1,21 @@
 <resources>
     <string name="app_name">Filester</string>
     <string name="app_description">Simple File Uploader</string>
-    <string name="app_version">Version: %1$s</string>
+    <string name="app_version">Version %1$s</string>
     <string name="app_copyleft">Copyleft © 2023 by Roozbeh Zarei</string>
     <string name="menu_about">About</string>
     <string name="link_transfer" translatable="false">transfer.sh</string>
     <string name="link_donate">Donate</string>
     <string name="link_website">Website</string>
+    <string name="link_privacy_policy">Privacy Policy</string>
     <string name="title_upload_success">Upload successful</string>
     <string name="message_upload_success">Your uploaded file will be available for the next 14 days.</string>
     <string name="dialog_button_copy">Copy Link</string>
     <string name="dialog_button_close">Close</string>
     <string name="title_upload_error">Upload failed</string>
     <string name="message_upload_error">Something went wrong. Please try again.</string>
+    <string name="title_upload_cancelled">Upload cancelled</string>
+    <string name="message_upload_cancelled">You have cancelled the upload process.</string>
     <string name="snackbar_clipboard">Link copied to clipboard</string>
     <string name="snackbar_uploading">Uploading file, please wait.</string>
     <string name="text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
@@ -24,4 +27,21 @@
     <string name="notification_channel_id" translatable="false">filester_notification_id</string>
     <string name="notification_title_start">Initializing upload…</string>
     <string name="notification_title_in_progress">Uploading…</string>
+    <string name="english">English</string>
+    <string name="persian">Persian</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="system_default">System default</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Remove</string>
+    <string name="file_hosting_service">File hosting service</string>
+    <string name="message_shared_with_filester">Shared with Filester secure uploader.</string>
+    <string name="dialog_delete_title">Remove this file?</string>
+    <string name="dialog_delete_message">\"%1s\" will be removed from your upload history.</string>
+    <string name="snackbar_delete_successful">File removed from history.</string>
+    <string name="copy_address">Copy Address</string>
+    <string name="share">Share</string>
+
 </resources>

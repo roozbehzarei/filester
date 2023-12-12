@@ -15,11 +15,13 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.roozbehzarei.filester.BaseApplication
+import com.roozbehzarei.filester.FilesterBroadcastReceiver
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.network.TransferApi
 import com.roozbehzarei.filester.ui.MainActivity
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_NAME
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_URI
+import kotlinx.coroutines.CancellationException
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -85,19 +87,32 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                 Result.failure()
             }
         } catch (e: Exception) {
-            notificationManager.notify(
-                1, createNotification(context.getString(R.string.title_upload_error))
-            )
+            if (e is CancellationException) {
+                notificationManager.notify(
+                    0, createNotification(context.getString(R.string.title_upload_cancelled))
+                )
+            } else {
+                notificationManager.notify(
+                    0, createNotification(context.getString(R.string.title_upload_error))
+                )
+            }
             Result.failure()
         }
     }
 
     private fun createForegroundInfo(progress: String): ForegroundInfo {
+        val cancelIntent = Intent(context, FilesterBroadcastReceiver::class.java).apply {
+            action = "FILESTER_STOP_UPLOAD"
+        }
+        val cancelPendingIntent = PendingIntent.getBroadcast(
+            context, -1, cancelIntent, PendingIntent.FLAG_IMMUTABLE
+        )
         val notificationChannelId = context.getString(R.string.notification_channel_id)
         val notification =
             NotificationCompat.Builder(context, notificationChannelId).setContentTitle(progress)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setOngoing(true)
+                .addAction(0, context.getString(R.string.button_cancel), cancelPendingIntent)
                 .setProgress(0, 0, true).build()
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

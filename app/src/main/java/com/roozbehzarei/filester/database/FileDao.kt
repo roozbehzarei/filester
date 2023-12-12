@@ -1,6 +1,7 @@
 package com.roozbehzarei.filester.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,5 +15,8 @@ interface FileDao {
 
     @Query("SELECT * FROM file")
     fun getAll(): Flow<List<File>>
+
+    @Delete
+    suspend fun delete(file: File)
 
 }

@@ -10,14 +10,14 @@ plugins {
 
 android {
     namespace = "com.roozbehzarei.filester"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 21
-        targetSdk = 33
-        versionCode = 4
-        versionName = "2.1.0"
+        targetSdk = 34
+        versionCode = 5
+        versionName = "2.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,21 +26,21 @@ android {
         viewBinding = true
     }
 
-        buildTypes {
-            getByName("release") {
-                isMinifyEnabled = false
-                proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-                )
-            }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
         }
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
-        }
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     androidResources {
         generateLocaleConfig = true
     }
@@ -54,6 +54,7 @@ dependencies {
     val retrofitVersion = "2.9.0"
     val workVersion = "2.8.1"
     val roomVersion = "2.5.2"
+    val preferenceVersion = "1.2.0"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -85,4 +86,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")
+    // Preference
+    implementation("androidx.preference:preference-ktx:$preferenceVersion")
 }

@@ -8,16 +8,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/overview_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/copyright_holder"
-        app:layout_constraintEnd_toStartOf="@id/buttons_container"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/links_container"
+        app:layout_constraintEnd_toStartOf="@id/links_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/links_container">
 
         <ImageView
             android:id="@+id/overview_logo"
-            android:layout_width="96dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_filester"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,26 +28,15 @@
         <TextView
             android:id="@+id/overview_app_name"
             style="@style/TextAppearance.Filester.HeadlineSmall"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="2dp"
             android:text="@string/app_name"
-            app:layout_constraintBottom_toTopOf="@id/overview_description"
-            app:layout_constraintStart_toEndOf="@id/overview_logo"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/overview_description"
-            style="@style/TextAppearance.Filester.TitleMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/app_description"
             app:layout_constraintBottom_toTopOf="@id/app_version"
             app:layout_constraintStart_toEndOf="@id/overview_logo"
-            app:layout_constraintTop_toBottomOf="@id/overview_app_name" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/app_version"
@@ -54,10 +44,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/overview_logo"
-            app:layout_constraintTop_toBottomOf="@id/overview_description" />
+            app:layout_constraintTop_toBottomOf="@id/overview_app_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/copyright_text"
+            android:id="@+id/copyleft_text"
             style="@style/TextAppearance.Material3.LabelMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +73,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/buttons_container"
+        android:id="@+id/links_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/copyright_holder"
@@ -92,45 +81,130 @@
         app:layout_constraintStart_toEndOf="@id/overview_container"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/link_donation"
-            style="@style/Widget.Material3.Button.TonalButton.Icon"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/websiteViewHolder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/link_donate"
-            android:textColor="@color/md_theme_dark_onPrimary"
-            app:backgroundTint="@color/seed"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/link_website"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/link_website"
-            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/link_website"
-            app:icon="@drawable/ic_round_code"
-
-            app:layout_constraintEnd_toStartOf="@id/link_transfer"
+            android:layout_marginEnd="12dp"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/donateViewHolder"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/link_donation" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/link_transfer"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/websiteImageView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/baseline_web"
+                app:layout_constraintBottom_toTopOf="@id/websiteTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorOnBackground" />
+
+            <TextView
+                android:id="@+id/websiteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/link_website"
+                android:textAppearance="@style/TextAppearance.Filester.LabelLarge"
+                android:textColor="?attr/colorOnBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/websiteImageView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/donateViewHolder"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/link_transfer"
-            app:icon="@drawable/ic_round_link"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/privacyPolicyViewHolder"
+            app:layout_constraintStart_toEndOf="@id/websiteViewHolder"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/donateImageView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/baseline_attach_money"
+                app:layout_constraintBottom_toTopOf="@id/donateTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorOnBackground" />
+
+            <TextView
+                android:id="@+id/donateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/link_donate"
+                android:textAppearance="@style/TextAppearance.Filester.LabelLarge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/donateImageView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/privacyPolicyViewHolder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/link_website"
-            app:layout_constraintTop_toBottomOf="@id/link_donation" />
+            app:layout_constraintStart_toEndOf="@id/donateViewHolder"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/privacyPolicyImageView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/outline_privacy_tip"
+                app:layout_constraintBottom_toTopOf="@id/privacyPolicyTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorOnBackground" />
+
+            <TextView
+                android:id="@+id/privacyPolicyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/link_privacy_policy"
+                android:textAppearance="@style/TextAppearance.Filester.LabelLarge"
+                android:textColor="?attr/colorOnBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyPolicyImageView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

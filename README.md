@@ -19,17 +19,15 @@
      </a>
 </p>
 
-Filester lets you share files with everyone, everywhere, whenever you want! Imagine a cloud storage
-app that doesn't show ads, collect your data nor require creating an account! With Filester, you're
-always one click away from uploading infinite huge files to the internet and share them with the
-world.
+Filester is the ultimate cloud storage app for Android. No annoying ads, no sneaky data collection, no account required! Just one click and you’re ready to go.
 
 **Features:**
 
 * Free for use
-* No-logs policy
-* All formats supported
+* Privacy-friendly
+* All file formats supported
 * No size limitations
+* Multilingual
 * Runs on Android 5.0 and later
 
 ![screenshots](https://user-images.githubusercontent.com/55883200/190531625-88746a7e-bf8b-4feb-840f-dc4d6f6d8480.png)
@@ -60,8 +58,7 @@ the [releases section](https://github.com/roozbehzarei/filester/releases/latest)
 
 ## Contributors
 
-* [Ahoora Fakhrian](https://linktr.ee/ahoora) (logo design)
-* [Artin Fakhrian](https://linktr.ee/artin_fakhrian) (logo design)
+* [Ahoora Fakhrian](https://www.linkedin.com/in/ahoorafakhrian) (logo design)
 * [Open source community](https://github.com/roozbehzarei/filester/graphs/contributors)
 
 ## License

@@ -15,10 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Filester.Starting">
 
+        <receiver
+            android:name=".FilesterBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="FILESTER_STOP_UPLOAD" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"
             tools:node="merge" />
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <meta-data
             android:name="firebase_performance_logcat_enabled"
@@ -26,8 +43,8 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTask"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

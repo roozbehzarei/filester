@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -25,6 +26,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,6 +39,7 @@ import com.roozbehzarei.filester.databinding.FragmentMainBinding
 import com.roozbehzarei.filester.viewmodel.FilesterViewModel
 import com.roozbehzarei.filester.viewmodel.FilesterViewModelFactory
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_URI
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -43,6 +47,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var ongoingUploadSnackbar: Snackbar? = null
 
     private val viewModel: FilesterViewModel by activityViewModels {
         FilesterViewModelFactory(
@@ -82,19 +87,47 @@ class MainFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.action_about -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutFragment())
+                    R.id.action_settings -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
                 }
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        val adapter = HistoryListAdapter { file ->
-            val clipboard =
-                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip: ClipData = ClipData.newPlainText("file url", file.fileUrl)
-            clipboard.setPrimaryClip(clip)
-            Snackbar.make(
-                binding.snackbarLayout, getString(R.string.snackbar_clipboard), Snackbar.LENGTH_SHORT
-            ).show()
+        val adapter = HistoryListAdapter { file, action ->
+            when (action) {
+                0 -> {
+                    val sendIntent: Intent = Intent().apply {
+                        setAction(Intent.ACTION_SEND)
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "${file.fileUrl}\n${getString(R.string.message_shared_with_filester)}"
+                        )
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+                }
+
+                1 -> {
+                    val clipboard =
+                        activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip: ClipData = ClipData.newPlainText("file url", file.fileUrl)
+                    clipboard.setPrimaryClip(clip)
+                    Snackbar.make(
+                        binding.snackbarLayout,
+                        getString(R.string.snackbar_clipboard),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                2 -> {
+                    showDeleteDialog(file.fileName) {
+                        viewModel.deleteFile(file)
+                    }
+
+                }
+            }
+
         }
         binding.fileListView.adapter = adapter
         viewModel.files.observe(viewLifecycleOwner) {
@@ -123,6 +156,22 @@ class MainFragment : Fragment() {
             }
         }
         viewModel.outputWorkInfo.observe(viewLifecycleOwner, workInfoObserver())
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    if (state.isFileDeleted) {
+                        Snackbar.make(
+                            binding.snackbarLayout,
+                            getString(R.string.snackbar_delete_successful),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        viewModel.uiStateConsumed()
+                    }
+                }
+            }
+        }
+
     }
 
     private fun workInfoObserver(): Observer<List<WorkInfo>> {
@@ -135,31 +184,46 @@ class MainFragment : Fragment() {
             val fileUrl = workInfo.outputData.getString(KEY_FILE_URI)
             if (!workInfo.state.isFinished) {
                 isUploadInProgress(true)
-                Snackbar.make(
+                ongoingUploadSnackbar = Snackbar.make(
                     binding.snackbarLayout,
-                    resources.getString(R.string.snackbar_uploading),
-                    Snackbar.LENGTH_LONG
-                ).show()
+                    getString(R.string.snackbar_uploading),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                ongoingUploadSnackbar?.setAction(getString(R.string.button_cancel)) {
+                    viewModel.cancelUploadWork()
+                }?.show()
             } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                showDialog(true, fileUrl)
+                showUploadDialog(true, fileUrl)
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
-
+                ongoingUploadSnackbar?.dismiss()
             } else {
-                showDialog(false, null)
+                showUploadDialog(false, null)
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
+                ongoingUploadSnackbar?.dismiss()
             }
         }
     }
 
-    private fun showDialog(isUploadSuccessful: Boolean, fileUrl: String?) {
+    private fun showUploadDialog(isUploadSuccessful: Boolean, fileUrl: String?) {
         val context = requireContext()
         val alertDialog = MaterialAlertDialogBuilder(context)
         if (isUploadSuccessful) {
             alertDialog.setTitle(resources.getString(R.string.title_upload_success))
                 .setMessage(getString(R.string.message_upload_success))
-                .setPositiveButton(resources.getString(R.string.dialog_button_copy)) { _, _ ->
+                .setPositiveButton(getString(R.string.share)) { _, _ ->
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "$fileUrl\n${getString(R.string.message_shared_with_filester)}"
+                        )
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+                }.setNegativeButton(getString(R.string.dialog_button_copy)) { _, _ ->
                     val clipboard =
                         activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip: ClipData = ClipData.newPlainText("file url", fileUrl)
@@ -169,8 +233,7 @@ class MainFragment : Fragment() {
                         getString(R.string.snackbar_clipboard),
                         Snackbar.LENGTH_SHORT
                     ).show()
-                }
-                .setNegativeButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
+                }.setNeutralButton(getString(R.string.dialog_button_close)) { dialog, _ ->
                     dialog.dismiss()
                 }
         } else {
@@ -180,6 +243,20 @@ class MainFragment : Fragment() {
                     dialog.dismiss()
                 }
         }.setCancelable(false).show()
+    }
+
+    private fun showDeleteDialog(fileName: String, onPositiveButtonClicked: () -> Unit) {
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+        with(dialog) {
+            setTitle(getString(R.string.dialog_delete_title))
+            setMessage(getString(R.string.dialog_delete_message, fileName))
+            setPositiveButton(getString(R.string.button_delete)) { _, _ ->
+                onPositiveButtonClicked()
+            }
+            setNegativeButton(getString(R.string.button_cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }.show()
+        }
     }
 
     private fun isUploadInProgress(state: Boolean) {

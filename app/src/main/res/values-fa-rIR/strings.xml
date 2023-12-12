@@ -2,17 +2,20 @@
 <resources>
     <string name="app_name">فایلستر</string>
     <string name="app_description">بارگذاری آسان فایل</string>
-    <string name="app_version">نسخه: %1$s</string>
+    <string name="app_version">نسخه %1$s</string>
     <string name="app_copyleft">کپی‌لفت © 2023 توسط روزبه زارعی</string>
     <string name="menu_about">درباره</string>
     <string name="link_donate">حمایت مالی</string>
     <string name="link_website">وبسایت</string>
+    <string name="link_privacy_policy">سیاست حفظ حریم خصوصی</string>
     <string name="title_upload_success">بارگذاری انجام شد</string>
     <string name="message_upload_success">فایل آپلود شده برای 14 روز آینده در دسترس خواهد بود.</string>
     <string name="dialog_button_copy">کپی نشانی</string>
     <string name="dialog_button_close">بستن</string>
     <string name="title_upload_error">بارگذاری انجام نشد</string>
     <string name="message_upload_error">خطایی رخ داده است. لطفا دوباره تلاش نمایید.</string>
+    <string name="title_upload_cancelled">بارگذاری لغو شد</string>
+    <string name="message_upload_cancelled">شما فرآیند بارگذاری فایل را لغو کردید.</string>
     <string name="snackbar_clipboard">نشانی کپی شد</string>
     <string name="snackbar_uploading">در حال بارگذاری فایل، لطفا صبر نمایید.</string>
     <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>
@@ -22,4 +25,21 @@
     <string name="settings">تنظیمات</string>
     <string name="notification_title_start">در حال آماده سازی بارگذاری…</string>
     <string name="notification_title_in_progress">در حال بارگذاری…</string>
+    <string name="english">انگلیسی</string>
+    <string name="persian">پارسی</string>
+    <string name="dark">تاریک</string>
+    <string name="light">روشن</string>
+    <string name="system_default">پیش فرض سیستم</string>
+    <string name="language">زبان</string>
+    <string name="theme">حالت نمایش</string>
+    <string name="button_cancel">لغو</string>
+    <string name="button_delete">حذف</string>
+    <string name="file_hosting_service">سرویس میزبانی فایل</string>
+    <string name="message_shared_with_filester">بارگذاری شده با امنیت توسط فایلستر.</string>
+    <string name="dialog_delete_title">فایل پاک شود؟</string>
+    <string name="dialog_delete_message">%s از تاریخچه دستگاه حذف خواهد شد.</string>
+    <string name="snackbar_delete_successful">فایل از تاریخچه پاک شد.</string>
+    <string name="copy_address">کپی نشانی</string>
+    <string name="share">اشتراک گذاری</string>
+
 </resources>
