@@ -32,7 +32,14 @@
     <string name="system_default">پیش فرض سیستم</string>
     <string name="language">زبان</string>
     <string name="theme">حالت نمایش</string>
-    <string name="cancel">لغو</string>
+    <string name="button_cancel">لغو</string>
+    <string name="button_delete">حذف</string>
     <string name="file_hosting_service">سرویس میزبانی فایل</string>
+    <string name="message_shared_with_filester">بارگذاری شده با امنیت توسط فایلستر.</string>
+    <string name="dialog_delete_title">فایل پاک شود؟</string>
+    <string name="dialog_delete_message">%s از تاریخچه دستگاه حذف خواهد شد.</string>
+    <string name="snackbar_delete_successful">فایل از تاریخچه پاک شد.</string>
+    <string name="copy_address">کپی نشانی</string>
+    <string name="share">اشتراک گذاری</string>
 
 </resources>

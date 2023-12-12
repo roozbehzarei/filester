@@ -34,7 +34,14 @@
     <string name="system_default">System default</string>
     <string name="language">Language</string>
     <string name="theme">Theme</string>
-    <string name="cancel">Cancel</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Remove</string>
     <string name="file_hosting_service">File hosting service</string>
+    <string name="message_shared_with_filester">Shared with Filester secure uploader.</string>
+    <string name="dialog_delete_title">Remove this file?</string>
+    <string name="dialog_delete_message">\"%1s\" will be removed from your upload history.</string>
+    <string name="snackbar_delete_successful">File removed from history.</string>
+    <string name="copy_address">Copy Address</string>
+    <string name="share">Share</string>
 
 </resources>

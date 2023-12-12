@@ -112,7 +112,7 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
             NotificationCompat.Builder(context, notificationChannelId).setContentTitle(progress)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setOngoing(true)
-                .addAction(0, context.getString(R.string.cancel), cancelPendingIntent)
+                .addAction(0, context.getString(R.string.button_cancel), cancelPendingIntent)
                 .setProgress(0, 0, true).build()
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
