@@ -47,6 +47,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var ongoingUploadSnackbar: Snackbar? = null
 
     private val viewModel: FilesterViewModel by activityViewModels {
         FilesterViewModelFactory(
@@ -115,7 +116,7 @@ class MainFragment : Fragment() {
                     Snackbar.make(
                         binding.snackbarLayout,
                         getString(R.string.snackbar_clipboard),
-                        Snackbar.LENGTH_SHORT
+                        Snackbar.LENGTH_LONG
                     ).show()
                 }
 
@@ -183,20 +184,24 @@ class MainFragment : Fragment() {
             val fileUrl = workInfo.outputData.getString(KEY_FILE_URI)
             if (!workInfo.state.isFinished) {
                 isUploadInProgress(true)
-                Snackbar.make(
+                ongoingUploadSnackbar = Snackbar.make(
                     binding.snackbarLayout,
-                    resources.getString(R.string.snackbar_uploading),
-                    Snackbar.LENGTH_LONG
-                ).show()
+                    getString(R.string.snackbar_uploading),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                ongoingUploadSnackbar?.setAction(getString(R.string.button_cancel)) {
+                    viewModel.cancelUploadWork()
+                }?.show()
             } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                 showUploadDialog(true, fileUrl)
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
-
+                ongoingUploadSnackbar?.dismiss()
             } else {
                 showUploadDialog(false, null)
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
+                ongoingUploadSnackbar?.dismiss()
             }
         }
     }

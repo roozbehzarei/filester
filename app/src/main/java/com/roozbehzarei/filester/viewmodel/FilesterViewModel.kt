@@ -61,6 +61,10 @@ class FilesterViewModel(private val fileDao: FileDao, application: Application) 
         )
     }
 
+    fun cancelUploadWork() {
+        workManager.cancelUniqueWork(KEY_WORK)
+    }
+
     fun clearWorkQueue() {
         workManager.pruneWork()
     }
