@@ -10,14 +10,14 @@ plugins {
 
 android {
     namespace = "com.roozbehzarei.filester"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 21
-        targetSdk = 33
-        versionCode = 4
-        versionName = "2.1.0"
+        targetSdk = 34
+        versionCode = 5
+        versionName = "2.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
