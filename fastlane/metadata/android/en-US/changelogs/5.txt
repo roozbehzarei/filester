@@ -1,0 +1,5 @@
+- Share your uploaded files effortlessly with the new one-tap sharing feature. No more copying and pasting links!
+- Keep your upload history tidy with the new option to remove past uploads at your convenience.
+- Dive into the settings page where you can toggle between light and dark modes and select your preferred language.
+- The newly added privacy policy outlines the commitment to your data's security, enhancing trust and transparency.
+- Enjoy a smoother and more intuitive user experience with many subtle yet impactful user experience improvements.
