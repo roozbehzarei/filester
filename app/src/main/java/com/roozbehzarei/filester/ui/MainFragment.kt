@@ -207,7 +207,18 @@ class MainFragment : Fragment() {
         if (isUploadSuccessful) {
             alertDialog.setTitle(resources.getString(R.string.title_upload_success))
                 .setMessage(getString(R.string.message_upload_success))
-                .setPositiveButton(resources.getString(R.string.dialog_button_copy)) { _, _ ->
+                .setPositiveButton(getString(R.string.share)) { _, _ ->
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "$fileUrl\n${getString(R.string.message_shared_with_filester)}"
+                        )
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+                }.setNegativeButton(getString(R.string.dialog_button_copy)) { _, _ ->
                     val clipboard =
                         activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip: ClipData = ClipData.newPlainText("file url", fileUrl)
@@ -217,8 +228,7 @@ class MainFragment : Fragment() {
                         getString(R.string.snackbar_clipboard),
                         Snackbar.LENGTH_SHORT
                     ).show()
-                }
-                .setNegativeButton(resources.getString(R.string.dialog_button_close)) { dialog, _ ->
+                }.setNeutralButton(getString(R.string.dialog_button_close)) { dialog, _ ->
                     dialog.dismiss()
                 }
         } else {
