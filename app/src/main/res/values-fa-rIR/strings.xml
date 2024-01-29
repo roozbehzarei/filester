@@ -41,5 +41,9 @@
     <string name="snackbar_delete_successful">فایل از تاریخچه پاک شد.</string>
     <string name="copy_address">کپی نشانی</string>
     <string name="share">اشتراک گذاری</string>
+    <string name="update">به‌روزرسانی</string>
+    <string name="dialog_title_update">به‌روزرسانی موجود است</string>
+    <string name="dialog_message_update">برای استفاده از برنامه، آخرین نسخه را دانلود نمایید.</string>
+    <string name="toast_app_not_found">برنامه‌ای برای باز کردن آدرس اینترنتی یافت نشد</string>
 
 </resources>

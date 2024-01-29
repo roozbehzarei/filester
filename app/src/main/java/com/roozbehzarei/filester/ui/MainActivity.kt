@@ -12,12 +12,17 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
+import com.roozbehzarei.filester.FilesterFirebaseMsgService
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 /**
  * Main Activity and entry point for the app.
@@ -79,7 +84,38 @@ class MainActivity : AppCompatActivity() {
         // Set up the app bar for use with the NavController
         binding.appBar.setupWithNavController(navController)
 
+        handleFirebaseUpdateMessage()
         createNotificationChannel()
+    }
+
+    /**
+     * 1. Show [UpdateDialog] if [FilesterFirebaseMsgService.KEY_UPDATE] is passed
+     * as intent extra (app is in background)
+     * 2. Observe incoming Firebase update messages exposed via [FilesterFirebaseMsgService.incomingMessage]
+     * to open [UpdateDialog] (app is in foreground)
+     */
+    private fun handleFirebaseUpdateMessage() {
+        // 1.
+        if (intent.extras?.getString(FilesterFirebaseMsgService.KEY_UPDATE).isNullOrEmpty().not())
+            showUpdateDialog()
+        // 2.
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                FilesterFirebaseMsgService.incomingMessage.collect { message ->
+                    if (!message.isShown) {
+                        showUpdateDialog()
+                        FilesterFirebaseMsgService.incomingMessageShown()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showUpdateDialog() {
+        val updateDialog = UpdateDialog()
+        if (!updateDialog.isAdded) updateDialog.show(
+            supportFragmentManager, UpdateDialog.TAG
+        )
     }
 
     private fun createNotificationChannel() {

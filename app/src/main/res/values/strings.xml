@@ -43,5 +43,9 @@
     <string name="snackbar_delete_successful">File removed from history.</string>
     <string name="copy_address">Copy Address</string>
     <string name="share">Share</string>
+    <string name="update">Update</string>
+    <string name="dialog_title_update">Update available</string>
+    <string name="dialog_message_update">To use this app, download the latest version.</string>
+    <string name="toast_app_not_found">No app found to open URL</string>
 
 </resources>
