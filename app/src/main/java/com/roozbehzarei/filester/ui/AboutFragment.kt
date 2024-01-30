@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentAboutBinding
@@ -37,27 +39,37 @@ class AboutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.websiteViewHolder.setOnClickListener {
-            openLink(WEBSITE_URL)
+            openInBrowser(WEBSITE_URL)
         }
 
         binding.donateViewHolder.setOnClickListener {
-            openLink(DONATE_URL)
+            openInBrowser(DONATE_URL)
         }
 
         binding.privacyPolicyViewHolder.setOnClickListener {
-            openLink(PRIVACY_POLICY_URL)
+            findNavController().navigate(
+                AboutFragmentDirections.actionGlobalWebFragment(
+                    PRIVACY_POLICY_URL, arrayOf(BASE_URL, PRIVACY_POLICY_URL)
+                )
+            )
         }
 
     }
 
     /**
-     * Open the passed [url] in browser
+     * Open passed [url] in web browser
      */
-    private fun openLink(url: String) {
+    private fun openInBrowser(url: String) {
         val intent = Intent(
             Intent.ACTION_VIEW, Uri.parse(url)
         )
-        startActivity(intent)
+        try {
+            startActivity(intent)
+        } catch (_: Exception) {
+            Toast.makeText(
+                requireContext(), getString(R.string.toast_app_not_found), Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
 }
