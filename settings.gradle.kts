@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Filester"
+rootProject.name = "filester"
 include(":app")
