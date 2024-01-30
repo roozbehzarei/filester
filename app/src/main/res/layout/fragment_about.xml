@@ -71,7 +71,8 @@
             android:src="@drawable/baseline_web"
             app:layout_constraintBottom_toBottomOf="@id/websiteTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/websiteTextView" />
+            app:layout_constraintTop_toTopOf="@id/websiteTextView"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:id="@+id/websiteTextView"
@@ -107,7 +108,8 @@
             android:src="@drawable/baseline_attach_money"
             app:layout_constraintBottom_toBottomOf="@id/donateTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/donateTextView" />
+            app:layout_constraintTop_toTopOf="@id/donateTextView"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:id="@+id/donateTextView"
@@ -142,7 +144,8 @@
             android:src="@drawable/outline_privacy_tip"
             app:layout_constraintBottom_toBottomOf="@id/privacyPolicyTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/privacyPolicyTextView" />
+            app:layout_constraintTop_toTopOf="@id/privacyPolicyTextView"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:id="@+id/privacyPolicyTextView"
