@@ -1,0 +1,8 @@
+### New
+* View live uptime status of file hosting services
+* Get notified when there's a new update available
+* View Privacy Policy faster and easier
+
+### Fixed
+* Wrong icon colors in About section
+* Potential app crash scenario
