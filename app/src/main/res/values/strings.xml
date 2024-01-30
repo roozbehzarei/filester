@@ -2,7 +2,7 @@
     <string name="app_name">Filester</string>
     <string name="app_description">Simple File Uploader</string>
     <string name="app_version">Version %1$s</string>
-    <string name="app_copyleft">Copyleft © 2023 by Roozbeh Zarei</string>
+    <string name="app_copyleft">Copyleft © 2024 by Roozbeh Zarei</string>
     <string name="menu_about">About</string>
     <string name="link_transfer" translatable="false">transfer.sh</string>
     <string name="link_donate">Donate</string>
