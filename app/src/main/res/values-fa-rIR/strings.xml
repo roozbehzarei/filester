@@ -3,7 +3,7 @@
     <string name="app_name">فایلستر</string>
     <string name="app_description">بارگذاری آسان فایل</string>
     <string name="app_version">نسخه %1$s</string>
-    <string name="app_copyleft">کپی‌لفت © 2023 توسط روزبه زارعی</string>
+    <string name="app_copyleft">کپی‌لفت © 2024 توسط روزبه زارعی</string>
     <string name="menu_about">درباره</string>
     <string name="link_donate">حمایت مالی</string>
     <string name="link_website">وبسایت</string>
@@ -41,5 +41,11 @@
     <string name="snackbar_delete_successful">فایل از تاریخچه پاک شد.</string>
     <string name="copy_address">کپی نشانی</string>
     <string name="share">اشتراک گذاری</string>
+    <string name="update">به‌روزرسانی</string>
+    <string name="dialog_title_update">به‌روزرسانی موجود است</string>
+    <string name="dialog_message_update">برای استفاده از برنامه، آخرین نسخه را دانلود نمایید.</string>
+    <string name="toast_app_not_found">برنامه‌ای برای باز کردن آدرس اینترنتی یافت نشد</string>
+    <string name="status">وضعیت</string>
+    <string name="refresh">تازه کردن</string>
 
 </resources>
