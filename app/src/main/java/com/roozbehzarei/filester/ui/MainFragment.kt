@@ -81,13 +81,19 @@ class MainFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.app_bar, menu)
+                menuInflater.inflate(R.menu.app_bar_main, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.action_about -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutFragment())
+                    R.id.action_status -> findNavController()
+                        .navigate(
+                            MainFragmentDirections
+                                .actionGlobalWebFragment(STATUS_URL, arrayOf(BASE_URL, STATUS_URL))
+                        )
+
                     R.id.action_settings -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
+                    R.id.action_about -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutFragment())
                 }
                 return true
             }
@@ -284,4 +290,5 @@ class MainFragment : Fragment() {
             else -> fileSelector.launch("*/*")
         }
     }
+
 }

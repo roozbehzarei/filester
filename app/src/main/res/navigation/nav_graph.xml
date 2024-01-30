@@ -22,4 +22,18 @@
         android:id="@+id/settingsFragment"
         android:name="com.roozbehzarei.filester.ui.SettingsFragment"
         android:label="@string/settings" />
+    <fragment
+        android:id="@+id/webFragment"
+        android:name="com.roozbehzarei.filester.ui.WebFragment"
+        android:label="@string/empty">
+        <argument
+            android:name="webpageUrl"
+            app:argType="string" />
+        <argument
+            android:name="allowedUrls"
+            app:argType="string[]" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_webFragment"
+        app:destination="@id/webFragment" />
 </navigation>

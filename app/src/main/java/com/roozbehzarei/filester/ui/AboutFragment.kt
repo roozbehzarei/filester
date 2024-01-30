@@ -11,9 +11,11 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentAboutBinding
 
-private const val WEBSITE_URL = "https://roozbehzarei.me/project/filester"
-private const val DONATE_URL = "https://roozbehzarei.me/donate"
-private const val PRIVACY_POLICY_URL = "https://roozbehzarei.me/filester/privacy-policy"
+const val BASE_URL = "https://roozbehzarei.me"
+const val WEBSITE_URL = "https://roozbehzarei.me/project/filester"
+const val DONATE_URL = "https://roozbehzarei.me/donate"
+const val PRIVACY_POLICY_URL = "https://roozbehzarei.me/filester/privacy-policy"
+const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
 
 class AboutFragment : Fragment() {
 

@@ -89,4 +89,6 @@ dependencies {
     implementation("com.google.firebase:firebase-perf-ktx")
     // Preference
     implementation("androidx.preference:preference-ktx:$preferenceVersion")
+    // Webkit
+    implementation("androidx.webkit:webkit:1.10.0")
 }
