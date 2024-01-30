@@ -86,11 +86,11 @@ class MainFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.action_status -> findNavController()
-                        .navigate(
-                            MainFragmentDirections
-                                .actionGlobalWebFragment(STATUS_URL, arrayOf(BASE_URL, STATUS_URL))
+                    R.id.action_status -> findNavController().navigate(
+                        MainFragmentDirections.actionGlobalWebFragment(
+                            STATUS_URL, arrayOf(BASE_URL, STATUS_URL)
                         )
+                    )
 
                     R.id.action_settings -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
                     R.id.action_about -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutFragment())
@@ -149,17 +149,17 @@ class MainFragment : Fragment() {
             }
         }
 
+        // Ask user to grant notification permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            checkNotificationPermission()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fab.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                checkNotificationPermission()
-            } else {
-                fileSelector.launch("*/*")
-            }
+            fileSelector.launch("*/*")
         }
         viewModel.outputWorkInfo.observe(viewLifecycleOwner, workInfoObserver())
 
@@ -283,11 +283,8 @@ class MainFragment : Fragment() {
             ) != PackageManager.PERMISSION_GRANTED -> requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
 
             shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
-                // Explain to the user why the app needs this permission
-                // To be implemented in future releases
+                // TODO: Explain why the app needs this permission
             }
-
-            else -> fileSelector.launch("*/*")
         }
     }
 
