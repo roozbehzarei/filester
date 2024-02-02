@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
-import com.roozbehzarei.filester.FilesterFirebaseMsgService
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -84,31 +83,7 @@ class MainActivity : AppCompatActivity() {
         // Set up the app bar for use with the NavController
         binding.appBar.setupWithNavController(navController)
 
-        handleFirebaseUpdateMessage()
         createNotificationChannel()
-    }
-
-    /**
-     * 1. Show [UpdateDialog] if [FilesterFirebaseMsgService.KEY_UPDATE] is passed
-     * as intent extra (app is in background)
-     * 2. Observe incoming Firebase update messages exposed via [FilesterFirebaseMsgService.incomingMessage]
-     * to open [UpdateDialog] (app is in foreground)
-     */
-    private fun handleFirebaseUpdateMessage() {
-        // 1.
-        if (intent.extras?.getString(FilesterFirebaseMsgService.KEY_UPDATE).isNullOrEmpty().not())
-            showUpdateDialog()
-        // 2.
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                FilesterFirebaseMsgService.incomingMessage.collect { message ->
-                    if (!message.isShown) {
-                        showUpdateDialog()
-                        FilesterFirebaseMsgService.incomingMessageShown()
-                    }
-                }
-            }
-        }
     }
 
     private fun showUpdateDialog() {
