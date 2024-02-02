@@ -65,8 +65,11 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    // Retrofit with Scalars Converter
+    // Retrofit 2
     implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    // Moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:$workVersion")
     // Room

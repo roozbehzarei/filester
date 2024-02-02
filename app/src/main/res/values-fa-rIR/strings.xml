@@ -47,5 +47,6 @@
     <string name="toast_app_not_found">برنامه‌ای برای باز کردن آدرس اینترنتی یافت نشد</string>
     <string name="status">وضعیت</string>
     <string name="refresh">تازه کردن</string>
+    <string name="not_now">بعدا</string>
 
 </resources>

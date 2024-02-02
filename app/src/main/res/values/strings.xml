@@ -49,5 +49,6 @@
     <string name="toast_app_not_found">No app found to open URL</string>
     <string name="status">Status</string>
     <string name="refresh">Refresh</string>
+    <string name="not_now">Not Now</string>
 
 </resources>

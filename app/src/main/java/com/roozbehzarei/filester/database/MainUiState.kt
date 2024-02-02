@@ -1,6 +1,6 @@
 package com.roozbehzarei.filester.database
 
 data class MainUiState(
-    // A pair of file name and its deletion status
+    val appVersion: Version? = null,
     val isFileDeleted: Boolean = false
 )

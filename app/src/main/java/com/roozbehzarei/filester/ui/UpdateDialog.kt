@@ -11,8 +11,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.DialogUpdateBinding
 
-private const val UPDATE_URL = "https://roozbehzarei.me/filester/download"
-
 class UpdateDialog : BottomSheetDialogFragment() {
 
     private lateinit var binding: DialogUpdateBinding
@@ -21,9 +19,16 @@ class UpdateDialog : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DialogUpdateBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val downloadUrl = arguments?.getString(VER_URL_KEY) ?: ""
 
         binding.actionButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UPDATE_URL))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl))
             try {
                 startActivity(intent)
             } catch (_: Exception) {
@@ -34,11 +39,14 @@ class UpdateDialog : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        return binding.root
+        binding.cancelButton.setOnClickListener {
+            dismiss()
+        }
     }
 
     companion object {
         const val TAG = "UpdateDialog"
+        const val VER_URL_KEY = "versionUrl"
     }
 
 }

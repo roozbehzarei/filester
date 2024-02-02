@@ -38,10 +38,27 @@
         app:layout_constraintTop_toBottomOf="@id/titleView" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/actionButton"
+        android:id="@+id/cancel_button"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/not_now"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/actionButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/messageView" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/actionButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
@@ -51,7 +68,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cancel_button"
         app:layout_constraintTop_toBottomOf="@id/messageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
