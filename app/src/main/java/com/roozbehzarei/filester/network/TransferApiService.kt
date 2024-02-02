@@ -13,7 +13,7 @@ private const val BASE_URL = "https://transfer.sh"
 /**
  * The Retrofit object with the Scalars converter.
  */
-val retrofit: Retrofit = Retrofit.Builder()
+private val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .addConverterFactory(ScalarsConverterFactory.create())
     .build()
