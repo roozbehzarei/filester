@@ -85,4 +85,6 @@ dependencies {
     implementation("androidx.preference:preference-ktx:$preferenceVersion")
     // Webkit
     implementation("androidx.webkit:webkit:1.10.0")
+    // Aptabase
+    implementation("com.aptabase:aptabase:0.0.6")
 }

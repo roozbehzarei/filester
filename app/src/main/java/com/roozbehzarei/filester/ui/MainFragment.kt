@@ -30,6 +30,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
+import com.aptabase.Aptabase
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.roozbehzarei.filester.BaseApplication
@@ -208,6 +209,7 @@ class MainFragment : Fragment() {
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
                 ongoingUploadSnackbar?.dismiss()
+                Aptabase.instance.trackEvent("file_uploaded")
             } else {
                 showUploadDialog(false, null)
                 viewModel.clearWorkQueue()
