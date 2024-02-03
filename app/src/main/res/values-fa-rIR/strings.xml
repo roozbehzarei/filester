@@ -48,5 +48,8 @@
     <string name="status">وضعیت</string>
     <string name="refresh">تازه کردن</string>
     <string name="not_now">بعدا</string>
+    <string name="crash_mail_subject">گزارش مشکل فایلستر</string>
+    <string name="crash_mail_body">فایل گزارش به این ایمیل ضمیمه شده است.</string>
+    <string name="send">ارسال</string>
 
 </resources>

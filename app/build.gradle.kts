@@ -52,6 +52,7 @@ dependencies {
     val workVersion = "2.8.1"
     val roomVersion = "2.5.2"
     val preferenceVersion = "1.2.0"
+    val acraVersion = "5.11.3"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -87,4 +88,7 @@ dependencies {
     implementation("androidx.webkit:webkit:1.10.0")
     // Aptabase
     implementation("com.aptabase:aptabase:0.0.6")
+    // ACRA
+    implementation("ch.acra:acra-mail:$acraVersion")
+    implementation("ch.acra:acra-notification:$acraVersion")
 }

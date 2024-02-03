@@ -50,5 +50,10 @@
     <string name="status">Status</string>
     <string name="refresh">Refresh</string>
     <string name="not_now">Not Now</string>
+    <string name="crash_mail_subject">Filester Crash Report</string>
+    <string name="crash_mail_body">The report file is attached to this email.</string>
+    <string name="send">Send</string>
+    <string name="crash_notification_title">Application crashed</string>
+    <string name="crash_notification_text">Please send a report to the developer.</string>
 
 </resources>
