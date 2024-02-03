@@ -51,5 +51,7 @@
     <string name="crash_mail_subject">گزارش مشکل فایلستر</string>
     <string name="crash_mail_body">فایل گزارش به این ایمیل ضمیمه شده است.</string>
     <string name="send">ارسال</string>
+    <string name="crash_notification_title">برنامه با خطا مواجه شد</string>
+    <string name="crash_notification_text">لطفا گزارش خطا را به توسعه دهنده ارسال نمایید.</string>
 
 </resources>

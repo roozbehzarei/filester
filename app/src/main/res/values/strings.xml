@@ -41,7 +41,7 @@
     <string name="dialog_delete_title">Remove this file?</string>
     <string name="dialog_delete_message">\"%1s\" will be removed from your upload history.</string>
     <string name="snackbar_delete_successful">File removed from history.</string>
-    <string name="copy_address">Copy Address</string>
+    <string name="copy_address">Copy Link</string>
     <string name="share">Share</string>
     <string name="update">Update</string>
     <string name="dialog_title_update">Update available</string>
