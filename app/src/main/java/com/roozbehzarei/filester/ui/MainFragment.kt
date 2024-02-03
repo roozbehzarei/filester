@@ -70,9 +70,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
-                fileSelector.launch("*/*")
-            }
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
         viewModel.getAppVersion()
     }
 
