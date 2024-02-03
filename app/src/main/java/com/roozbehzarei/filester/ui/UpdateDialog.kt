@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.aptabase.Aptabase
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.DialogUpdateBinding
@@ -31,6 +32,7 @@ class UpdateDialog : BottomSheetDialogFragment() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl))
             try {
                 startActivity(intent)
+                Aptabase.instance.trackEvent("app_updated")
             } catch (_: Exception) {
                 Toast.makeText(
                     requireContext(), getString(R.string.toast_app_not_found), Toast.LENGTH_LONG
