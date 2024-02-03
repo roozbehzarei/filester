@@ -3,9 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -16,8 +13,8 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 21
         targetSdk = 34
-        versionCode = 6
-        versionName = "2.3.0"
+        versionCode = 7
+        versionName = "2.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +52,7 @@ dependencies {
     val workVersion = "2.8.1"
     val roomVersion = "2.5.2"
     val preferenceVersion = "1.2.0"
+    val acraVersion = "5.11.3"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -68,8 +66,11 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    // Retrofit with Scalars Converter
+    // Retrofit 2
     implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    // Moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:$workVersion")
     // Room
@@ -81,14 +82,13 @@ dependencies {
     implementation("androidx.activity:activity-ktx:$activityVersion")
     // SplashScreen
     implementation("androidx.core:core-splashscreen:1.0.1")
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-perf-ktx")
     // Preference
     implementation("androidx.preference:preference-ktx:$preferenceVersion")
     // Webkit
     implementation("androidx.webkit:webkit:1.10.0")
+    // Aptabase
+    implementation("com.aptabase:aptabase:0.0.6")
+    // ACRA
+    implementation("ch.acra:acra-mail:$acraVersion")
+    implementation("ch.acra:acra-notification:$acraVersion")
 }

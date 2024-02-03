@@ -2,11 +2,21 @@ package com.roozbehzarei.filester.viewmodel
 
 import android.app.Application
 import android.net.Uri
-import androidx.lifecycle.*
-import androidx.work.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.roozbehzarei.filester.database.File
 import com.roozbehzarei.filester.database.FileDao
 import com.roozbehzarei.filester.database.MainUiState
+import com.roozbehzarei.filester.network.FilesterApi
 import com.roozbehzarei.filester.worker.UploadWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +31,7 @@ const val KEY_WORK = "UNIQUE_WORK"
 class FilesterViewModel(private val fileDao: FileDao, application: Application) :
     AndroidViewModel(application) {
 
+    private val filesterApi = FilesterApi.retrofitService
     private var inputData: Data? = null
     private val workManager = WorkManager.getInstance(application)
     val outputWorkInfo: LiveData<List<WorkInfo>>
@@ -47,7 +58,7 @@ class FilesterViewModel(private val fileDao: FileDao, application: Application) 
 
     fun uiStateConsumed() {
         _uiState.update { uiState ->
-            uiState.copy(isFileDeleted = false)
+            uiState.copy(isFileDeleted = false, appVersion = null)
         }
     }
 
@@ -67,6 +78,18 @@ class FilesterViewModel(private val fileDao: FileDao, application: Application) 
 
     fun clearWorkQueue() {
         workManager.pruneWork()
+    }
+
+    fun getAppVersion() {
+        viewModelScope.launch {
+            try {
+                val response = filesterApi.getVersion()
+                if (response.isSuccessful) {
+                    _uiState.update { it.copy(appVersion = response.body()) }
+                }
+            } catch (_: Exception) {
+            }
+        }
     }
 
 }

@@ -30,12 +30,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
+import com.aptabase.Aptabase
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.roozbehzarei.filester.BaseApplication
+import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.HistoryListAdapter
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentMainBinding
+import com.roozbehzarei.filester.ui.UpdateDialog.Companion.VER_URL_KEY
 import com.roozbehzarei.filester.viewmodel.FilesterViewModel
 import com.roozbehzarei.filester.viewmodel.FilesterViewModelFactory
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_URI
@@ -67,9 +70,8 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
-                fileSelector.launch("*/*")
-            }
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ -> }
+        viewModel.getAppVersion()
     }
 
     override fun onCreateView(
@@ -150,8 +152,7 @@ class MainFragment : Fragment() {
         }
 
         // Ask user to grant notification permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            checkNotificationPermission()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) checkNotificationPermission()
 
         return binding.root
     }
@@ -172,8 +173,11 @@ class MainFragment : Fragment() {
                             getString(R.string.snackbar_delete_successful),
                             Snackbar.LENGTH_LONG
                         ).show()
-                        viewModel.uiStateConsumed()
                     }
+                    if (state.appVersion != null) {
+                        if (state.appVersion.code > BuildConfig.VERSION_CODE) showUpdateDialog(state.appVersion.url)
+                    }
+                    viewModel.uiStateConsumed()
                 }
             }
         }
@@ -203,6 +207,7 @@ class MainFragment : Fragment() {
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
                 ongoingUploadSnackbar?.dismiss()
+                Aptabase.instance.trackEvent("file_uploaded")
             } else {
                 showUploadDialog(false, null)
                 viewModel.clearWorkQueue()
@@ -286,6 +291,14 @@ class MainFragment : Fragment() {
                 // TODO: Explain why the app needs this permission
             }
         }
+    }
+
+    private fun showUpdateDialog(url: String) {
+        val updateDialog = UpdateDialog()
+        val args = Bundle()
+        args.putString(VER_URL_KEY, url)
+        updateDialog.arguments = args
+        if (!updateDialog.isAdded) updateDialog.show(parentFragmentManager, UpdateDialog.TAG)
     }
 
 }

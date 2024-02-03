@@ -1,0 +1,2 @@
+### Improvements
+- **Increased Privacy**: Replaced Google services with free, open-source alternatives. These changes not only ensure compliance with F-Droid's inclusion policy but also empower users with greater control over their data
