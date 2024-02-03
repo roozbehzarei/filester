@@ -1,11 +1,11 @@
-Filester is the ultimate cloud storage app for Android. No annoying ads, no sneaky data collection, no account required! Just one click and you’re ready to go.
+Filester is the ultimate cloud storage solution for Android. No annoying ads, no sneaky data collection, no account required! Just one click and you’re ready to go.
 
 <b>Features</b>
 
  * Free for use
  * Privacy-friendly
  * All formats supported
- * No size limitations
+ * No file size limitations
  * Multilingual
  * Runs on Android 5.0 and later
  
