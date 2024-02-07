@@ -1,1 +1,1 @@
-Simple file uploader
+A secure, accessible cloud sotrage app for android

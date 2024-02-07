@@ -2,7 +2,7 @@
      Filester
 </h1>
 <p align="center">
-     A simple file uploader for android
+     A secure, accessible cloud sotrage app for android.
 </p>
 <p align="center">
      <a style="text-decoration:none" href="LICENSE">
@@ -19,27 +19,33 @@
      </a>
 </p>
 
-Filester is the ultimate cloud storage app for Android. No annoying ads, no sneaky data collection, no account required! Just one click and you’re ready to go.
+Filester is the cloud storage solution that respects your privacy and puts you in control. No more intrusive ads or sneaky data collection. Just one tap and you're ready to store, share, and access your files from anywhere in the world. With support for a wide range of devices and multiple languages, Filester works seamlessly across your Android ecosystem. So whether you're rocking a classic or a cutting-edge phone, your files are always within reach.
 
-**Features:**
+#### Features:
 
-* Free for use
-* Privacy-friendly
-* All file formats supported
-* No size limitations
-* Multilingual
-* Runs on Android 5.0 and later
+* **Privacy-first:** We are open-source and do not have access to your files.
+* **Ad-free experience:** Focus on what matters without annoying interruptions.
+* **No account required:** Get started instantly, no sign-ups or commitments.
+* **Universal compatibility:** Works across a wide range of devices.
 
-![screenshots](https://user-images.githubusercontent.com/55883200/190531625-88746a7e-bf8b-4feb-840f-dc4d6f6d8480.png)
+## Screenshots
+
+<p align="center">
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width=200>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width=200>
+</p>
 
 ## Download
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-alt="Get it on F-Droid"
-height="80">](https://f-droid.org/packages/com.roozbehzarei.filester/)
-
-or get the apk directly from
-the [releases section](https://github.com/roozbehzarei/filester/releases/latest).
+[<img src="https://roozbehzarei.me/wp-content/uploads/f-droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
+[<img src="https://stc.utdstc.com/img/mediakit/download-gio-big.png" alt="Get it on Uptodown" height="60">](https://filester.en.uptodown.com/android)
+[<img src="https://roozbehzarei.me/wp-content/uploads/download.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
 
 ## Build
 
