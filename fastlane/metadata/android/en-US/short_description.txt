@@ -1,1 +1,1 @@
-A secure, accessible cloud sotrage app for android
+A secure, accessible cloud storage app for android
