@@ -44,6 +44,7 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 ## Download
 
 [<img src="https://roozbehzarei.me/wp-content/uploads/f-droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
+[<img src="https://roozbehzarei.me/wp-content/uploads/getapps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
 [<img src="https://stc.utdstc.com/img/mediakit/download-gio-big.png" alt="Get it on Uptodown" height="60">](https://filester.en.uptodown.com/android)
 [<img src="https://roozbehzarei.me/wp-content/uploads/download.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
 
