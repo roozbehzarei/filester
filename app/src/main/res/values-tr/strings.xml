@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Filester</string>
+    <string name="app_description">Basit Dosya Yükleyici</string>
+    <string name="app_version">Sürüm %1$s</string>
+    <string name="app_copyleft">Copyleft © 2024, Roozbeh Zarei</string>
+    <string name="menu_about">Hakkında</string>
+    <string name="link_transfer" translatable="false">transfer.sh</string>
+    <string name="link_donate">Bağış Yapın</string>
+    <string name="link_website">Web sitesi</string>
+    <string name="link_privacy_policy">Gizlilik Politikası</string>
+    <string name="title_upload_success">Yükleme başarılı</string>
+    <string name="message_upload_success">Yüklediğiniz dosya önümüzdeki 14 gün boyunca kullanılabilir olacaktır.</string>
+    <string name="dialog_button_copy">Bağlantıyı Kopyala</string>
+    <string name="dialog_button_close">Kapat</string>
+    <string name="title_upload_error">Yükleme başarısız</string>
+    <string name="message_upload_error">Bir hata oluştu. Lütfen tekrar deneyin.</string>
+    <string name="title_upload_cancelled">Yükleme iptal edildi</string>
+    <string name="message_upload_cancelled">Yükleme işlemini iptal ettiniz.</string>
+    <string name="snackbar_clipboard">Bağlantı panoya kopyalandı</string>
+    <string name="snackbar_uploading">Dosya yükleniyor, lütfen bekleyin.</string>
+    <string name="text_empty_history">Henüz herhangi bir dosya yüklemediniz.\nÖnce bir dosya yüklemeyi deneyin.</string>
+    <string name="channel_name">Yükleme ilerlemesi durumu</string>
+    <string name="channel_description">Yükleme devam ederken, başarılı veya başarısız olduğunda bildir.</string>
+    <string name="fab_label">Dosya yükle</string>
+    <string name="settings">Ayarlar</string>
+    <string name="empty" translatable="false" />
+    <string name="notification_channel_id" translatable="false">filester_notification_id</string>
+    <string name="notification_title_start">Karşıya yükleme başlatılıyor...</string>
+    <string name="notification_title_in_progress">Yükleniyor...</string>
+    <string name="english">İngilizce</string>
+    <string name="persian">Farsça</string>
+    <string name="dark">Koyu</string>
+    <string name="light">Açık</string>
+    <string name="system_default">Sistem varsayılanı</string>
+    <string name="language">Dil</string>
+    <string name="theme">Tema</string>
+    <string name="button_cancel">İptal</string>
+    <string name="button_delete">Kaldır</string>
+    <string name="file_hosting_service">Dosya barındırma hizmeti</string>
+    <string name="message_shared_with_filester">Filester güvenli yükleyici ile paylaşıldı.</string>
+    <string name="dialog_delete_title">Bu dosya kaldırılsın mı?</string>
+    <string name="dialog_delete_message">\"%1s\" yükleme geçmişinizden kaldırılacak.</string>
+    <string name="snackbar_delete_successful">Dosya geçmişten kaldırıldı.</string>
+    <string name="copy_address">Bağlantıyı Kopyala</string>
+    <string name="share">Paylaş</string>
+    <string name="update">Güncelle</string>
+    <string name="dialog_title_update">Güncelleme mevcut</string>
+    <string name="dialog_message_update">Bu uygulamayı kullanmak için en son sürümü indirin.</string>
+    <string name="toast_app_not_found">Bağlantıyı açacak uygulama bulunamadı</string>
+    <string name="status">Durum</string>
+    <string name="refresh">Yenile</string>
+    <string name="not_now">Şimdi Değil</string>
+    <string name="crash_mail_subject">Filester Çökme Raporu</string>
+    <string name="crash_mail_body">Rapor dosyası bu e-postaya eklenmiştir.</string>
+    <string name="send">Gönder</string>
+    <string name="crash_notification_title">Uygulama çöktü</string>
+    <string name="crash_notification_text">Lütfen geliştiriciye bir rapor gönderin.</string>
+</resources>
