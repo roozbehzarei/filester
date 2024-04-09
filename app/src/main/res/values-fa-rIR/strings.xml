@@ -9,7 +9,7 @@
     <string name="link_website">وبسایت</string>
     <string name="link_privacy_policy">سیاست حفظ حریم خصوصی</string>
     <string name="title_upload_success">بارگذاری انجام شد</string>
-    <string name="message_upload_success">فایل آپلود شده برای 14 روز آینده در دسترس خواهد بود.</string>
+    <string name="message_upload_success">فایل آپلود شده برای 30 روز آینده در دسترس خواهد بود.</string>
     <string name="dialog_button_copy">کپی نشانی</string>
     <string name="dialog_button_close">بستن</string>
     <string name="title_upload_error">بارگذاری انجام نشد</string>
@@ -53,5 +53,6 @@
     <string name="send">ارسال</string>
     <string name="crash_notification_title">برنامه با خطا مواجه شد</string>
     <string name="crash_notification_text">لطفا گزارش خطا را به توسعه دهنده ارسال نمایید.</string>
+    <string name="turkish">ترکی</string>
 
 </resources>
