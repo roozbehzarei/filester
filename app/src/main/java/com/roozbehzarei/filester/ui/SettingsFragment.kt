@@ -23,10 +23,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
             key = "file_hosting_service"
             title = getString(R.string.file_hosting_service)
             dialogTitle = getString(R.string.file_hosting_service)
-            entries = arrayOf(getString(R.string.link_transfer))
-            entryValues = arrayOf(getString(R.string.link_transfer))
-            setDefaultValue(getString(R.string.link_transfer))
-            summary = getString(R.string.link_transfer)
+            entries = arrayOf(getString(R.string.link_oshi))
+            entryValues = arrayOf(getString(R.string.link_oshi))
+            setDefaultValue(getString(R.string.link_oshi))
+            summary = getString(R.string.link_oshi)
         }
 
         val languagePreference = ListPreference(context)
@@ -34,8 +34,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             key = "language"
             title = getString(R.string.language)
             dialogTitle = getString(R.string.language)
-            entries = arrayOf(getString(R.string.english), getString(R.string.persian))
-            entryValues = arrayOf("en-US", "fa-IR")
+            entries = arrayOf(getString(R.string.english),getString(R.string.turkish) ,getString(R.string.persian))
+            entryValues = arrayOf("en-US","tr" ,"fa-IR")
             setDefaultValue("en-US")
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
