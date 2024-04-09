@@ -1,4 +1,4 @@
-package com.roozbehzarei.filester.database
+package com.roozbehzarei.filester.model
 
 import com.squareup.moshi.JsonClass
 

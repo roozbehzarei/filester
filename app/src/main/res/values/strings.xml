@@ -5,11 +5,12 @@
     <string name="app_copyleft">Copyleft © 2024 by Roozbeh Zarei</string>
     <string name="menu_about">About</string>
     <string name="link_transfer" translatable="false">transfer.sh</string>
+    <string name="link_oshi" translatable="false">oshi.at</string>
     <string name="link_donate">Donate</string>
     <string name="link_website">Website</string>
     <string name="link_privacy_policy">Privacy Policy</string>
     <string name="title_upload_success">Upload successful</string>
-    <string name="message_upload_success">Your uploaded file will be available for the next 14 days.</string>
+    <string name="message_upload_success">Your uploaded file will be available for the next 30 days.</string>
     <string name="dialog_button_copy">Copy Link</string>
     <string name="dialog_button_close">Close</string>
     <string name="title_upload_error">Upload failed</string>
@@ -29,6 +30,7 @@
     <string name="notification_title_in_progress">Uploading…</string>
     <string name="english">English</string>
     <string name="persian">Persian</string>
+    <string name="turkish">Turkish</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
     <string name="system_default">System default</string>

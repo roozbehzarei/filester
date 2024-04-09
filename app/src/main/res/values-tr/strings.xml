@@ -4,12 +4,11 @@
     <string name="app_version">Sürüm %1$s</string>
     <string name="app_copyleft">Copyleft © 2024, Roozbeh Zarei</string>
     <string name="menu_about">Hakkında</string>
-    <string name="link_transfer" translatable="false">transfer.sh</string>
     <string name="link_donate">Bağış Yapın</string>
     <string name="link_website">Web sitesi</string>
     <string name="link_privacy_policy">Gizlilik Politikası</string>
     <string name="title_upload_success">Yükleme başarılı</string>
-    <string name="message_upload_success">Yüklediğiniz dosya önümüzdeki 14 gün boyunca kullanılabilir olacaktır.</string>
+    <string name="message_upload_success">Yüklediğiniz dosya önümüzdeki 30 gün boyunca kullanılabilir olacaktır.</string>
     <string name="dialog_button_copy">Bağlantıyı Kopyala</string>
     <string name="dialog_button_close">Kapat</string>
     <string name="title_upload_error">Yükleme başarısız</string>
@@ -23,8 +22,6 @@
     <string name="channel_description">Yükleme devam ederken, başarılı veya başarısız olduğunda bildir.</string>
     <string name="fab_label">Dosya yükle</string>
     <string name="settings">Ayarlar</string>
-    <string name="empty" translatable="false" />
-    <string name="notification_channel_id" translatable="false">filester_notification_id</string>
     <string name="notification_title_start">Karşıya yükleme başlatılıyor...</string>
     <string name="notification_title_in_progress">Yükleniyor...</string>
     <string name="english">İngilizce</string>
@@ -55,4 +52,5 @@
     <string name="send">Gönder</string>
     <string name="crash_notification_title">Uygulama çöktü</string>
     <string name="crash_notification_text">Lütfen geliştiriciye bir rapor gönderin.</string>
+    <string name="turkish">Türkçe</string>
 </resources>

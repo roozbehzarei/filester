@@ -1,6 +1,6 @@
 package com.roozbehzarei.filester.network
 
-import com.roozbehzarei.filester.database.Version
+import com.roozbehzarei.filester.model.Version
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Response

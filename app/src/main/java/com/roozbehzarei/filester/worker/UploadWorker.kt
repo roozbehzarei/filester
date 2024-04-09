@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
@@ -17,7 +18,8 @@ import androidx.work.workDataOf
 import com.roozbehzarei.filester.BaseApplication
 import com.roozbehzarei.filester.FilesterBroadcastReceiver
 import com.roozbehzarei.filester.R
-import com.roozbehzarei.filester.network.TransferApi
+import com.roozbehzarei.filester.domain.ParseOshiResponseUseCase
+import com.roozbehzarei.filester.network.OshiApi
 import com.roozbehzarei.filester.ui.MainActivity
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_NAME
 import com.roozbehzarei.filester.viewmodel.KEY_FILE_URI
@@ -66,13 +68,13 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                     context.getString(R.string.notification_title_in_progress)
                 )
             )
-            val apiResponse = TransferApi.retrofitService.sendFile(filePart)
-            val responseBody = apiResponse.body()
-            if (apiResponse.isSuccessful && !responseBody.isNullOrEmpty()) {
-                val outputData = workDataOf(KEY_FILE_URI to responseBody)
+            val apiResponse = OshiApi.retrofitService.sendFile(filePart)
+            if (apiResponse.isSuccessful && !apiResponse.body().isNullOrEmpty()) {
+                val oshiResponse = ParseOshiResponseUseCase().invoke(apiResponse.body()!!)
+                val outputData = workDataOf(KEY_FILE_URI to oshiResponse.downloadUrl)
                 val newFileEntry = com.roozbehzarei.filester.database.File(
                     fileName = file.name,
-                    fileUrl = responseBody,
+                    fileUrl = oshiResponse.downloadUrl,
                     fileSize = file.length() / 1024 / 1024
                 )
                 fileDao.insert(newFileEntry)
