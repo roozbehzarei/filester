@@ -1,0 +1,2 @@
+* Replaced transfer.sh hosting service with oshi.at due to downtime issues
+* Added Turkish translation
