@@ -13,8 +13,8 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 21
         targetSdk = 34
-        versionCode = 7
-        versionName = "2.3.1"
+        versionCode = 8
+        versionName = "2.3.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
