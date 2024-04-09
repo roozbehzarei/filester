@@ -8,31 +8,31 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
-private const val TRANSFER_URL = "https://transfer.sh"
+private const val OSHI_URL = "https://oshi.at"
 
 /**
  * The Retrofit object with the Scalars converter.
  */
 private val retrofit: Retrofit = Retrofit.Builder()
-    .baseUrl(TRANSFER_URL)
+    .baseUrl(OSHI_URL)
     .addConverterFactory(ScalarsConverterFactory.create())
     .build()
 
 /**
  * A public interface that exposes the [sendFile] method
  */
-interface TransferApiService {
+interface OshiApiService {
     @Multipart
-    @POST("/")
+    @POST("/?expire=1800")
     suspend fun sendFile(
-        @Part filePart: MultipartBody.Part
+        @Part("f") filePart: MultipartBody.Part
     ): Response<String>
 }
 
 /**
  * A public Api object that exposes the lazy-initialized Retrofit service
  */
-object TransferApi {
+object OshiApi {
     val retrofitService:
             TransferApiService by lazy { retrofit.create(TransferApiService::class.java) }
 }
