@@ -2,7 +2,7 @@
      Filester
 </h1>
 <p align="center">
-     A secure, accessible cloud sotrage app for android.
+     A secure, accessible cloud storage app for android.
 </p>
 <p align="center">
      <a style="text-decoration:none" href="LICENSE">
