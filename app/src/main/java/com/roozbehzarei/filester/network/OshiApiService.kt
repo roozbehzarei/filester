@@ -13,19 +13,18 @@ private const val OSHI_URL = "https://oshi.at"
 /**
  * The Retrofit object with the Scalars converter.
  */
-private val retrofit: Retrofit = Retrofit.Builder()
-    .baseUrl(OSHI_URL)
-    .addConverterFactory(ScalarsConverterFactory.create())
-    .build()
+private val retrofit: Retrofit =
+    Retrofit.Builder().baseUrl(OSHI_URL).addConverterFactory(ScalarsConverterFactory.create())
+        .build()
 
 /**
  * A public interface that exposes the [sendFile] method
  */
 interface OshiApiService {
     @Multipart
-    @POST("/?expire=1800")
+    @POST("/")
     suspend fun sendFile(
-        @Part("f") filePart: MultipartBody.Part
+        @Part filePart: MultipartBody.Part
     ): Response<String>
 }
 
@@ -33,6 +32,5 @@ interface OshiApiService {
  * A public Api object that exposes the lazy-initialized Retrofit service
  */
 object OshiApi {
-    val retrofitService:
-            TransferApiService by lazy { retrofit.create(TransferApiService::class.java) }
+    val retrofitService: OshiApiService by lazy { retrofit.create(OshiApiService::class.java) }
 }
