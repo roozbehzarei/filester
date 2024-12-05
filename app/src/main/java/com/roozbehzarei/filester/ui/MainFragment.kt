@@ -204,6 +204,12 @@ class MainFragment : Fragment() {
             }
             val workInfo = it[0]
             val fileUrl = workInfo.outputData.getString(KEY_FILE_URI)
+            when (workInfo.state) {
+                WorkInfo.State.SUCCEEDED -> Aptabase.instance.trackEvent("file_upload_succeeded")
+                WorkInfo.State.FAILED -> Aptabase.instance.trackEvent("file_upload_failed")
+                WorkInfo.State.CANCELLED -> Aptabase.instance.trackEvent("file_upload_cancelled")
+                else -> {}
+            }
             if (!workInfo.state.isFinished) {
                 isUploadInProgress(true)
                 ongoingUploadSnackbar = Snackbar.make(
@@ -219,7 +225,6 @@ class MainFragment : Fragment() {
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
                 ongoingUploadSnackbar?.dismiss()
-                Aptabase.instance.trackEvent("file_uploaded")
             } else {
                 showUploadDialog(false, null)
                 viewModel.clearWorkQueue()
