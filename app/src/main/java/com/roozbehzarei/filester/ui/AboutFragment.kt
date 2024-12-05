@@ -7,13 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.databinding.FragmentAboutBinding
 
-const val BASE_URL = "https://roozbehzarei.me"
 const val WEBSITE_URL = "https://roozbehzarei.me/project/filester"
 const val DONATE_URL = "https://roozbehzarei.me/donate"
 const val PRIVACY_POLICY_URL = "https://roozbehzarei.me/filester/privacy-policy"
@@ -47,11 +46,14 @@ class AboutFragment : Fragment() {
         }
 
         binding.privacyPolicyViewHolder.setOnClickListener {
-            findNavController().navigate(
-                AboutFragmentDirections.actionGlobalWebFragment(
-                    PRIVACY_POLICY_URL, arrayOf(BASE_URL, PRIVACY_POLICY_URL)
-                )
-            )
+            val intent = CustomTabsIntent.Builder().build()
+            try {
+                intent.launchUrl(requireActivity(), Uri.parse(PRIVACY_POLICY_URL))
+            } catch (_: Exception) {
+                Toast.makeText(
+                    requireContext(), getString(R.string.toast_app_not_found), Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
     }

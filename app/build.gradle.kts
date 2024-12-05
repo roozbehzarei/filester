@@ -84,8 +84,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     // Preference
     implementation("androidx.preference:preference-ktx:$preferenceVersion")
-    // Webkit
-    implementation("androidx.webkit:webkit:1.12.1")
+    // Browser
+    implementation("androidx.browser:browser:1.8.0")
     // Aptabase
     implementation("com.github.aptabase:aptabase-kotlin:0.0.8")
     // ACRA
