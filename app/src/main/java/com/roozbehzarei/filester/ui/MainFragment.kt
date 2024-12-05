@@ -96,7 +96,9 @@ class MainFragment : Fragment() {
                             intent.launchUrl(requireActivity(), Uri.parse(STATUS_URL))
                         } catch (_: Exception) {
                             Toast.makeText(
-                                requireContext(), getString(R.string.toast_app_not_found), Toast.LENGTH_LONG
+                                requireContext(),
+                                getString(R.string.toast_app_not_found),
+                                Toast.LENGTH_LONG
                             ).show()
                         }
 
@@ -182,8 +184,10 @@ class MainFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
-                    if (state.appVersion != null) {
-                        if (state.appVersion.code > BuildConfig.VERSION_CODE) showUpdateDialog(state.appVersion.url)
+                    if (state.appConfig != null) {
+                        if (state.appConfig.versionCode > BuildConfig.VERSION_CODE) showUpdateDialog(
+                            state.appConfig.downloadUrl
+                        )
                     }
                     viewModel.uiStateConsumed()
                 }

@@ -1,8 +1,8 @@
 package com.roozbehzarei.filester.database
 
-import com.roozbehzarei.filester.model.Version
+import com.roozbehzarei.filester.model.FilesterConfig
 
 data class MainUiState(
-    val appVersion: Version? = null,
+    val appConfig: FilesterConfig? = null,
     val isFileDeleted: Boolean = false
 )
