@@ -15,9 +15,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -88,11 +90,19 @@ class MainFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.action_status -> findNavController().navigate(
-                        MainFragmentDirections.actionGlobalWebFragment(
-                            STATUS_URL, arrayOf(BASE_URL, STATUS_URL)
-                        )
-                    )
+                    R.id.action_status -> {
+                        val intent = CustomTabsIntent.Builder().build()
+                        try {
+                            intent.launchUrl(requireActivity(), Uri.parse(STATUS_URL))
+                        } catch (_: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.toast_app_not_found),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    }
 
                     R.id.action_settings -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
                     R.id.action_about -> findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutFragment())
@@ -174,8 +184,10 @@ class MainFragment : Fragment() {
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
-                    if (state.appVersion != null) {
-                        if (state.appVersion.code > BuildConfig.VERSION_CODE) showUpdateDialog(state.appVersion.url)
+                    if (state.appConfig != null) {
+                        if (state.appConfig.versionCode > BuildConfig.VERSION_CODE) showUpdateDialog(
+                            state.appConfig.downloadUrl
+                        )
                     }
                     viewModel.uiStateConsumed()
                 }
@@ -192,6 +204,12 @@ class MainFragment : Fragment() {
             }
             val workInfo = it[0]
             val fileUrl = workInfo.outputData.getString(KEY_FILE_URI)
+            when (workInfo.state) {
+                WorkInfo.State.SUCCEEDED -> Aptabase.instance.trackEvent("file_upload_succeeded")
+                WorkInfo.State.FAILED -> Aptabase.instance.trackEvent("file_upload_failed")
+                WorkInfo.State.CANCELLED -> Aptabase.instance.trackEvent("file_upload_cancelled")
+                else -> {}
+            }
             if (!workInfo.state.isFinished) {
                 isUploadInProgress(true)
                 ongoingUploadSnackbar = Snackbar.make(
@@ -207,7 +225,6 @@ class MainFragment : Fragment() {
                 viewModel.clearWorkQueue()
                 isUploadInProgress(false)
                 ongoingUploadSnackbar?.dismiss()
-                Aptabase.instance.trackEvent("file_uploaded")
             } else {
                 showUploadDialog(false, null)
                 viewModel.clearWorkQueue()

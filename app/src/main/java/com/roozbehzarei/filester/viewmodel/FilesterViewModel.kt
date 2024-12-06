@@ -58,7 +58,7 @@ class FilesterViewModel(private val fileDao: FileDao, application: Application) 
 
     fun uiStateConsumed() {
         _uiState.update { uiState ->
-            uiState.copy(isFileDeleted = false, appVersion = null)
+            uiState.copy(isFileDeleted = false, appConfig = null)
         }
     }
 
@@ -85,7 +85,7 @@ class FilesterViewModel(private val fileDao: FileDao, application: Application) 
             try {
                 val response = filesterApi.getVersion()
                 if (response.isSuccessful) {
-                    _uiState.update { it.copy(appVersion = response.body()) }
+                    _uiState.update { it.copy(appConfig = response.body()) }
                 }
             } catch (_: Exception) {
             }

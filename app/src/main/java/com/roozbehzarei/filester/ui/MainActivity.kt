@@ -2,7 +2,6 @@ package com.roozbehzarei.filester.ui
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -82,13 +81,6 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
     }
 
-    private fun showUpdateDialog() {
-        val updateDialog = UpdateDialog()
-        if (!updateDialog.isAdded) updateDialog.show(
-            supportFragmentManager, UpdateDialog.TAG
-        )
-    }
-
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -103,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }

@@ -1,6 +1,6 @@
 package com.roozbehzarei.filester.network
 
-import com.roozbehzarei.filester.model.Version
+import com.roozbehzarei.filester.model.FilesterConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Response
@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-private const val BASE_URL = "https://api.roozbehzarei.me/filester/"
+private const val BASE_URL = "https://gist.githubusercontent.com/roozbehzarei/"
 
 private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
@@ -22,8 +22,8 @@ private val retrofit: Retrofit =
         .build()
 
 interface FilesterApiService {
-    @GET("version.json")
-    suspend fun getVersion(): Response<Version>
+    @GET("245781d48b1a3183eb59d99d25ee2bd3/raw/5b6fb00bcb799774e9793c3b47da5254284a729e/filester_remote_config.json")
+    suspend fun getVersion(): Response<FilesterConfig>
 }
 
 /**
