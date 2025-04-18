@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
@@ -99,6 +98,12 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                 )
             }
             Result.failure()
+        } finally {
+            try {
+                // delete temp file
+                file.delete()
+            } catch (_: Exception) {
+            }
         }
     }
 
