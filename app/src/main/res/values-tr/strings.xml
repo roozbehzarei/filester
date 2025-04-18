@@ -2,10 +2,9 @@
     <string name="app_name">Filester</string>
     <string name="app_description">Basit Dosya Yükleyici</string>
     <string name="app_version">Sürüm %1$s</string>
-    <string name="app_copyleft">Copyleft © 2025, Roozbeh Zarei</string>
     <string name="menu_about">Hakkında</string>
     <string name="link_donate">Bağış Yapın</string>
-    <string name="link_website">Web sitesi</string>
+    <string name="link_source_code">Kaynak Kodu</string>
     <string name="link_privacy_policy">Gizlilik Politikası</string>
     <string name="title_upload_success">Yükleme başarılı</string>
     <string name="message_upload_success">Yüklediğiniz dosya önümüzdeki 30 gün boyunca kullanılabilir olacaktır.</string>
@@ -40,10 +39,8 @@
     <string name="snackbar_delete_successful">Dosya geçmişten kaldırıldı.</string>
     <string name="copy_address">Bağlantıyı Kopyala</string>
     <string name="share">Paylaş</string>
-    <string name="update">Güncelle</string>
     <string name="dialog_title_update">Güncelleme mevcut</string>
-    <string name="dialog_message_update">Bu uygulamayı kullanmak için en son sürümü indirin.</string>
-    <string name="toast_app_not_found">Bağlantıyı açacak uygulama bulunamadı</string>
+    <string name="toast_app_not_found">Bağlantı yüklenemiyor</string>
     <string name="status">Durum</string>
     <string name="refresh">Yenile</string>
     <string name="not_now">Şimdi Değil</string>
@@ -54,4 +51,7 @@
     <string name="crash_notification_text">Lütfen geliştiriciye bir rapor gönderin.</string>
     <string name="turkish">Türkçe</string>
     <string name="button_apply">Apply</string>
+    <string name="update_description">Uygulamanın yeni bir sürümü mevcut</string>
+    <string name="dynamic_colors">Dinamik renkler</string>
+    <string name="dynamic_colors_description">Renkleri otomatik olarak cihazınızın duvar kağıdıyla uyumlu hale getirin</string>
 </resources>

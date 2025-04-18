@@ -2,12 +2,11 @@
     <string name="app_name">Filester</string>
     <string name="app_description">Simple File Uploader</string>
     <string name="app_version">Version %1$s</string>
-    <string name="app_copyleft">Copyleft © 2025 by Roozbeh Zarei</string>
+    <string name="app_copyleft" translatable="false">Copyleft © 2025 by Roozbeh Zarei</string>
     <string name="menu_about">About</string>
-    <string name="link_transfer" translatable="false">transfer.sh</string>
-    <string name="link_oshi" translatable="false">oshi.at</string>
+    <string name="link_oshi" translatable="false">oshi.ec</string>
     <string name="link_donate">Donate</string>
-    <string name="link_website">Website</string>
+    <string name="link_source_code">Source Code</string>
     <string name="link_privacy_policy">Privacy Policy</string>
     <string name="title_upload_success">Upload successful</string>
     <string name="message_upload_success">Your uploaded file will be available for the next 30 days.</string>
@@ -45,10 +44,8 @@
     <string name="snackbar_delete_successful">File removed from history.</string>
     <string name="copy_address">Copy Link</string>
     <string name="share">Share</string>
-    <string name="update">Update</string>
     <string name="dialog_title_update">Update available</string>
-    <string name="dialog_message_update">To use this app, download the latest version.</string>
-    <string name="toast_app_not_found">No app found to open this URL</string>
+    <string name="toast_app_not_found">Can\'t load link</string>
     <string name="status">Status</string>
     <string name="refresh">Refresh</string>
     <string name="not_now">Not Now</string>
@@ -58,5 +55,8 @@
     <string name="crash_notification_title">Application crashed</string>
     <string name="crash_notification_text">Please send a report to the developer.</string>
     <string name="button_apply">Apply</string>
+    <string name="update_description">A new version of the app is available</string>
+    <string name="dynamic_colors">Dynamic colors</string>
+    <string name="dynamic_colors_description">Adapt colors to match your device\'s wallpaper automatically</string>
 
 </resources>

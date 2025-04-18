@@ -133,8 +133,8 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
                     .defaultMinSize(minHeight = 64.dp),
-                title = "Dynamic colors",
-                description = "Adapt colors to match your device's wallpaper automatically",
+                title = stringResource(R.string.dynamic_colors),
+                description = stringResource(R.string.dynamic_colors_description),
                 icon = Icons.Outlined.Palette,
                 options = { modifier ->
                     Switch(
@@ -154,8 +154,8 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
                         .defaultMinSize(minHeight = 64.dp),
-                    title = "Update Available",
-                    description = "A new version of the app is available. Update now to get the best experience.",
+                    title = stringResource(R.string.dialog_title_update),
+                    description = stringResource(R.string.update_description),
                     icon = Icons.Outlined.SystemUpdate,
                     options = null,
                     onClick = {
@@ -212,7 +212,7 @@ private fun SettingsItem(
                 description,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodySmall
             )
         }
         if (options != null) options(Modifier.padding(horizontal = 18.dp))
@@ -299,8 +299,8 @@ private fun SettingsScreenPreview() {
 private fun SettingsItemPreview() {
     SettingsItem(
         modifier = Modifier.padding(vertical = 18.dp),
-        title = "Theme",
-        description = "System Default",
+        title = stringResource(R.string.theme),
+        description = stringResource(R.string.system_default),
         icon = Icons.Outlined.BrightnessMedium,
         options = {
             Switch(

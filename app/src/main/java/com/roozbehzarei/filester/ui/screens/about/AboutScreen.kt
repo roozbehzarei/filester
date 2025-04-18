@@ -77,7 +77,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                     Icon(Icons.Outlined.Code, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = stringResource(R.string.link_website),
+                        text = stringResource(R.string.link_source_code),
                         style = MaterialTheme.typography.labelLarge,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

@@ -3,10 +3,9 @@
     <string name="app_name">فایلستر</string>
     <string name="app_description">بارگذاری آسان فایل</string>
     <string name="app_version">نسخه %1$s</string>
-    <string name="app_copyleft">کپی‌لفت © 2025 توسط روزبه زارعی</string>
     <string name="menu_about">درباره</string>
     <string name="link_donate">حمایت مالی</string>
-    <string name="link_website">وبسایت</string>
+    <string name="link_source_code">کد منبع</string>
     <string name="link_privacy_policy">سیاست حفظ حریم خصوصی</string>
     <string name="title_upload_success">بارگذاری انجام شد</string>
     <string name="message_upload_success">فایل آپلود شده برای 30 روز آینده در دسترس خواهد بود.</string>
@@ -41,10 +40,8 @@
     <string name="snackbar_delete_successful">فایل از تاریخچه پاک شد.</string>
     <string name="copy_address">کپی نشانی</string>
     <string name="share">اشتراک گذاری</string>
-    <string name="update">به‌روزرسانی</string>
     <string name="dialog_title_update">به‌روزرسانی موجود است</string>
-    <string name="dialog_message_update">برای استفاده از برنامه، آخرین نسخه را دانلود نمایید.</string>
-    <string name="toast_app_not_found">برنامه‌ای برای باز کردن آدرس اینترنتی یافت نشد</string>
+    <string name="toast_app_not_found">برنامه‌ای برای باز کردن پیوند یافت نشد</string>
     <string name="status">وضعیت</string>
     <string name="refresh">تازه کردن</string>
     <string name="not_now">بعدا</string>
@@ -55,5 +52,8 @@
     <string name="crash_notification_text">لطفا گزارش خطا را به توسعه دهنده ارسال نمایید.</string>
     <string name="turkish">ترکی</string>
     <string name="button_apply">اعمال</string>
+    <string name="update_description">نسخه جدیدی از برنامه آماده دریافت است</string>
+    <string name="dynamic_colors">رنگ بندی پویا</string>
+    <string name="dynamic_colors_description">رنگ‌ها به‌صورت خودکار با تصویر پس‌زمینه دستگاه هماهنگ شوند</string>
 
 </resources>
