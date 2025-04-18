@@ -69,6 +69,7 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                 )
             )
             val apiResponse = OshiApi.retrofitService.sendFile(filePart)
+
             if (apiResponse.isSuccessful && !apiResponse.body().isNullOrEmpty()) {
                 val oshiResponse = ParseOshiResponseUseCase().invoke(apiResponse.body()!!)
                 val outputData = workDataOf(KEY_FILE_URI to oshiResponse.downloadUrl)
@@ -99,8 +100,11 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                     0, postNotification(context.getString(R.string.title_upload_error))
                 )
             }
-            e.printStackTrace()
+
             Result.failure()
+        } finally {
+            // Delete temp file after uploading to server
+            file.delete()
         }
     }
 
