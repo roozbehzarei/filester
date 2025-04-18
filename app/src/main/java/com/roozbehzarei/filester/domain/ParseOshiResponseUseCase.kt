@@ -1,7 +1,6 @@
 package com.roozbehzarei.filester.domain
 
-import android.util.Log
-import com.roozbehzarei.filester.model.OshiResponse
+import com.roozbehzarei.filester.data.network.oshi.OshiResponse
 
 class ParseOshiResponseUseCase() {
 

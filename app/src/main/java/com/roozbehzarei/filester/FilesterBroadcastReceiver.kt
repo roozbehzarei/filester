@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.work.WorkManager
-import com.roozbehzarei.filester.viewmodel.KEY_WORK
+import com.roozbehzarei.filester.ui.KEY_WORK
 
 class FilesterBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

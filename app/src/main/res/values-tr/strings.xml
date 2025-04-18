@@ -2,7 +2,7 @@
     <string name="app_name">Filester</string>
     <string name="app_description">Basit Dosya Yükleyici</string>
     <string name="app_version">Sürüm %1$s</string>
-    <string name="app_copyleft">Copyleft © 2024, Roozbeh Zarei</string>
+    <string name="app_copyleft">Copyleft © 2025, Roozbeh Zarei</string>
     <string name="menu_about">Hakkında</string>
     <string name="link_donate">Bağış Yapın</string>
     <string name="link_website">Web sitesi</string>
@@ -53,4 +53,5 @@
     <string name="crash_notification_title">Uygulama çöktü</string>
     <string name="crash_notification_text">Lütfen geliştiriciye bir rapor gönderin.</string>
     <string name="turkish">Türkçe</string>
+    <string name="button_apply">Apply</string>
 </resources>

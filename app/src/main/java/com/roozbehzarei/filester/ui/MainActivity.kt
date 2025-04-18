@@ -2,88 +2,69 @@ package com.roozbehzarei.filester.ui
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.AppBarLayout
 import com.roozbehzarei.filester.R
-import com.roozbehzarei.filester.databinding.ActivityMainBinding
+import com.roozbehzarei.filester.data.local.UserPreferencesRepository
+import com.roozbehzarei.filester.ui.theme.FilesterAppTheme
+import org.koin.android.ext.android.inject
+
 
 /**
  * Main Activity and entry point for the app.
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+    private val userPreferencesRepository: UserPreferencesRepository by inject()
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        // Inflate the layout XML file using Binding object instance
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        /**
-         * Display content edge-to-edge
-         */
-        // Lay out your app in full screen
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        // Handle overlaps using insets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.findViewById<AppBarLayout>(R.id.app_bar_layout).updatePadding(top = insets.top)
-            view.updatePadding(
-                left = insets.left,
-                right = insets.right,
-                bottom = insets.bottom,
+        enableEdgeToEdge()
+        setContent {
+            val isDynamicColor by userPreferencesRepository.getDynamicColorsPreference.collectAsState(
+                false
             )
-            // Do not pass window insets down to descendant views
-            WindowInsetsCompat.CONSUMED
-        }
-
-        // Change the color of the navigation bars
-        val windowInsetsController = WindowCompat.getInsetsController(window, binding.root)
-        val currentNightMode =
-            applicationContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_NO -> {
-                windowInsetsController.isAppearanceLightNavigationBars = true
-                windowInsetsController.isAppearanceLightStatusBars = true
+            val userThemePreference by userPreferencesRepository.getThemePreference.collectAsState(1)
+            val view = LocalView.current
+            val insetsController = WindowCompat.getInsetsController(this@MainActivity.window, view)
+            // Dynamically modify the foreground color of status bar to align with app theme
+            when (userThemePreference) {
+                // Light mode
+                0 -> {
+                    insetsController.isAppearanceLightStatusBars = true
+                }
+                // Dark mode
+                2 -> {
+                    insetsController.isAppearanceLightStatusBars = false
+                }
             }
-
-            Configuration.UI_MODE_NIGHT_YES -> {
-                windowInsetsController.isAppearanceLightNavigationBars = false
-                windowInsetsController.isAppearanceLightStatusBars = false
+            FilesterAppTheme(
+                dynamicColor = isDynamicColor,
+                darkTheme = when (userThemePreference) {
+                    0 -> false
+                    2 -> true
+                    else -> isSystemInDarkTheme()
+                }
+            ) {
+                FilesterApp(context = this)
             }
         }
-
-        // Set as the app bar for the activity
-        setSupportActionBar(binding.appBar)
-
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the app bar for use with the NavController
-        binding.appBar.setupWithNavController(navController)
-
         createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
