@@ -6,7 +6,3 @@ Filester is the cloud storage solution that respects your privacy and puts you i
  * <b>Ad-free experience:</b> Focus on what matters without annoying interruptions.
  * <b>No account required:</b> Get started instantly, no sign-ups or commitments.
  * <b>Universal compatibility:</b> Works across a wide range of devices.
- 
- <b>Disclaimer</b>
- 
- This app relies on transfer.sh free, open-source file hosting service and does not function otherwise.
