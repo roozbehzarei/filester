@@ -1,0 +1,2 @@
+* Resolved connectivity issues
+* Fixed a bug causing the app to consume more storage over time
