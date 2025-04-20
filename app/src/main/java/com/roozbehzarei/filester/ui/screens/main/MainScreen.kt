@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.text.format.Formatter
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -67,7 +68,6 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.local.File
 import com.roozbehzarei.filester.ui.SharedViewModel
 import kotlinx.coroutines.launch
-import org.apache.commons.io.FileUtils
 import org.koin.compose.koinInject
 
 @Composable
@@ -209,6 +209,7 @@ private fun FileItem(
     onCopy: () -> Unit,
     onRemove: () -> Unit,
 ) {
+    val context = LocalContext.current
     val cardColor = when (isExpanded) {
         true -> MaterialTheme.colorScheme.surfaceVariant
         false -> Color.Transparent
@@ -234,7 +235,7 @@ private fun FileItem(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        FileUtils.byteCountToDisplaySize(size),
+                        Formatter.formatFileSize(context, size),
                         style = MaterialTheme.typography.labelMedium,
                         maxLines = 1
                     )

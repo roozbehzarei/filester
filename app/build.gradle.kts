@@ -117,6 +117,4 @@ dependencies {
     implementation("ch.acra:acra-notification:$acraVersion")
     // Media3
     implementation("androidx.media3:media3-common-ktx:$media3_version")
-    // Apache Commons IO
-    implementation("commons-io:commons-io:2.19.0")
 }
