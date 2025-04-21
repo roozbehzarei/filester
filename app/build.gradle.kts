@@ -1,9 +1,9 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("kotlinx-serialization")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -54,67 +54,56 @@ ksp {
 }
 
 dependencies {
-    val navVersion = "2.8.9"
-    val retrofitVersion = "2.9.0"
-    val workVersion = "2.10.0"
-    val roomVersion = "2.7.0"
-    val acraVersion = "5.12.0"
-    val accompanistVersion = "0.37.2"
-    val media3_version = "1.6.1"
-
-
     // Core
-    implementation("androidx.core:core-ktx:1.16.0")
+    implementation(libs.androidx.core.ktx)
     // Compose
-    val composeBom = platform("androidx.compose:compose-bom:2025.03.00")
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.runtime:runtime")
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.runtime)
+    implementation(libs.androidx.material.icons.extended)
     // Activity
-    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation(libs.androidx.activity.compose)
     // Navigation
-    implementation("androidx.navigation:navigation-compose:$navVersion")
+    implementation(libs.androidx.navigation.compose)
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     // WorkManager
-    implementation("androidx.work:work-runtime-ktx:$workVersion")
+    implementation(libs.androidx.work.runtime.ktx)
     // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
     // Preferences DataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.4")
+    implementation(libs.androidx.datastore.preferences)
     // SplashScreen
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.androidx.core.splashscreen)
     // Google Fonts
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.8")
+    implementation(libs.androidx.ui.text.google.fonts)
     // Browser
-    implementation("androidx.browser:browser:1.8.0")
+    implementation(libs.androidx.browser)
     // DocumentFile
-    implementation("androidx.documentfile:documentfile:1.0.1")
+    implementation(libs.androidx.documentfile)
     // kotlinx.serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation(libs.kotlinx.serialization.json)
     // Koin
-    implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.0.2"))
-    implementation("io.insert-koin:koin-android")
-    implementation("io.insert-koin:koin-androidx-compose")
-    implementation("io.insert-koin:koin-annotations:2.0.0")
-    ksp("io.insert-koin:koin-ksp-compiler:2.0.0")
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
     // Accompanist
-    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
+    implementation(libs.accompanist.permissions)
     // Retrofit 2
-    implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    implementation(libs.converter.scalars)
+    implementation(libs.converter.moshi)
     // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation(libs.moshi.kotlin)
     // Aptabase
-    implementation("com.github.aptabase:aptabase-kotlin:0.0.8")
+    implementation(libs.aptabase.kotlin)
     // ACRA
-    implementation("ch.acra:acra-mail:$acraVersion")
-    implementation("ch.acra:acra-notification:$acraVersion")
+    implementation(libs.acra.mail)
+    implementation(libs.acra.notification)
     // Media3
-    implementation("androidx.media3:media3-common-ktx:$media3_version")
+    implementation(libs.androidx.media3.common.ktx)
 }
