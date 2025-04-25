@@ -83,11 +83,13 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                 notificationManager.notify(
                     1, postNotification(context.getString(R.string.title_upload_success))
                 )
+                AptabaseAnalytics.trackUploadSuccess()
                 Result.success(outputData)
             } else {
                 notificationManager.notify(
                     1, postNotification(context.getString(R.string.title_upload_error))
                 )
+                AptabaseAnalytics.trackUploadFailure()
                 Result.failure()
             }
         } catch (e: Exception) {
@@ -95,10 +97,12 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                 notificationManager.notify(
                     0, postNotification(context.getString(R.string.title_upload_cancelled))
                 )
+                AptabaseAnalytics.trackUploadCancellation()
             } else {
                 notificationManager.notify(
                     0, postNotification(context.getString(R.string.title_upload_error))
                 )
+                AptabaseAnalytics.trackUploadFailure()
             }
 
             Result.failure()

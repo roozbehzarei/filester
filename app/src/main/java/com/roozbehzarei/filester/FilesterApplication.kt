@@ -2,7 +2,6 @@ package com.roozbehzarei.filester
 
 import android.app.Application
 import android.content.Context
-import com.aptabase.Aptabase
 import com.roozbehzarei.filester.di.AppModule
 import org.acra.BuildConfig
 import org.acra.config.mailSender
@@ -13,8 +12,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
-
-private const val APTABASE_KEY = "A-EU-5566501326"
 
 class FilesterApplication : Application() {
 
@@ -28,10 +25,9 @@ class FilesterApplication : Application() {
             modules(AppModule().module)
         }
 
-        // Initialize Aptabase SDK
-        Aptabase.instance.initialize(applicationContext, APTABASE_KEY)
-        // Track app launch on startup
-        Aptabase.instance.trackEvent("app_started")
+        // Initialize analytics
+        AptabaseAnalytics.initialize(applicationContext)
+
     }
 
     /**
