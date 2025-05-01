@@ -1,7 +1,6 @@
 package com.roozbehzarei.filester.ui.screens.settings
 
 import android.os.Build
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -43,7 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -56,7 +54,6 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.local.UserPreferencesRepository
 import com.roozbehzarei.filester.ui.SharedViewModel
-import com.roozbehzarei.filester.ui.screens.about.launchUrl
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import java.util.Locale
@@ -72,7 +69,6 @@ fun SettingsScreen(
 ) {
     val uiState by viewModel.settingsUiState.collectAsState()
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val currentLocale = LocalConfiguration.current.locales.get(0)
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
     val isDynamicColor by userPreferencesRepository.getDynamicColorsPreference.collectAsState(false)
@@ -158,17 +154,8 @@ fun SettingsScreen(
                     description = stringResource(R.string.update_description),
                     icon = Icons.Outlined.SystemUpdate,
                     options = null,
-                    onClick = {
-                        val isLaunched =
-                            launchUrl(context = context, url = uiState.appConfig!!.downloadUrl)
-                        if (isLaunched.not()) {
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.toast_app_not_found),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
+                    onClick = null
+                )
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.UploadWorker
 import com.roozbehzarei.filester.data.local.File
 import com.roozbehzarei.filester.data.local.FileDao
@@ -79,8 +80,7 @@ class SharedViewModel(private val fileDao: FileDao, application: Application) :
     fun initializeUpload(uri: Uri, fileName: String) {
         inputData = Data.Builder().putString(KEY_FILE_URI, uri.toString())
             .putString(KEY_FILE_NAME, fileName).build()
-        val workRequest =
-            OneTimeWorkRequestBuilder<UploadWorker>().setInputData(inputData).build()
+        val workRequest = OneTimeWorkRequestBuilder<UploadWorker>().setInputData(inputData).build()
         workManager.enqueueUniqueWork(
             KEY_WORK, ExistingWorkPolicy.REPLACE, workRequest
         )
@@ -100,7 +100,10 @@ class SharedViewModel(private val fileDao: FileDao, application: Application) :
                 if (response.isSuccessful) {
                     _settingsUiState.update { it.copy(appConfig = response.body()) }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace()
+                }
             }
         }
     }
