@@ -22,7 +22,7 @@ private val retrofit: Retrofit =
 
 interface FilesterApiService {
     @GET("245781d48b1a3183eb59d99d25ee2bd3/raw/filester_remote_config.json")
-    suspend fun getVersion(): Response<FilesterConfig>
+    suspend fun getVersion(): Response<FilesterResponse>
 }
 
 /**

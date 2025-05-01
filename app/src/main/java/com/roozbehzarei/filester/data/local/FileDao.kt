@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 interface FileDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(file: File)
+    suspend fun insert(file: FileEntity)
 
-    @Query("SELECT * FROM file")
-    fun getAll(): Flow<List<File>>
+    @Query("SELECT * FROM fileentity")
+    fun getAll(): Flow<List<FileEntity>>
 
     @Delete
-    suspend fun delete(file: File)
+    suspend fun delete(file: FileEntity)
 
 }
