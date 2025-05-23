@@ -1,150 +1,148 @@
 package com.roozbehzarei.filester.framework
 
-import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
-import android.webkit.MimeTypeMap
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
-import com.roozbehzarei.filester.data.local.FileDao
-import com.roozbehzarei.filester.data.network.aptabase.AptabaseAnalyticsImpl
-import com.roozbehzarei.filester.data.network.oshi.OshiApi
-import com.roozbehzarei.filester.data.network.oshi.OshiResponseParser
-import com.roozbehzarei.filester.presentation.KEY_FILE_NAME
+import com.roozbehzarei.filester.data.network.catbox.CatboxResult
+import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.domain.repository.AptabaseAnalyticsRepository
+import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.presentation.KEY_FILE_URI
-import com.roozbehzarei.filester.presentation.MainActivity
-import kotlinx.coroutines.CancellationException
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import com.roozbehzarei.filester.presentation.KEY_WORK_PROGRESS
+import io.ktor.utils.io.CancellationException
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.File
+import java.io.FileOutputStream
+
+private const val ONGOING_NOTIFICATION_ID = 20
+private const val FINAL_NOTIFICATION_ID = 10
 
 class UploadWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {
 
-    private val notificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    private val resolver = context.contentResolver
-    private val fileDao: FileDao by inject()
+    private val fileRepository: FileRepository by inject()
+    private val aptabaseAnalyticsRepository: AptabaseAnalyticsRepository by inject()
+    private lateinit var notificationManager: NotificationManager
+    private lateinit var ongoingNotificationBuilder: NotificationCompat.Builder
+    private lateinit var fileToUpload: java.io.File
 
     override suspend fun doWork(): Result {
 
-        setForeground(
-            createForegroundInfo(
-                context.getString(R.string.notification_title_start)
-            )
-        )
-
-        val resourceUri = inputData.getString(KEY_FILE_URI)!!.toUri()
-        val fileName = inputData.getString(KEY_FILE_NAME)
-        val mediaType = MediaType.parse(resolver.getType(resourceUri)!!)
-        val inputStream = resolver.openInputStream(resourceUri)
-        val file = File(context.cacheDir, fileName!!)
-
-        return try {
-            inputStream.use { input ->
-                file.outputStream().use { output ->
-                    input?.copyTo(output)
-                    output.flush()
+        setForeground(createForegroundInfo())
+        notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val inputFileUri = inputData.getString(KEY_FILE_URI)?.toUri()
+        if (inputFileUri == null) return Result.failure()
+        val inputFile = DocumentFile.fromSingleUri(context, inputFileUri)
+        fileToUpload = java.io.File(context.cacheDir, inputFile?.name.orEmpty())
+        try {
+            context.contentResolver.openInputStream(inputFileUri)?.use { inputStream ->
+                FileOutputStream(fileToUpload).use { outputStream ->
+                    inputStream.copyTo(outputStream)
                 }
             }
-            inputStream?.close()
-            file.length()
-            val filePart = MultipartBody.Part.createFormData(
-                "files", file.name, RequestBody.create(mediaType, file)
-            )
-            setForeground(
-                createForegroundInfo(
-                    context.getString(R.string.notification_title_in_progress)
-                )
-            )
-            val apiResponse = OshiApi.retrofitService.sendFile(filePart)
+            val result = fileRepository.uploadFile(fileToUpload).onEach { result ->
+                if (result is CatboxResult.Loading) {
+                    updateOngoingNotification(
+                        R.string.notification_title_in_progress, result.progress
+                    )
+                    setProgress(workDataOf(KEY_WORK_PROGRESS to result.progress))
+                }
+            }.filter { it !is CatboxResult.Loading }.first()
 
-            if (apiResponse.isSuccessful && !apiResponse.body().isNullOrEmpty()) {
-                val oshiResponse = OshiResponseParser().invoke(apiResponse.body()!!)
-                val outputData = workDataOf(KEY_FILE_URI to oshiResponse.downloadUrl)
-                val newFileEntry = com.roozbehzarei.filester.data.local.FileEntity(
-                    name = file.name,
-                    url = oshiResponse.downloadUrl,
-                    size = file.length(),
-                    mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
-                )
-                fileDao.insert(newFileEntry)
-                notificationManager.notify(
-                    1, postNotification(context.getString(R.string.title_upload_success))
-                )
-                AptabaseAnalyticsImpl.trackUploadSuccess()
-                Result.success(outputData)
-            } else {
-                notificationManager.notify(
-                    1, postNotification(context.getString(R.string.title_upload_error))
-                )
-                AptabaseAnalyticsImpl.trackUploadFailure()
-                Result.failure()
+            fileToUpload.delete()
+
+            return when (result) {
+                is CatboxResult.Error -> {
+                    postResultNotification(R.string.title_upload_error)
+                    aptabaseAnalyticsRepository.trackUploadFailure()
+                    Result.failure()
+                }
+
+                is CatboxResult.Success -> {
+                    val uploadedFile = File(
+                        name = inputFile?.name.orEmpty(),
+                        downloadUrl = result.url,
+                        size = inputFile?.length() ?: 0,
+                        mimeType = inputFile?.type
+                    )
+                    fileRepository.saveFile(uploadedFile)
+                    postResultNotification(R.string.title_upload_success)
+                    aptabaseAnalyticsRepository.trackUploadSuccess()
+                    Result.success()
+                }
+
+                else -> Result.failure()
             }
         } catch (e: Exception) {
+            fileToUpload.delete()
+            notificationManager.cancel(ONGOING_NOTIFICATION_ID)
             if (e is CancellationException) {
-                notificationManager.notify(
-                    0, postNotification(context.getString(R.string.title_upload_cancelled))
-                )
-                AptabaseAnalyticsImpl.trackUploadCancellation()
-            } else {
-                notificationManager.notify(
-                    0, postNotification(context.getString(R.string.title_upload_error))
-                )
-                AptabaseAnalyticsImpl.trackUploadFailure()
-            }
-
-            Result.failure()
-        } finally {
-            // Delete temp file after uploading to server
-            file.delete()
+                postResultNotification(R.string.title_upload_cancelled)
+                aptabaseAnalyticsRepository.trackUploadCancellation()
+            } else aptabaseAnalyticsRepository.trackUploadFailure()
+            if (BuildConfig.DEBUG) e.printStackTrace()
+            return Result.failure()
         }
     }
 
-    private fun createForegroundInfo(progress: String): ForegroundInfo {
+    private fun createForegroundInfo(): ForegroundInfo {
+        val channelId = context.getString(R.string.notification_channel_id)
         val cancelIntent = Intent(context, FilesterBroadcastReceiver::class.java).apply {
             this.action = "FILESTER_STOP_UPLOAD"
         }
         val cancelPendingIntent = PendingIntent.getBroadcast(
             context, -1, cancelIntent, PendingIntent.FLAG_IMMUTABLE
         )
-        val notificationChannelId = context.getString(R.string.notification_channel_id)
-        val notification =
-            NotificationCompat.Builder(context, notificationChannelId).setContentTitle(progress)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setOngoing(true)
-                .addAction(0, context.getString(R.string.button_cancel), cancelPendingIntent)
-                .setProgress(0, 0, true).build()
+        ongoingNotificationBuilder = NotificationCompat.Builder(context, channelId)
+            .setContentTitle(context.getString(R.string.notification_title_start))
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setOngoing(true)
+            .addAction(0, context.getString(R.string.button_cancel), cancelPendingIntent)
+            .setProgress(100, 0, false)
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ForegroundInfo(0, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            ForegroundInfo(
+                ONGOING_NOTIFICATION_ID,
+                ongoingNotificationBuilder.build(),
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            )
         } else {
-            ForegroundInfo(0, notification)
+            ForegroundInfo(ONGOING_NOTIFICATION_ID, ongoingNotificationBuilder.build())
         }
     }
 
-    private fun postNotification(progress: String): Notification {
-        val notificationChannelId = context.getString(R.string.notification_channel_id)
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE
-        )
-        return NotificationCompat.Builder(applicationContext, notificationChannelId)
-            .setContentTitle(progress).setSmallIcon(R.drawable.ic_notification)
-            .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setAutoCancel(true)
-            .setContentIntent(pendingIntent).build()
+    private fun updateOngoingNotification(@StringRes titleResource: Int, currentProgress: Int) {
+        ongoingNotificationBuilder.setContentTitle(context.getString(titleResource))
+            .setProgress(100, currentProgress, false)
+        notificationManager.notify(ONGOING_NOTIFICATION_ID, ongoingNotificationBuilder.build())
     }
+
+    private fun postResultNotification(@StringRes titleResource: Int) {
+        val channelId = context.getString(R.string.notification_channel_id)
+        val resultNotification = NotificationCompat.Builder(context, channelId)
+            .setContentTitle(context.getString(titleResource))
+            .setSmallIcon(R.drawable.ic_notification)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.seed)).setOngoing(false)
+            .build()
+        notificationManager.notify(FINAL_NOTIFICATION_ID, resultNotification)
+    }
+
 }

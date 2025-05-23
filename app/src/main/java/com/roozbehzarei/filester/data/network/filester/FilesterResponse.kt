@@ -1,8 +1,15 @@
 package com.roozbehzarei.filester.data.network.filester
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
-data class FilesterResponse(
+sealed class FilesterResponse {
+
+    data class Success(val config: RemoteConfigDto) : FilesterResponse()
+    data object Error : FilesterResponse()
+
+}
+
+@Serializable
+data class RemoteConfigDto(
     val versionCode: Int
 )

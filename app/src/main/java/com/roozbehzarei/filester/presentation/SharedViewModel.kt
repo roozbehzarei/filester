@@ -9,8 +9,8 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.roozbehzarei.filester.BuildConfig
-import com.roozbehzarei.filester.data.network.filester.FilesterApi
 import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.domain.repository.ConfigRepository
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.framework.UploadWorker
 import com.roozbehzarei.filester.presentation.screens.main.MainUiState
@@ -23,12 +23,15 @@ import kotlinx.coroutines.launch
 import org.koin.core.annotation.Single
 
 const val KEY_FILE_URI = "FILE_URI"
-const val KEY_FILE_NAME = "FILE_NAME"
 const val KEY_WORK = "UNIQUE_WORK"
+const val KEY_WORK_PROGRESS = "upload_progress"
 
 @Single
-class SharedViewModel(private val fileRepository: FileRepository, application: Application) :
-    AndroidViewModel(application) {
+class SharedViewModel(
+    private val fileRepository: FileRepository,
+    private val configRepository: ConfigRepository,
+    application: Application
+) : AndroidViewModel(application) {
 
     private val _mainUiState = MutableStateFlow(MainUiState())
     val mainUiState: StateFlow<MainUiState> = _mainUiState.asStateFlow()
@@ -38,7 +41,6 @@ class SharedViewModel(private val fileRepository: FileRepository, application: A
     val shouldShowUploadFab: StateFlow<Boolean> = _shouldShowUploadFab.asStateFlow()
     private val workManager = WorkManager.getInstance(application)
     private lateinit var inputData: Data
-    private val filesterApi = FilesterApi.retrofitService
 
     init {
         getFiles()
@@ -51,7 +53,10 @@ class SharedViewModel(private val fileRepository: FileRepository, application: A
             workManager.getWorkInfosForUniqueWorkFlow(KEY_WORK).collect { workInfos ->
                 if (workInfos.isNotEmpty()) {
                     _mainUiState.update {
-                        it.copy(uploadStatus = workInfos.first().state)
+                        it.copy(
+                            uploadStatus = workInfos.first().state,
+                            uploadProgress = workInfos.first().progress.getInt(KEY_WORK_PROGRESS, 0)
+                        )
                     }
                 }
             }
@@ -87,8 +92,7 @@ class SharedViewModel(private val fileRepository: FileRepository, application: A
     }
 
     fun initializeUpload(uri: Uri, fileName: String) {
-        inputData = Data.Builder().putString(KEY_FILE_URI, uri.toString())
-            .putString(KEY_FILE_NAME, fileName).build()
+        inputData = Data.Builder().putString(KEY_FILE_URI, uri.toString()).build()
         val workRequest = OneTimeWorkRequestBuilder<UploadWorker>().setInputData(inputData).build()
         workManager.enqueueUniqueWork(
             KEY_WORK, ExistingWorkPolicy.REPLACE, workRequest
@@ -104,15 +108,9 @@ class SharedViewModel(private val fileRepository: FileRepository, application: A
 
     private fun getAppVersion() {
         viewModelScope.launch {
-            try {
-                val response = filesterApi.getVersion()
-                if (response.isSuccessful) {
-                    _settingsUiState.update { it.copy(appConfig = response.body()) }
-                }
-            } catch (e: Exception) {
-                if (BuildConfig.DEBUG) {
-                    e.printStackTrace()
-                }
+            val config = configRepository.fetchRemoteConfig()
+            config?.let { config ->
+                _settingsUiState.update { it.copy(appConfig = config) }
             }
         }
     }

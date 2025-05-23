@@ -7,5 +7,6 @@ data class MainUiState(
     val files: List<File> = listOf(),
     val isFileDeleted: Boolean = false,
     val uploadStatus: WorkInfo.State? = null,
+    val uploadProgress: Int? = null,
     val uploadingFileName: String? = null
 )

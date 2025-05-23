@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +20,14 @@ android {
         versionName = "3.0.0-alpha02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val keyPropertiesFile = project.rootProject.file("key.properties")
+        val properties = Properties()
+        properties.load(keyPropertiesFile.inputStream())
+        // Retrieve Aptabase API key from key.properties file
+        val aptabaseApiKey = properties.getProperty("APTABASE_API_KEY") ?: ""
+
+        buildConfigField(type = "String", name = "APTABASE_API_KEY", value = aptabaseApiKey)
     }
 
     buildFeatures {
@@ -92,13 +102,14 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
+    // Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging)
+    // Apache Log4j
+    implementation(libs.slf4j.android)
     // Accompanist
     implementation(libs.accompanist.permissions)
-    // Retrofit 2
-    implementation(libs.converter.scalars)
-    implementation(libs.converter.moshi)
-    // Moshi
-    implementation(libs.moshi.kotlin)
     // Aptabase
     implementation(libs.aptabase.kotlin)
     // ACRA

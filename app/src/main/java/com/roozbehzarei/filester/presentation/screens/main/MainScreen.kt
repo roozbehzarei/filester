@@ -107,6 +107,7 @@ fun MainScreen(
             files = uiState.files,
             isUploadingFile = uiState.uploadStatus == WorkInfo.State.RUNNING,
             uploadingFileName = uiState.uploadingFileName,
+            uploadingFileProgress = uiState.uploadProgress,
             onCancelUploadRequest = {
                 viewModel.cancelUpload()
             },
@@ -135,6 +136,7 @@ private fun FilesList(
     modifier: Modifier = Modifier,
     files: List<File>,
     uploadingFileName: String?,
+    uploadingFileProgress: Int?,
     isUploadingFile: Boolean,
     onCancelUploadRequest: () -> Unit,
     onRemoveFileRequest: (file: File) -> Unit
@@ -154,6 +156,7 @@ private fun FilesList(
                         .padding(8.dp)
                         .fillMaxWidth(),
                     fileName = uploadingFileName ?: "",
+                    progress = uploadingFileProgress ?: 0,
                     onCancel = onCancelUploadRequest,
                 )
             }
@@ -312,7 +315,9 @@ private fun FileItem(
 }
 
 @Composable
-private fun FileUploadCard(modifier: Modifier = Modifier, fileName: String, onCancel: () -> Unit) {
+private fun FileUploadCard(
+    modifier: Modifier = Modifier, fileName: String, progress: Int, onCancel: () -> Unit
+) {
     Card(
         modifier = modifier
     ) {
@@ -335,7 +340,9 @@ private fun FileUploadCard(modifier: Modifier = Modifier, fileName: String, onCa
                     overflow = TextOverflow.Ellipsis
                 )
                 LinearProgressIndicator(
-                    trackColor = Color.Transparent
+                    progress = {
+                        (progress.toFloat() / 100)
+                    }, trackColor = Color.Transparent
                 )
             }
             TextButton(
