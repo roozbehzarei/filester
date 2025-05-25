@@ -2,30 +2,31 @@ package com.roozbehzarei.filester.data.repository
 
 import android.content.Context
 import com.aptabase.Aptabase
-import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.domain.repository.AptabaseAnalyticsRepository
+import org.koin.core.annotation.Single
 
-object AptabaseAnalyticsRepositoryImpl : AptabaseAnalyticsRepository {
+@Single
+class AptabaseAnalyticsRepositoryImpl() : AptabaseAnalyticsRepository {
 
-    private val apiKey = BuildConfig.APTABASE_API_KEY
+    private val apiKey = "A-EU-5566501326"
 
     override fun initialize(context: Context) {
         // Initialize Aptabase SDK
-        Aptabase.Companion.instance.initialize(context, apiKey)
+        Aptabase.instance.initialize(context, apiKey)
         // Track app launch
-        Aptabase.Companion.instance.trackEvent("app_started")
+        Aptabase.instance.trackEvent("app_started")
     }
 
     override fun trackUploadSuccess() {
-        Aptabase.Companion.instance.trackEvent("file_upload_succeeded")
+        Aptabase.instance.trackEvent("file_upload_succeeded")
     }
 
     override fun trackUploadFailure() {
-        Aptabase.Companion.instance.trackEvent("file_upload_failed")
+        Aptabase.instance.trackEvent("file_upload_failed")
     }
 
     override fun trackUploadCancellation() {
-        Aptabase.Companion.instance.trackEvent("file_upload_cancelled")
+        Aptabase.instance.trackEvent("file_upload_cancelled")
     }
 
 }

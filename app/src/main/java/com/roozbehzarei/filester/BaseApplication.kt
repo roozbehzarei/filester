@@ -2,19 +2,22 @@ package com.roozbehzarei.filester
 
 import android.app.Application
 import android.content.Context
-import com.roozbehzarei.filester.data.repository.AptabaseAnalyticsRepositoryImpl
 import com.roozbehzarei.filester.di.AppModule
+import com.roozbehzarei.filester.domain.repository.AptabaseAnalyticsRepository
 import org.acra.BuildConfig
 import org.acra.config.mailSender
 import org.acra.config.notification
 import org.acra.data.StringFormat
 import org.acra.ktx.initAcra
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 
 class BaseApplication : Application() {
+
+    private val aptabaseAnalyticsRepository: AptabaseAnalyticsRepository by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -27,7 +30,7 @@ class BaseApplication : Application() {
         }
 
         // Initialize analytics
-        AptabaseAnalyticsRepositoryImpl.initialize(applicationContext)
+        aptabaseAnalyticsRepository.initialize(applicationContext)
 
     }
 
