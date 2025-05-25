@@ -6,6 +6,8 @@ interface AptabaseAnalyticsRepository {
 
     fun initialize(context: Context)
 
+    fun setupKey(key: String)
+
     fun trackUploadSuccess()
 
     fun trackUploadFailure()

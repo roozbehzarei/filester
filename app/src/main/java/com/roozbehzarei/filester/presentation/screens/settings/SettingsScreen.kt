@@ -113,12 +113,12 @@ fun SettingsScreen(
                     options.forEachIndexed { index, icon ->
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(
-                                index = index, count = options.size
-                            ), onClick = {
-                                scope.launch {
-                                    userPreferencesRepository.saveThemeModePreference(index)
-                                }
-                            }, selected = index == themeModeIndex, label = { Icon(icon, null) })
+                            index = index, count = options.size
+                        ), onClick = {
+                            scope.launch {
+                                userPreferencesRepository.saveThemeModePreference(index)
+                            }
+                        }, selected = index == themeModeIndex, label = { Icon(icon, null) })
                     }
                 }
             },
@@ -144,8 +144,8 @@ fun SettingsScreen(
                 onClick = null
             )
         }
-        uiState.appConfig?.let { appConfig ->
-            if (BuildConfig.VERSION_CODE < appConfig.versionCode) {
+        uiState.remoteConfig?.let { remoteConfig ->
+            if (BuildConfig.VERSION_CODE < remoteConfig.appVersionCode) {
                 SettingsItem(
                     modifier = Modifier
                         .fillMaxWidth()

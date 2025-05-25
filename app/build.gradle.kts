@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -20,14 +18,6 @@ android {
         versionName = "3.0.0-alpha02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        val keyPropertiesFile = project.rootProject.file("key.properties")
-        val properties = Properties()
-        properties.load(keyPropertiesFile.inputStream())
-        // Retrieve Aptabase API key from key.properties file
-        val aptabaseApiKey = properties.getProperty("APTABASE_API_KEY") ?: ""
-
-        buildConfigField(type = "String", name = "APTABASE_API_KEY", value = aptabaseApiKey)
     }
 
     buildFeatures {

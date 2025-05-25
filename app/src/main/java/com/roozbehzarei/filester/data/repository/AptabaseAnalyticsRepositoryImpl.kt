@@ -8,25 +8,34 @@ import org.koin.core.annotation.Single
 @Single
 class AptabaseAnalyticsRepositoryImpl() : AptabaseAnalyticsRepository {
 
-    private val apiKey = "A-EU-5566501326"
+    private var apiKey = ""
 
     override fun initialize(context: Context) {
-        // Initialize Aptabase SDK
-        Aptabase.instance.initialize(context, apiKey)
-        // Track app launch
-        Aptabase.instance.trackEvent("app_started")
+        if (apiKey.isNotBlank()) {
+            // Initialize Aptabase SDK
+            Aptabase.instance.initialize(context, apiKey)
+            // Track app launch
+            Aptabase.instance.trackEvent("app_started")
+        }
+    }
+
+    override fun setupKey(key: String) {
+        apiKey = key
     }
 
     override fun trackUploadSuccess() {
-        Aptabase.instance.trackEvent("file_upload_succeeded")
+        if (apiKey.isNotBlank())
+            Aptabase.instance.trackEvent("file_upload_succeeded")
     }
 
     override fun trackUploadFailure() {
-        Aptabase.instance.trackEvent("file_upload_failed")
+        if (apiKey.isNotBlank())
+            Aptabase.instance.trackEvent("file_upload_failed")
     }
 
     override fun trackUploadCancellation() {
-        Aptabase.instance.trackEvent("file_upload_cancelled")
+        if (apiKey.isNotBlank())
+            Aptabase.instance.trackEvent("file_upload_cancelled")
     }
 
 }

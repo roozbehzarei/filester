@@ -9,12 +9,15 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.roozbehzarei.filester.BuildConfig
+import com.roozbehzarei.filester.data.repository.APTABASE_SERVICE_NAME
 import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.domain.repository.AptabaseAnalyticsRepository
 import com.roozbehzarei.filester.domain.repository.ConfigRepository
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.framework.UploadWorker
 import com.roozbehzarei.filester.presentation.screens.main.MainUiState
 import com.roozbehzarei.filester.presentation.screens.settings.SettingsUiState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +33,7 @@ const val KEY_WORK_PROGRESS = "upload_progress"
 class SharedViewModel(
     private val fileRepository: FileRepository,
     private val configRepository: ConfigRepository,
+    private val aptabaseAnalyticsRepository: AptabaseAnalyticsRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -44,8 +48,10 @@ class SharedViewModel(
 
     init {
         getFiles()
-        getAppVersion()
         updateUploadStatus()
+        fetchAppConfig().invokeOnCompletion {
+            aptabaseAnalyticsRepository.initialize(application.applicationContext)
+        }
     }
 
     private fun updateUploadStatus() {
@@ -106,11 +112,17 @@ class SharedViewModel(
         workManager.cancelAllWork()
     }
 
-    private fun getAppVersion() {
-        viewModelScope.launch {
+    private fun fetchAppConfig(): Job {
+        return viewModelScope.launch {
             val config = configRepository.fetchRemoteConfig()
             config?.let { config ->
-                _settingsUiState.update { it.copy(appConfig = config) }
+                _settingsUiState.update { it.copy(remoteConfig = config) }
+                config.services.firstOrNull { service ->
+                    service.name == APTABASE_SERVICE_NAME
+                }?.let {
+                    aptabaseAnalyticsRepository.setupKey(it.apiKey)
+                }
+
             }
         }
     }
