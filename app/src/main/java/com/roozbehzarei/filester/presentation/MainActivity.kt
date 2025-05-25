@@ -42,15 +42,11 @@ class MainActivity : AppCompatActivity() {
             val view = LocalView.current
             val insetsController = WindowCompat.getInsetsController(this@MainActivity.window, view)
             // Dynamically modify the foreground color of status bar to align with app theme
+            // 0 = Light, 1 = Follow system, 2 = Dark
             when (userThemePreference) {
-                // Light mode
-                0 -> {
-                    insetsController.isAppearanceLightStatusBars = true
-                }
-                // Dark mode
-                2 -> {
-                    insetsController.isAppearanceLightStatusBars = false
-                }
+                0 -> insetsController.isAppearanceLightStatusBars = true
+                2 -> insetsController.isAppearanceLightStatusBars = false
+                else -> insetsController.isAppearanceLightStatusBars = isSystemInDarkTheme().not()
             }
             FilesterAppTheme(
                 dynamicColor = isDynamicColor,
