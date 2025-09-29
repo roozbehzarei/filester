@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
@@ -14,8 +15,8 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
-        versionName = "3.0.0-alpha03"
+        versionCode = 14
+        versionName = "3.0.0-alpha04"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -122,4 +123,8 @@ dependencies {
     implementation(libs.acra.notification)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
+    // Firebase
+    "globalImplementation"(platform(libs.firebase.bom))
+    "globalImplementation"(libs.firebase.analytics)
+    "globalImplementation"(libs.firebase.perf)
 }
