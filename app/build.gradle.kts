@@ -25,9 +25,26 @@ android {
         buildConfig = true
     }
 
+    flavorDimensions += listOf("store")
+
+    productFlavors {
+        create("global") {
+            dimension = "store"
+        }
+        create("fdroid") {
+            dimension = "store"
+            applicationIdSuffix = ".fdroid"
+            versionNameSuffix = " (f-droid)"
+        }
+    }
+
     buildTypes {
-        getByName("release") {
+        getByName("debug") {
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+        }
+        getByName("release") {
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
