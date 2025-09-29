@@ -57,6 +57,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
@@ -384,6 +385,33 @@ private fun FileRemoverDialog(
             Text(stringResource(R.string.dialog_button_close))
         }
     })
+}
+
+@Preview
+@Composable
+private fun FileItemPreview() {
+    FileItem(
+        name = "android.mp4",
+        size = 2048,
+        icon = painterResource(R.drawable.ic_filled_file_video),
+        isExpanded = true,
+        onClick = {},
+        onShare = {},
+        onCopy = {},
+        onRemove = {})
+}
+
+@Preview
+@Composable
+private fun FileUploadCardPreview() {
+    FileUploadCard(fileName = "android.mp4", progress = 50) { }
+}
+
+@Preview
+@Composable
+private fun FileRemoverDialogPreview() {
+    FileRemoverDialog(
+        fileName = "android.mp4", onDismissRequest = {}) {}
 }
 
 private fun shareFileLink(context: Context, link: String) {
