@@ -21,8 +21,8 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.repository.FileRepository
-import com.roozbehzarei.filester.presentation.KEY_FILE_URI
-import com.roozbehzarei.filester.presentation.KEY_WORK_PROGRESS
+import com.roozbehzarei.filester.presentation.screens.main.KEY_FILE_URI
+import com.roozbehzarei.filester.presentation.screens.main.KEY_WORK_PROGRESS
 import io.ktor.utils.io.CancellationException
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first

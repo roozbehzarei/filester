@@ -43,6 +43,7 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.presentation.navigation.FilesterNavHost
 import com.roozbehzarei.filester.presentation.navigation.SettingsRoute
 import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
+import com.roozbehzarei.filester.presentation.screens.main.SharedViewModel
 import org.koin.compose.koinInject
 
 private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"

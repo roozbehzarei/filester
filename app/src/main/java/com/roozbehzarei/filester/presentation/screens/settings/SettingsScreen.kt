@@ -20,7 +20,6 @@ import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.ModeNight
 import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,10 +50,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
-import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
-import com.roozbehzarei.filester.presentation.SharedViewModel
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -66,10 +63,8 @@ private val localeOptions = mapOf(
 
 @Composable
 fun SettingsScreen(
-    userPreferencesRepository: UserPreferencesRepositoryImpl = koinInject(),
-    viewModel: SharedViewModel = koinInject()
+    userPreferencesRepository: UserPreferencesRepositoryImpl = koinInject()
 ) {
-    val uiState by viewModel.settingsUiState.collectAsState()
     val scope = rememberCoroutineScope()
     val currentLocale = LocalConfiguration.current.locales.get(0)
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
@@ -145,21 +140,6 @@ fun SettingsScreen(
                 },
                 onClick = null
             )
-        }
-        uiState.remoteConfig?.let { remoteConfig ->
-            if (BuildConfig.VERSION_CODE < remoteConfig.latestVersionCode) {
-                SettingsItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .defaultMinSize(minHeight = 64.dp),
-                    title = stringResource(R.string.dialog_title_update),
-                    description = stringResource(R.string.update_description),
-                    icon = Icons.Outlined.SystemUpdate,
-                    options = null,
-                    onClick = null
-                )
-            }
         }
     }
 }

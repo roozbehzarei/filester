@@ -67,7 +67,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
-import com.roozbehzarei.filester.presentation.SharedViewModel
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
