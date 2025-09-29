@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RemoteConfigDto(
-    val appVersionCode: Int,
-    val services: List<ServiceDto>
+    val latestVersionCode: Int,
+    val minVersionCode: Int
 )

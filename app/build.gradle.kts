@@ -100,8 +100,6 @@ dependencies {
     implementation(libs.slf4j.android)
     // Accompanist
     implementation(libs.accompanist.permissions)
-    // Aptabase
-    implementation(libs.aptabase.kotlin)
     // ACRA
     implementation(libs.acra.mail)
     implementation(libs.acra.notification)

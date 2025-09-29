@@ -7,8 +7,6 @@ import com.roozbehzarei.filester.domain.model.RemoteConfig
 import com.roozbehzarei.filester.domain.repository.ConfigRepository
 import org.koin.core.annotation.Single
 
-const val APTABASE_SERVICE_NAME = "Aptabase"
-
 @Single
 class ConfigRepositoryImpl(private val api: FilesterApi) : ConfigRepository {
 

@@ -3,7 +3,6 @@ accompanist = "0.37.2"
 acraVersion = "5.12.0"
 activity = "1.10.1"
 agp = "8.7.2"
-aptabase = "0.0.8"
 browser = "1.8.0"
 compose-bom = "2025.03.00"
 core = "1.16.0"
@@ -47,7 +46,6 @@ androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-f
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
-aptabase-kotlin = { module = "com.github.aptabase:aptabase-kotlin", version.ref = "aptabase" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }

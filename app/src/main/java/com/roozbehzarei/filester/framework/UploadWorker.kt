@@ -20,7 +20,6 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
-import com.roozbehzarei.filester.domain.repository.AptabaseAnalyticsRepository
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.presentation.KEY_FILE_URI
 import com.roozbehzarei.filester.presentation.KEY_WORK_PROGRESS
@@ -39,7 +38,6 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {
 
     private val fileRepository: FileRepository by inject()
-    private val aptabaseAnalyticsRepository: AptabaseAnalyticsRepository by inject()
     private lateinit var notificationManager: NotificationManager
     private lateinit var ongoingNotificationBuilder: NotificationCompat.Builder
     private lateinit var fileToUpload: java.io.File
@@ -72,7 +70,6 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
             return when (result) {
                 is CatboxResult.Error -> {
                     postResultNotification(R.string.title_upload_error)
-                    aptabaseAnalyticsRepository.trackUploadFailure()
                     Result.failure()
                 }
 
@@ -85,7 +82,6 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                     )
                     fileRepository.saveFile(uploadedFile)
                     postResultNotification(R.string.title_upload_success)
-                    aptabaseAnalyticsRepository.trackUploadSuccess()
                     Result.success()
                 }
 
@@ -96,8 +92,7 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
             notificationManager.cancel(ONGOING_NOTIFICATION_ID)
             if (e is CancellationException) {
                 postResultNotification(R.string.title_upload_cancelled)
-                aptabaseAnalyticsRepository.trackUploadCancellation()
-            } else aptabaseAnalyticsRepository.trackUploadFailure()
+            }
             if (BuildConfig.DEBUG) e.printStackTrace()
             return Result.failure()
         }

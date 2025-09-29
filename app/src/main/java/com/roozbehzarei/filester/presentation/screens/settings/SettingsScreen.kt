@@ -145,7 +145,7 @@ fun SettingsScreen(
             )
         }
         uiState.remoteConfig?.let { remoteConfig ->
-            if (BuildConfig.VERSION_CODE < remoteConfig.appVersionCode) {
+            if (BuildConfig.VERSION_CODE < remoteConfig.latestVersionCode) {
                 SettingsItem(
                     modifier = Modifier
                         .fillMaxWidth()
