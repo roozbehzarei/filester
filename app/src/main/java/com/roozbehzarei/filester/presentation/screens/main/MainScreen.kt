@@ -68,6 +68,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.presentation.SharedViewModel
+import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -390,28 +391,34 @@ private fun FileRemoverDialog(
 @Preview
 @Composable
 private fun FileItemPreview() {
-    FileItem(
-        name = "android.mp4",
-        size = 2048,
-        icon = painterResource(R.drawable.ic_filled_file_video),
-        isExpanded = true,
-        onClick = {},
-        onShare = {},
-        onCopy = {},
-        onRemove = {})
+    FilesterAppTheme {
+        FileItem(
+            name = "android.mp4",
+            size = 2048,
+            icon = painterResource(R.drawable.ic_filled_file_video),
+            isExpanded = true,
+            onClick = {},
+            onShare = {},
+            onCopy = {},
+            onRemove = {})
+    }
 }
 
 @Preview
 @Composable
 private fun FileUploadCardPreview() {
-    FileUploadCard(fileName = "android.mp4", progress = 50) { }
+    FilesterAppTheme {
+        FileUploadCard(fileName = "android.mp4", progress = 50) { }
+    }
 }
 
 @Preview
 @Composable
 private fun FileRemoverDialogPreview() {
-    FileRemoverDialog(
-        fileName = "android.mp4", onDismissRequest = {}) {}
+    FilesterAppTheme {
+        FileRemoverDialog(
+            fileName = "android.mp4", onDismissRequest = {}) {}
+    }
 }
 
 private fun shareFileLink(context: Context, link: String) {

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
+import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 
 enum class Urls(val link: String) {
     SOURCE_CODE("https://github.com/roozbehzarei/filester"), DONATE("https://roozbehzarei.com/donate"), PRIVACY_POLICY(
@@ -146,7 +148,11 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun AboutScreenPreview() {
-    AboutScreen()
+    FilesterAppTheme {
+        Surface {
+            AboutScreen()
+        }
+    }
 }
 
 

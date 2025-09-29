@@ -28,6 +28,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -54,6 +55,7 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
 import com.roozbehzarei.filester.presentation.SharedViewModel
+import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import java.util.Locale
@@ -278,22 +280,20 @@ private fun LanguagePickerDialog(onDismissRequest: () -> Unit) {
 
 @Preview
 @Composable
-private fun SettingsScreenPreview() {
-    SettingsScreen()
-}
-
-@Preview
-@Composable
 private fun SettingsItemPreview() {
-    SettingsItem(
-        modifier = Modifier.padding(vertical = 18.dp),
-        title = stringResource(R.string.theme),
-        description = stringResource(R.string.system_default),
-        icon = Icons.Outlined.BrightnessMedium,
-        options = {
-            Switch(
-                checked = true, onCheckedChange = { })
-        },
-        onClick = null
-    )
+    FilesterAppTheme {
+        Surface {
+            SettingsItem(
+                modifier = Modifier.padding(vertical = 18.dp),
+                title = stringResource(R.string.theme),
+                description = stringResource(R.string.system_default),
+                icon = Icons.Outlined.BrightnessMedium,
+                options = {
+                    Switch(
+                        checked = true, onCheckedChange = { })
+                },
+                onClick = null
+            )
+        }
+    }
 }
