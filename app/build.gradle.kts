@@ -1,10 +1,21 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+}
+
+/**
+ * Applies the Google Services plugin only if the build flavor is "fdroid",
+ * determined by inspecting the Gradle task names.
+ */
+val tasks = gradle.startParameter.taskNames
+if (tasks.any { it.contains("fdroid", ignoreCase = true).not() }) {
+    pluginManager.apply(libs.plugins.google.services.get().pluginId)
+    println("Google Services plugin applied")
+} else {
+    println("Google Services plugin NOT applied")
 }
 
 android {
@@ -42,7 +53,6 @@ android {
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
         }
         getByName("release") {
             isMinifyEnabled = true
