@@ -54,4 +54,8 @@
     <string name="update_description">Uygulamanın yeni bir sürümü mevcut</string>
     <string name="dynamic_colors">Dinamik renkler</string>
     <string name="dynamic_colors_description">Renkleri otomatik olarak cihazınızın duvar kağıdıyla uyumlu hale getirin</string>
+    <string name="telemetry">Telemetry</string>
+    <string name="telemetry_desc">Share anonymous usage data to help us understand how the app is used and improve features.</string>
+    <string name="crash_report">Crash Reports</string>
+    <string name="crash_report_desc">Send anonymous crash reports so we can fix bugs and improve stability.</string>
 </resources>

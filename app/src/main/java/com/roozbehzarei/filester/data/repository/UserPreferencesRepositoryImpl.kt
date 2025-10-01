@@ -21,6 +21,8 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
     private companion object {
         val IS_DYNAMIC_COLORS = booleanPreferencesKey("is_dynamic_colors")
         val THEME_MODE = intPreferencesKey("theme_mode")
+        val TELEMETRY = booleanPreferencesKey("telemetry")
+        val CRASH_REPORT = booleanPreferencesKey("crash_report")
     }
 
     override fun getDynamicColorsPreference(): Flow<Boolean> =
@@ -32,6 +34,16 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
         preferences[THEME_MODE] ?: 1
     }
 
+    override fun getTelemetryPreference(): Flow<Boolean> =
+        context.dataStore.data.map { preferences ->
+            preferences[TELEMETRY] == true
+        }
+
+    override fun getCrashReportPreference(): Flow<Boolean> =
+        context.dataStore.data.map { preferences ->
+            preferences[CRASH_REPORT] != false
+        }
+
     override suspend fun saveDynamicColorsPreference(isDynamic: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[IS_DYNAMIC_COLORS] = isDynamic
@@ -41,6 +53,18 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
     override suspend fun saveThemeModePreference(index: Int) {
         context.dataStore.edit { preferences ->
             preferences[THEME_MODE] = index
+        }
+    }
+
+    override suspend fun saveTelemetryPreference(isEnabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[TELEMETRY] = isEnabled
+        }
+    }
+
+    override suspend fun saveCrashReportPreference(isEnabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[CRASH_REPORT] = isEnabled
         }
     }
 

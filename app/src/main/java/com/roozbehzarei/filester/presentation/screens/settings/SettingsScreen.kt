@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +51,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
@@ -66,11 +70,16 @@ fun SettingsScreen(
     userPreferencesRepository: UserPreferencesRepositoryImpl = koinInject()
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val currentLocale = LocalConfiguration.current.locales.get(0)
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
     val isDynamicColor by userPreferencesRepository.getDynamicColorsPreference()
         .collectAsState(false)
     val themeModeIndex by userPreferencesRepository.getThemePreference().collectAsState(1)
+    val isTelemetryEnabled by userPreferencesRepository.getTelemetryPreference()
+        .collectAsState(false)
+    val isCrashReportEnabled by userPreferencesRepository.getCrashReportPreference()
+        .collectAsState(true)
     if (shouldShowLanguageDialog) {
         LanguagePickerDialog {
             shouldShowLanguageDialog = false
@@ -110,12 +119,12 @@ fun SettingsScreen(
                     options.forEachIndexed { index, icon ->
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(
-                            index = index, count = options.size
-                        ), onClick = {
-                            scope.launch {
-                                userPreferencesRepository.saveThemeModePreference(index)
-                            }
-                        }, selected = index == themeModeIndex, label = { Icon(icon, null) })
+                                index = index, count = options.size
+                            ), onClick = {
+                                scope.launch {
+                                    userPreferencesRepository.saveThemeModePreference(index)
+                                }
+                            }, selected = index == themeModeIndex, label = { Icon(icon, null) })
                     }
                 }
             },
@@ -135,6 +144,53 @@ fun SettingsScreen(
                         modifier = modifier, checked = isDynamicColor, onCheckedChange = {
                             scope.launch {
                                 userPreferencesRepository.saveDynamicColorsPreference(it)
+                            }
+                        })
+                },
+                onClick = null
+            )
+        }
+        if (BuildConfig.FLAVOR.equals("global")) {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+            val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
+
+            SettingsItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .defaultMinSize(minHeight = 64.dp),
+                title = stringResource(R.string.telemetry),
+                description = stringResource(R.string.telemetry_desc),
+                icon = Icons.Outlined.Palette,
+                options = { modifier ->
+                    Switch(
+                        modifier = modifier,
+                        checked = isTelemetryEnabled,
+                        onCheckedChange = { isEnabled ->
+                            scope.launch {
+                                firebaseAnalytics.setAnalyticsCollectionEnabled(isEnabled)
+                                userPreferencesRepository.saveTelemetryPreference(isEnabled)
+                            }
+                        })
+                },
+                onClick = null
+            )
+            SettingsItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .defaultMinSize(minHeight = 64.dp),
+                title = stringResource(R.string.crash_report),
+                description = stringResource(R.string.crash_report_desc),
+                icon = Icons.Outlined.Palette,
+                options = { modifier ->
+                    Switch(
+                        modifier = modifier,
+                        checked = isCrashReportEnabled,
+                        onCheckedChange = { isEnabled ->
+                            scope.launch {
+                                firebaseCrashlytics.isCrashlyticsCollectionEnabled = isEnabled
+                                userPreferencesRepository.saveCrashReportPreference(isEnabled)
                             }
                         })
                 },

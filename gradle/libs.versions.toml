@@ -9,6 +9,7 @@ core = "1.16.0"
 dataStore = "1.1.4"
 documentfile = "1.0.1"
 firebaseBom = "34.3.0"
+firebaseCrashlytics = "3.0.6"
 googleFonts = "1.7.8"
 googleServices = "4.4.3"
 koin = "4.0.2"
@@ -49,6 +50,7 @@ androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ndk" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -63,6 +65,7 @@ slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

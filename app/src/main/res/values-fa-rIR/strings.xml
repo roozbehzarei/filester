@@ -55,5 +55,9 @@
     <string name="update_description">نسخه جدیدی از برنامه آماده دریافت است</string>
     <string name="dynamic_colors">رنگ بندی پویا</string>
     <string name="dynamic_colors_description">رنگ‌ها به‌صورت خودکار با تصویر پس‌زمینه دستگاه هماهنگ شوند</string>
+    <string name="telemetry">گزارش استفاده</string>
+    <string name="telemetry_desc">ارسال اطلاعات استفاده به‌طور ناشناس جهت درک بهتر نیازمندی کاربران و بهبود اپ</string>
+    <string name="crash_report">گزارش خطا</string>
+    <string name="crash_report_desc">ارسال گزارش خطا و از کار افتادن اپ به‌طور ناشناس جهت تشخیص و رفع سریعتر آن</string>
 
 </resources>

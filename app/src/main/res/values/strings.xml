@@ -58,5 +58,9 @@
     <string name="update_description">A new version of the app is available</string>
     <string name="dynamic_colors">Dynamic colors</string>
     <string name="dynamic_colors_description">Adapt colors to match your device\'s wallpaper automatically</string>
+    <string name="telemetry">Telemetry</string>
+    <string name="telemetry_desc">Share anonymous usage data to help us understand how the app is used and improve features.</string>
+    <string name="crash_report">Crash Reports</string>
+    <string name="crash_report_desc">Send anonymous crash reports so we can fix bugs and improve stability.</string>
 
 </resources>

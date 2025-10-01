@@ -12,10 +12,10 @@ plugins {
  */
 val tasks = gradle.startParameter.taskNames
 if (tasks.any { it.contains("fdroid", ignoreCase = true).not() }) {
-    pluginManager.apply(libs.plugins.google.services.get().pluginId)
-    println("Google Services plugin applied")
-} else {
-    println("Google Services plugin NOT applied")
+    with(pluginManager) {
+        apply(libs.plugins.google.services.get().pluginId)
+        apply(libs.plugins.firebase.crashlytics.get().pluginId)
+    }
 }
 
 android {
@@ -136,5 +136,6 @@ dependencies {
     // Firebase
     "globalImplementation"(platform(libs.firebase.bom))
     "globalImplementation"(libs.firebase.analytics)
+    "globalImplementation"(libs.firebase.crashlytics)
     "globalImplementation"(libs.firebase.perf)
 }
