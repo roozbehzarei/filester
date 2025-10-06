@@ -129,8 +129,8 @@ dependencies {
     // Accompanist
     implementation(libs.accompanist.permissions)
     // ACRA
-    implementation(libs.acra.mail)
-    implementation(libs.acra.notification)
+    "fdroidImplementation"(libs.acra.mail)
+    "fdroidImplementation"(libs.acra.notification)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
     // Firebase
