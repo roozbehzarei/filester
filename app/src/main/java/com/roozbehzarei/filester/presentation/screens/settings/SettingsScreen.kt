@@ -51,11 +51,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
+import com.roozbehzarei.filester.domain.service.FirebaseService
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -67,7 +66,8 @@ private val localeOptions = mapOf(
 
 @Composable
 fun SettingsScreen(
-    userPreferencesRepository: UserPreferencesRepositoryImpl = koinInject()
+    userPreferencesRepository: UserPreferencesRepositoryImpl = koinInject(),
+    firebaseService: FirebaseService = koinInject()
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -119,12 +119,12 @@ fun SettingsScreen(
                     options.forEachIndexed { index, icon ->
                         SegmentedButton(
                             shape = SegmentedButtonDefaults.itemShape(
-                                index = index, count = options.size
-                            ), onClick = {
-                                scope.launch {
-                                    userPreferencesRepository.saveThemeModePreference(index)
-                                }
-                            }, selected = index == themeModeIndex, label = { Icon(icon, null) })
+                            index = index, count = options.size
+                        ), onClick = {
+                            scope.launch {
+                                userPreferencesRepository.saveThemeModePreference(index)
+                            }
+                        }, selected = index == themeModeIndex, label = { Icon(icon, null) })
                     }
                 }
             },
@@ -151,9 +151,6 @@ fun SettingsScreen(
             )
         }
         if (BuildConfig.FLAVOR.equals("global")) {
-            val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-            val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
-
             SettingsItem(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -168,7 +165,7 @@ fun SettingsScreen(
                         checked = isTelemetryEnabled,
                         onCheckedChange = { isEnabled ->
                             scope.launch {
-                                firebaseAnalytics.setAnalyticsCollectionEnabled(isEnabled)
+                                firebaseService.setAnalyticsCollectionEnabled(context, isEnabled)
                                 userPreferencesRepository.saveTelemetryPreference(isEnabled)
                             }
                         })
@@ -189,7 +186,7 @@ fun SettingsScreen(
                         checked = isCrashReportEnabled,
                         onCheckedChange = { isEnabled ->
                             scope.launch {
-                                firebaseCrashlytics.isCrashlyticsCollectionEnabled = isEnabled
+                                firebaseService.setCrashlyticsCollectionEnabled(isEnabled)
                                 userPreferencesRepository.saveCrashReportPreference(isEnabled)
                             }
                         })

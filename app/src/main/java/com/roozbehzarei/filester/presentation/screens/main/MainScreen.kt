@@ -118,6 +118,11 @@ fun MainScreen(
     }
 }
 
+@Composable
+private fun UploadResultDialog() {
+
+}
+
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -385,6 +390,14 @@ private fun FileRemoverDialog(
             Text(stringResource(R.string.dialog_button_close))
         }
     })
+}
+
+@Preview
+@Composable
+private fun UploadResultDialogPreview() {
+    FilesterAppTheme {
+        UploadResultDialog()
+    }
 }
 
 @Preview
