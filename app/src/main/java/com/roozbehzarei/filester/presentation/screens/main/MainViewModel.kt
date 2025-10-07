@@ -25,8 +25,7 @@ const val KEY_WORK_PROGRESS = "upload_progress"
 
 @Single
 class SharedViewModel(
-    private val fileRepository: FileRepository,
-    application: Application
+    private val fileRepository: FileRepository, application: Application
 ) : AndroidViewModel(application) {
 
     private val _mainUiState = MutableStateFlow(MainUiState())
@@ -93,6 +92,10 @@ class SharedViewModel(
         _mainUiState.update {
             it.copy(uploadingFileName = fileName)
         }
+    }
+
+    fun uploadResultShown() {
+        workManager.pruneWork()
     }
 
     fun cancelUpload() {

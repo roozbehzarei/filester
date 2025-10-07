@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -44,6 +45,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,19 +77,41 @@ import org.koin.compose.koinInject
 fun MainScreen(
     viewModel: SharedViewModel = koinInject()
 ) {
+    val snackbarHostState: SnackbarHostState = koinInject()
+    val coroutineScope = rememberCoroutineScope()
     val uiState by viewModel.mainUiState.collectAsState()
+    var showUploadFailDialog by rememberSaveable { mutableStateOf(false) }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         RequestNotificationPermission()
     }
+    val uploadSuccessMessage = stringResource(R.string.message_upload_success)
+    val uploadCancelMessage = stringResource(R.string.message_upload_cancelled)
+
     LaunchedEffect(uiState.uploadStatus) {
         when (uiState.uploadStatus) {
             WorkInfo.State.RUNNING -> viewModel.setUploadFabVisibility(false)
-            WorkInfo.State.SUCCEEDED -> viewModel.setUploadFabVisibility(true)
-            WorkInfo.State.FAILED -> viewModel.setUploadFabVisibility(true)
-            WorkInfo.State.CANCELLED -> viewModel.setUploadFabVisibility(true)
+
+            WorkInfo.State.SUCCEEDED -> {
+                viewModel.setUploadFabVisibility(true)
+                coroutineScope.launch { snackbarHostState.showSnackbar(uploadSuccessMessage) }
+                viewModel.uploadResultShown()
+            }
+
+            WorkInfo.State.FAILED -> {
+                viewModel.setUploadFabVisibility(true)
+                showUploadFailDialog = true
+            }
+
+            WorkInfo.State.CANCELLED -> {
+                viewModel.setUploadFabVisibility(true)
+                snackbarHostState.showSnackbar(uploadCancelMessage)
+                viewModel.uploadResultShown()
+            }
+
             else -> viewModel.setUploadFabVisibility(true)
         }
     }
+
     Column(modifier = Modifier.fillMaxSize()) {
         if (uiState.files.isEmpty() && uiState.uploadStatus != WorkInfo.State.RUNNING) {
             Column(
@@ -105,6 +129,7 @@ fun MainScreen(
             }
         }
         FilesList(
+            snackbarHostState = snackbarHostState,
             files = uiState.files,
             isUploadingFile = uiState.uploadStatus == WorkInfo.State.RUNNING,
             uploadingFileName = uiState.uploadingFileName,
@@ -115,12 +140,32 @@ fun MainScreen(
             onRemoveFileRequest = { file ->
                 viewModel.deleteFile(file)
             })
+        if (showUploadFailDialog) {
+            UploadFailDialog(onDismissRequest = {
+                viewModel.uploadResultShown()
+                showUploadFailDialog = false
+            })
+        }
     }
 }
 
 @Composable
-private fun UploadResultDialog() {
-
+private fun UploadFailDialog(
+    modifier: Modifier = Modifier, onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        modifier = modifier,
+        icon = { Icon(Icons.Outlined.ErrorOutline, null) },
+        title = { Text(stringResource(R.string.title_upload_error)) },
+        text = { Text(stringResource(R.string.message_upload_error)) },
+        confirmButton = {
+            TextButton(onClick = {
+                onDismissRequest()
+            }) {
+                Text(text = stringResource(R.string.dialog_button_close))
+            }
+        },
+        onDismissRequest = { onDismissRequest() })
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -140,6 +185,7 @@ private fun RequestNotificationPermission() {
 @Composable
 private fun FilesList(
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
     files: List<File>,
     uploadingFileName: String?,
     uploadingFileProgress: Int?,
@@ -148,7 +194,6 @@ private fun FilesList(
     onRemoveFileRequest: (file: File) -> Unit
 ) {
     val context = LocalContext.current
-    val snackbarHostState: SnackbarHostState = koinInject()
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val clipboardManager = LocalClipboardManager.current
@@ -394,9 +439,9 @@ private fun FileRemoverDialog(
 
 @Preview
 @Composable
-private fun UploadResultDialogPreview() {
+private fun UploadFailDialogPreview() {
     FilesterAppTheme {
-        UploadResultDialog()
+        UploadFailDialog(onDismissRequest = {})
     }
 }
 
