@@ -13,7 +13,7 @@ interface FileDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(file: FileEntity)
 
-    @Query("SELECT * FROM fileentity")
+    @Query("SELECT * FROM fileentity ORDER BY id DESC")
     fun getAll(): Flow<List<FileEntity>>
 
     @Delete
