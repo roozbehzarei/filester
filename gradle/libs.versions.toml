@@ -4,6 +4,7 @@ acraVersion = "5.12.0"
 activity = "1.10.1"
 agp = "8.7.2"
 browser = "1.8.0"
+dokka = "2.1.0-Beta"
 compose-bom = "2025.03.00"
 core = "1.16.0"
 dataStore = "1.1.4"
@@ -62,6 +63,7 @@ ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
+versioning-plugin = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -69,5 +71,6 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

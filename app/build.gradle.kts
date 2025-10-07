@@ -1,21 +1,26 @@
+val versionName = "3.0.0-alpha04"
+
+// Get the list of all Gradle tasks requested by the invoked build
+val taskNames = gradle.startParameter.taskNames
+// Only apply Google Services and Firebase plugins if we are NOT running a build for F-Droid or generating Dokka documentation.
+if (taskNames.all {
+        it.contains("fdroid", ignoreCase = true).not() && it.contains(
+            "dokka", ignoreCase = true
+        ).not()
+    }) {
+    with(pluginManager) {
+        apply(libs.plugins.google.services.get().pluginId)
+        apply(libs.plugins.firebase.crashlytics.get().pluginId)
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.dokka)
     alias(libs.plugins.ksp)
-}
-
-/**
- * Applies the Google Services plugin only if the build flavor is "fdroid",
- * determined by inspecting the Gradle task names.
- */
-val tasks = gradle.startParameter.taskNames
-if (tasks.any { it.contains("fdroid", ignoreCase = true).not() }) {
-    with(pluginManager) {
-        apply(libs.plugins.google.services.get().pluginId)
-        apply(libs.plugins.firebase.crashlytics.get().pluginId)
-    }
 }
 
 android {
@@ -27,7 +32,7 @@ android {
         minSdk = 24
         targetSdk = 36
         versionCode = 14
-        versionName = "3.0.0-alpha04"
+        versionName = versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -79,6 +84,37 @@ android {
 ksp {
     arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+}
+
+// Dokka configuration for generating project documentation
+dokka {
+    moduleName.set("Filester")
+    moduleVersion.set(versionName)
+    dokkaPublications.html {
+        // Suppress inherited members (e.g., functions from Any, Object, etc.)
+        suppressInheritedMembers.set(true)
+        // Fail the build on Dokka warnings
+        failOnWarning.set(true)
+    }
+    dokkaSourceSets.main {
+        // Configure source linking to GitHub for better navigation in the generated docs
+        sourceLink {
+            localDirectory.set(file("src/main/java"))
+            remoteUrl("https://github.com/roozbehzarei/filester/tree/main/app/src/main/java")
+            remoteLineSuffix.set("#L")
+        }
+    }
+    dokkaSourceSets.all {
+        // Suppress generated files
+        suppressGeneratedFiles.set(true)
+        // Define options for specific packages, overriding global settings
+        perPackageOption {
+            // Regex matching Koin’s KSP-generated code packages
+            matchingRegex.set("org\\.koin\\.ksp\\.generated(\\..*)?")
+            // Hide any code in packages that match the regex
+            suppress.set(true)
+        }
+    }
 }
 
 dependencies {
@@ -138,4 +174,6 @@ dependencies {
     "globalImplementation"(libs.firebase.analytics)
     "globalImplementation"(libs.firebase.crashlytics)
     "globalImplementation"(libs.firebase.perf)
+    // dokka
+    dokkaHtmlPlugin(libs.versioning.plugin)
 }
