@@ -175,5 +175,5 @@ dependencies {
     "globalImplementation"(libs.firebase.crashlytics)
     "globalImplementation"(libs.firebase.perf)
     // dokka
-    dokkaHtmlPlugin(libs.versioning.plugin)
+    dokkaPlugin(libs.android.documentation.plugin)
 }
