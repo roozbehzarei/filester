@@ -10,6 +10,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.onUpload
+import io.ktor.client.request.forms.InputProvider
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.post
@@ -18,8 +19,10 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.io.buffered
 import org.koin.core.annotation.Single
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -43,6 +46,7 @@ class CatboxApi {
 
     fun uploadFile(file: File): Flow<CatboxResult> = channelFlow {
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension).orEmpty()
+        val fileSize = file.length()
         try {
             val response: HttpResponse = client.post("${CATBOX_URL}/resources/internals/api.php") {
                 setBody(
@@ -50,15 +54,16 @@ class CatboxApi {
                         formData {
                             append("reqtype", "fileupload")
                             append("time", "72h")
-                            append("fileToUpload", file.readBytes(), Headers.build {
+                            append("fileToUpload", InputProvider {
+                                file.inputStream().asInput().buffered()
+                            }, Headers.build {
                                 append(HttpHeaders.ContentType, mimeType)
                                 append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
                             })
                         })
                 )
                 onUpload { bytesSentTotal, contentLength ->
-                    val percentage =
-                        if (contentLength == null) 0 else (bytesSentTotal * 100 / contentLength).toInt()
+                    val percentage = (bytesSentTotal * 100 / fileSize).toInt()
                     trySend(CatboxResult.Loading(percentage))
                 }
             }
@@ -66,8 +71,9 @@ class CatboxApi {
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) e.printStackTrace()
             trySend(CatboxResult.Error)
+        } finally {
+            close()
         }
-
     }
 
 }
