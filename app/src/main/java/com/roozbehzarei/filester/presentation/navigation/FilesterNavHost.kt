@@ -1,5 +1,6 @@
 package com.roozbehzarei.filester.presentation.navigation
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -19,13 +20,14 @@ import com.roozbehzarei.filester.presentation.screens.settings.SettingsScreen
 fun FilesterNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    snackbarHostState: SnackbarHostState
 ) {
 
     return NavHost(
         modifier = modifier, navController = navController, startDestination = MainRoute
     ) {
         composable<MainRoute> {
-            MainScreen()
+            MainScreen(snackbarHostState = snackbarHostState)
         }
         composable<SettingsRoute> {
             SettingsScreen()

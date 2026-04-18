@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 val versionName = "3.0.0-alpha04"
 
 // Get the list of all Gradle tasks requested by the invoked build
@@ -16,6 +18,7 @@ if (taskNames.all {
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.koin.compiler)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
@@ -25,7 +28,11 @@ plugins {
 
 android {
     namespace = "com.roozbehzarei.filester"
-    compileSdk = 36
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
@@ -66,18 +73,20 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     androidResources {
         generateLocaleConfig = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget("17")
     }
 }
 
@@ -152,10 +161,12 @@ dependencies {
     // kotlinx.serialization
     implementation(libs.kotlinx.serialization.json)
     // Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.annotations)
-    ksp(libs.koin.ksp.compiler)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.androidx.workmanager)
     // Ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)

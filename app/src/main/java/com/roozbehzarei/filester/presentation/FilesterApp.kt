@@ -27,7 +27,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +42,8 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.presentation.navigation.FilesterNavHost
 import com.roozbehzarei.filester.presentation.navigation.SettingsRoute
 import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
-import com.roozbehzarei.filester.presentation.screens.main.SharedViewModel
+import com.roozbehzarei.filester.presentation.screens.main.MainViewModel
+import com.roozbehzarei.filester.presentation.state.UploadFabStateHolder
 import org.koin.compose.koinInject
 
 private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
@@ -61,8 +61,9 @@ private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilesterApp(context: Context) {
-    val viewModel: SharedViewModel = koinInject()
-    val snackbarHostState: SnackbarHostState = koinInject()
+    val viewModel: MainViewModel = koinInject()
+    val uploadFabStateHolder: UploadFabStateHolder = koinInject()
+    val snackbarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Check if current route is the main screen
@@ -72,7 +73,6 @@ fun FilesterApp(context: Context) {
     val currentDestination = TopLevelDestination.entries.firstOrNull {
         backStackEntry?.destination?.hasRoute(it.route::class) == true
     }
-    val shouldShowUploadFab by viewModel.shouldShowUploadFab.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -103,12 +103,14 @@ fun FilesterApp(context: Context) {
         },
         floatingActionButton = {
             // Show FAB only on main screen
-            if (isMainRoute && shouldShowUploadFab) {
+            if (isMainRoute && uploadFabStateHolder.isVisible) {
                 UploadFab(viewModel::initializeUpload)
             }
         }) { innerPadding ->
         FilesterNavHost(
-            modifier = Modifier.padding(innerPadding), navController = navController
+            modifier = Modifier.padding(innerPadding),
+            navController = navController,
+            snackbarHostState = snackbarHostState
         )
     }
 

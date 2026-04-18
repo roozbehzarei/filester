@@ -1,8 +1,11 @@
 package com.roozbehzarei.filester.di
 
-import org.koin.core.annotation.ComponentScan
-import org.koin.core.annotation.Module
+import com.roozbehzarei.filester.domain.service.FirebaseService
+import com.roozbehzarei.filester.service.FirebaseServiceImpl
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import org.koin.plugin.module.dsl.factory
 
-@Module
-@ComponentScan("com.roozbehzarei.filester.service")
-class ServiceModule
+val serviceModule = module {
+    factory<FirebaseServiceImpl>() bind FirebaseService::class
+}

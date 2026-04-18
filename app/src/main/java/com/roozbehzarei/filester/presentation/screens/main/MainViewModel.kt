@@ -1,8 +1,7 @@
 package com.roozbehzarei.filester.presentation.screens.main
 
-import android.app.Application
 import android.net.Uri
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
@@ -17,22 +16,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.annotation.Single
 
 const val KEY_FILE_URI = "FILE_URI"
 const val KEY_WORK = "UNIQUE_WORK"
 const val KEY_WORK_PROGRESS = "upload_progress"
 
-@Single
-class SharedViewModel(
-    private val fileRepository: FileRepository, application: Application
-) : AndroidViewModel(application) {
+class MainViewModel(
+    private val fileRepository: FileRepository, private val workManager: WorkManager
+) : ViewModel() {
 
     private val _mainUiState = MutableStateFlow(MainUiState())
     val mainUiState: StateFlow<MainUiState> = _mainUiState.asStateFlow()
-    private var _shouldShowUploadFab = MutableStateFlow(false)
-    val shouldShowUploadFab: StateFlow<Boolean> = _shouldShowUploadFab.asStateFlow()
-    private val workManager = WorkManager.getInstance(application)
     private lateinit var inputData: Data
 
     init {
@@ -53,10 +47,6 @@ class SharedViewModel(
                 }
             }
         }
-    }
-
-    fun setUploadFabVisibility(isVisible: Boolean) {
-        _shouldShowUploadFab.value = isVisible
     }
 
     private fun getFiles() {

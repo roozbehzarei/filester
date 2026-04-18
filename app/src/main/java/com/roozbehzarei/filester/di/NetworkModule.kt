@@ -1,9 +1,9 @@
 package com.roozbehzarei.filester.di
 
-import org.koin.core.annotation.ComponentScan
-import org.koin.core.annotation.Module
+import com.roozbehzarei.filester.data.network.catbox.CatboxApi
+import org.koin.dsl.module
+import org.koin.plugin.module.dsl.single
 
-
-@Module
-@ComponentScan("com.roozbehzarei.filester.data.network")
-class NetworkModule
+val networkModule = module {
+    single<CatboxApi>()
+}

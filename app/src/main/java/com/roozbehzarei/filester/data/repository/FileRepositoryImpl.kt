@@ -9,9 +9,7 @@ import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.koin.core.annotation.Single
 
-@Single
 class FileRepositoryImpl(private val fileDao: FileDao, private val catboxApi: CatboxApi) :
     FileRepository {
 

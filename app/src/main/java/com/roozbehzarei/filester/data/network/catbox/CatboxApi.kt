@@ -23,13 +23,11 @@ import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.io.buffered
-import org.koin.core.annotation.Single
 import java.io.File
 import java.util.concurrent.TimeUnit
 
 private const val CATBOX_URL = "https://litterbox.catbox.moe"
 
-@Single
 class CatboxApi {
 
     private val client = HttpClient(CIO) {

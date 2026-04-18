@@ -69,15 +69,17 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.presentation.state.UploadFabStateHolder
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
 fun MainScreen(
-    viewModel: SharedViewModel = koinInject()
+    viewModel: MainViewModel = koinInject(),
+    uploadFabStateHolder: UploadFabStateHolder = koinInject(),
+    snackbarHostState: SnackbarHostState
 ) {
-    val snackbarHostState: SnackbarHostState = koinInject()
     val coroutineScope = rememberCoroutineScope()
     val uiState by viewModel.mainUiState.collectAsState()
     var showUploadFailDialog by rememberSaveable { mutableStateOf(false) }
@@ -89,26 +91,26 @@ fun MainScreen(
 
     LaunchedEffect(uiState.uploadStatus) {
         when (uiState.uploadStatus) {
-            WorkInfo.State.RUNNING -> viewModel.setUploadFabVisibility(false)
+            WorkInfo.State.RUNNING -> uploadFabStateHolder.hide()
 
             WorkInfo.State.SUCCEEDED -> {
-                viewModel.setUploadFabVisibility(true)
+                uploadFabStateHolder.show()
                 coroutineScope.launch { snackbarHostState.showSnackbar(uploadSuccessMessage) }
                 viewModel.uploadResultShown()
             }
 
             WorkInfo.State.FAILED -> {
-                viewModel.setUploadFabVisibility(true)
+                uploadFabStateHolder.show()
                 showUploadFailDialog = true
             }
 
             WorkInfo.State.CANCELLED -> {
-                viewModel.setUploadFabVisibility(true)
+                uploadFabStateHolder.show()
                 snackbarHostState.showSnackbar(uploadCancelMessage)
                 viewModel.uploadResultShown()
             }
 
-            else -> viewModel.setUploadFabVisibility(true)
+            else -> uploadFabStateHolder.show()
         }
     }
 

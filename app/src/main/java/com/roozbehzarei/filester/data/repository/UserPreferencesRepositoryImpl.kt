@@ -10,12 +10,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.koin.core.annotation.Single
 
 // Define Preferences DataStore extension function
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-@Single
 class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferencesRepository {
 
     private companion object {

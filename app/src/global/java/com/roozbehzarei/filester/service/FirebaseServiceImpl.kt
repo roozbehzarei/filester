@@ -4,9 +4,7 @@ import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.roozbehzarei.filester.domain.service.FirebaseService
-import org.koin.core.annotation.Factory
 
-@Factory(binds = [FirebaseService::class])
 class FirebaseServiceImpl() : FirebaseService {
 
     private val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
