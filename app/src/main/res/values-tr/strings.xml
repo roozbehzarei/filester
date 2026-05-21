@@ -1,61 +1,61 @@
 <resources>
+
+    <!-- Common -->
     <string name="app_name">Filester</string>
-    <string name="app_description">Basit Dosya Yükleyici</string>
-    <string name="app_version">Sürüm %1$s</string>
-    <string name="menu_about">Hakkında</string>
-    <string name="link_donate">Bağış Yapın</string>
-    <string name="link_source_code">Kaynak Kodu</string>
-    <string name="link_privacy_policy">Gizlilik Politikası</string>
-    <string name="title_upload_success">Yükleme başarılı</string>
-    <string name="message_upload_success">Yüklediğiniz dosya önümüzdeki 30 gün boyunca kullanılabilir olacaktır.</string>
-    <string name="dialog_button_copy">Bağlantıyı Kopyala</string>
-    <string name="dialog_button_close">Kapat</string>
-    <string name="title_upload_error">Yükleme başarısız</string>
-    <string name="message_upload_error">Bir hata oluştu. Lütfen tekrar deneyin.</string>
-    <string name="title_upload_cancelled">Yükleme iptal edildi</string>
-    <string name="message_upload_cancelled">Yükleme işlemini iptal ettiniz.</string>
-    <string name="snackbar_clipboard">Bağlantı panoya kopyalandı</string>
-    <string name="snackbar_uploading">Dosya yükleniyor, lütfen bekleyin.</string>
-    <string name="text_empty_history">Henüz herhangi bir dosya yüklemediniz.\nÖnce bir dosya yüklemeyi deneyin.</string>
-    <string name="channel_name">Yükleme ilerlemesi durumu</string>
-    <string name="channel_description">Yükleme devam ederken, başarılı veya başarısız olduğunda bildir.</string>
-    <string name="fab_label">Dosya yükle</string>
     <string name="settings">Ayarlar</string>
-    <string name="notification_title_start">Karşıya yükleme başlatılıyor...</string>
-    <string name="notification_title_in_progress">Yükleniyor...</string>
-    <string name="english">İngilizce</string>
-    <string name="persian">Farsça</string>
-    <string name="dark">Koyu</string>
-    <string name="light">Açık</string>
-    <string name="system_default">Sistem varsayılanı</string>
-    <string name="language">Dil</string>
-    <string name="theme">Tema</string>
-    <string name="button_cancel">İptal</string>
-    <string name="button_delete">Kaldır</string>
-    <string name="file_hosting_service">Dosya barındırma hizmeti</string>
-    <string name="message_shared_with_filester">Filester güvenli yükleyici ile paylaşıldı.</string>
-    <string name="dialog_delete_title">Bu dosya kaldırılsın mı?</string>
-    <string name="dialog_delete_message">\"%1s\" yükleme geçmişinizden kaldırılacak.</string>
-    <string name="snackbar_delete_successful">Dosya geçmişten kaldırıldı.</string>
-    <string name="copy_address">Bağlantıyı Kopyala</string>
-    <string name="share">Paylaş</string>
-    <string name="dialog_title_update">Güncelleme mevcut</string>
+    <string name="cancel">İptal</string>
+    <string name="apply">Apply</string>
     <string name="toast_app_not_found">Bağlantı yüklenemiyor</string>
-    <string name="status">Durum</string>
-    <string name="refresh">Yenile</string>
-    <string name="not_now">Şimdi Değil</string>
-    <string name="crash_mail_subject">Filester Çökme Raporu</string>
-    <string name="crash_mail_body">Rapor dosyası bu e-postaya eklenmiştir.</string>
-    <string name="send">Gönder</string>
-    <string name="crash_notification_title">Uygulama çöktü</string>
-    <string name="crash_notification_text">Lütfen geliştiriciye bir rapor gönderin.</string>
-    <string name="turkish">Türkçe</string>
-    <string name="button_apply">Apply</string>
-    <string name="update_description">Uygulamanın yeni bir sürümü mevcut</string>
-    <string name="dynamic_colors">Dinamik renkler</string>
-    <string name="dynamic_colors_description">Renkleri otomatik olarak cihazınızın duvar kağıdıyla uyumlu hale getirin</string>
-    <string name="telemetry">Telemetry</string>
-    <string name="telemetry_desc">Share anonymous usage data to help us understand how the app is used and improve features.</string>
-    <string name="crash_report">Crash Reports</string>
-    <string name="crash_report_desc">Send anonymous crash reports so we can fix bugs and improve stability.</string>
+    <string name="title_upload_error">Yükleme başarısız</string>
+
+    <!-- Main Screen -->
+    <string name="main_menu_about">Hakkında</string>
+    <string name="main_text_upload_success">Yüklediğiniz dosya önümüzdeki 30 gün boyunca kullanılabilir olacaktır.</string>
+    <string name="main_text_upload_error">Bir hata oluştu. Lütfen tekrar deneyin.</string>
+    <string name="main_text_upload_cancelled">Yükleme işlemini iptal ettiniz.</string>
+    <string name="main_snackbar_clipboard">Bağlantı panoya kopyalandı</string>
+    <string name="main_text_empty_history">Henüz herhangi bir dosya yüklemediniz.\nÖnce bir dosya yüklemeyi deneyin.</string>
+    <string name="main_button_delete">Kaldır</string>
+    <string name="main_text_shared_with_filester">Filester güvenli yükleyici ile paylaşıldı.</string>
+    <string name="main_dialog_title_delete">Bu dosya kaldırılsın mı?</string>
+    <string name="main_dialog_text_delete">\"%1s\" yükleme geçmişinizden kaldırılacak.</string>
+    <string name="main_snackbar_delete_successful">Dosya geçmişten kaldırıldı.</string>
+    <string name="main_button_copy">Bağlantıyı Kopyala</string>
+    <string name="main_button_share">Paylaş</string>
+    <string name="main_button_close">Kapat</string>
+
+    <!-- About Screen -->
+    <string name="about_text_version">Sürüm %1$s</string>
+    <string name="about_button_donate">Bağış Yapın</string>
+    <string name="about_button_source_code">Kaynak Kodu</string>
+    <string name="about_button_privacy_policy">Gizlilik Politikası</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_label_language">Dil</string>
+    <string name="settings_label_theme">Tema</string>
+    <string name="settings_label_dark">Koyu</string>
+    <string name="settings_label_light">Açık</string>
+    <string name="settings_label_system_default">Sistem varsayılanı</string>
+    <string name="settings_label_dynamic_colors">Dinamik renkler</string>
+    <string name="settings_description_dynamic_colors">Renkleri otomatik olarak cihazınızın duvar kağıdıyla uyumlu hale getirin</string>
+    <string name="settings_label_telemetry">Telemetry</string>
+    <string name="settings_description_telemetry">Share anonymous usage data to help us understand how the app is used and improve features.</string>
+    <string name="settings_label_crash_report">Crash Reports</string>
+    <string name="settings_description_crash_report">Send anonymous crash reports so we can fix bugs and improve stability.</string>
+
+    <!-- Notifications -->
+    <string name="notif_label_channel_name">Yükleme ilerlemesi durumu</string>
+    <string name="notif_description_channel">Yükleme devam ederken, başarılı veya başarısız olduğunda bildir.</string>
+    <string name="notif_title_start">Karşıya yükleme başlatılıyor...</string>
+    <string name="notif_title_in_progress">Yükleniyor...</string>
+    <string name="notif_title_upload_success">Yükleme başarılı</string>
+    <string name="notif_title_upload_cancelled">Yükleme iptal edildi</string>
+
+    <!-- Crash Reporting -->
+    <string name="crash_text_mail_subject">Filester Çökme Raporu</string>
+    <string name="crash_text_mail_body">Rapor dosyası bu e-postaya eklenmiştir.</string>
+    <string name="crash_button_send">Gönder</string>
+    <string name="crash_title_notification">Uygulama çöktü</string>
+    <string name="crash_text_notification">Lütfen geliştiriciye bir rapor gönderin.</string>
+
 </resources>
