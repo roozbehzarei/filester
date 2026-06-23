@@ -396,6 +396,7 @@ private fun FileUploadCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
                     progress = {
                         (uploadProgress.toFloat() / 100)
                     }, trackColor = Color.Transparent
