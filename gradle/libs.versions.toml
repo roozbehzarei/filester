@@ -2,26 +2,26 @@
 accompanist = "0.37.3"
 acraVersion = "5.13.1"
 activity = "1.13.0"
-agp = "8.13.2"
+agp = "9.2.1"
 browser = "1.10.0"
 dokka = "2.2.0"
-compose-bom = "2026.03.01"
-core = "1.18.0"
+compose-bom = "2026.06.00"
+core = "1.19.0"
 dataStore = "1.2.1"
 documentfile = "1.1.0"
 firebaseBom = "34.12.0"
 firebaseCrashlytics = "3.0.7"
 googleFonts = "1.10.6"
 googleServices = "4.4.4"
-koin = "4.2.1"
+koin = "4.2.2"
 koin-plugin = "1.0.0-RC1"
-kotlin = "2.3.20"
+kotlin = "2.3.10"
 kotlinx-serialization = "1.11.0"
 ksp = "2.3.6"
 ktor = "3.4.2"
 lifecycle = "2.10.0"
-media3 = "1.10.0"
-navigation = "2.9.7"
+media3 = "1.10.1"
+navigation = "2.9.8"
 room = "2.8.4"
 slf4j = "1.7.36"
 splashScreen = "1.2.0"
@@ -35,7 +35,7 @@ android-documentation-plugin = { module = "org.jetbrains.dokka:android-documenta
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core" }
+androidx-core-ktx = { module = "androidx.core:core", version.ref = "core" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
@@ -72,7 +72,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

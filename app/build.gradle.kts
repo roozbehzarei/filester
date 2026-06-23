@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 val versionName = "3.0.0-alpha04"
 
 // Get the list of all Gradle tasks requested by the invoked build
@@ -19,7 +17,6 @@ if (taskNames.all {
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.koin.compiler)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.dokka)
     alias(libs.plugins.kotlin.parcelize)
@@ -29,16 +26,12 @@ plugins {
 
 android {
     namespace = "com.roozbehzarei.filester"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 14
         versionName = versionName
 
@@ -69,6 +62,7 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
@@ -82,12 +76,6 @@ android {
 
     androidResources {
         generateLocaleConfig = true
-    }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.fromTarget("17")
     }
 }
 
@@ -105,16 +93,20 @@ dokka {
         suppressInheritedMembers.set(true)
         // Fail the build on Dokka warnings
         failOnWarning.set(true)
+        // Set output directory
+        outputDirectory.set(layout.projectDirectory.dir("../docs/"))
     }
-    dokkaSourceSets.main {
-        // Configure source linking to GitHub for better navigation in the generated docs
-        sourceLink {
-            localDirectory.set(file("src/main/java"))
-            remoteUrl("https://github.com/roozbehzarei/filester/tree/main/app/src/main/java")
-            remoteLineSuffix.set("#L")
+    dokkaSourceSets.configureEach {
+        suppress.set(name != "globalRelease")
+
+        if (name == "globalRelease") {
+            sourceLink {
+                localDirectory.set(file("src/main/java"))
+                remoteUrl("https://github.com/roozbehzarei/filester/tree/main/app/src/main/java")
+                remoteLineSuffix.set("#L")
+            }
         }
-    }
-    dokkaSourceSets.all {
+
         // Suppress generated files
         suppressGeneratedFiles.set(true)
         // Define options for specific packages, overriding global settings
