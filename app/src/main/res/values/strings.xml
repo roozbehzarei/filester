@@ -7,12 +7,12 @@
     <string name="notification_channel_id" translatable="false">filester_notification_id</string>
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
-    <string name="toast_app_not_found">Can\'t load link</string>
+    <string name="toast_app_not_found">No app found to open link</string>
     <string name="title_upload_error">Upload failed</string>
 
     <!-- Main Screen -->
     <string name="main_menu_about">About</string>
-    <string name="main_text_upload_success">Your uploaded file will be available for the next 30 days.</string>
+    <string name="main_text_upload_success">File uploaded successfully.</string>
     <string name="main_text_upload_error">Something went wrong. Please try again.</string>
     <string name="main_text_upload_cancelled">You have cancelled the upload process.</string>
     <string name="main_snackbar_clipboard">Link copied to clipboard</string>
@@ -20,7 +20,7 @@
     <string name="main_button_delete">Remove</string>
     <string name="main_text_shared_with_filester">Shared with Filester secure uploader.</string>
     <string name="main_dialog_title_delete">Remove this file?</string>
-    <string name="main_dialog_text_delete">\"%1s\" will be removed from your upload history.</string>
+    <string name="main_dialog_text_delete">\"%1$s\" will be removed from your upload history.</string>
     <string name="main_snackbar_delete_successful">File removed from history.</string>
     <string name="main_button_copy">Copy Link</string>
     <string name="main_button_share">Share</string>
@@ -34,7 +34,7 @@
 
     <!-- About Screen -->
     <string name="about_text_version">Version %1$s</string>
-    <string name="about_text_copyleft" translatable="false">Copyleft © 2025 by Roozbeh Zarei</string>
+    <string name="about_text_copyleft" translatable="false">Copyleft © 2026 by Roozbeh Zarei</string>
     <string name="about_button_donate">Donate</string>
     <string name="about_button_source_code">Source Code</string>
     <string name="about_button_privacy_policy">Privacy Policy</string>
