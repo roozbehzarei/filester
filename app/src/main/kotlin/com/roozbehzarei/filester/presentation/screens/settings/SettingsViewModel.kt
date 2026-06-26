@@ -4,14 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
 import com.roozbehzarei.filester.domain.model.Theme
-import com.roozbehzarei.filester.domain.service.FirebaseService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SettingsViewModel(
-    private val userPreferencesRepository: UserPreferencesRepositoryImpl,
-    firebaseService: FirebaseService
+    private val userPreferencesRepository: UserPreferencesRepositoryImpl
 ) : ViewModel() {
     val getDynamicColorPref = userPreferencesRepository.getDynamicColorsPreference()
     val getThemeModePref = userPreferencesRepository.getThemePreference()

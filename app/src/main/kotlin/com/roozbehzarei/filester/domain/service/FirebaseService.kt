@@ -1,11 +1,14 @@
 package com.roozbehzarei.filester.domain.service
 
-import android.content.Context
 
 interface FirebaseService {
 
-    fun setAnalyticsCollectionEnabled(context: Context, isEnabled: Boolean)
+    fun setAnalyticsCollectionEnabled(isEnabled: Boolean)
 
     fun setCrashlyticsCollectionEnabled(isEnabled: Boolean)
+
+    fun logUploadSuccess()
+
+    fun logUploadFailure()
 
 }

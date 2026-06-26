@@ -21,6 +21,7 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.repository.FileRepository
+import com.roozbehzarei.filester.domain.service.FirebaseService
 import com.roozbehzarei.filester.presentation.screens.main.KEY_FILE_URI
 import com.roozbehzarei.filester.presentation.screens.main.KEY_WORK_PROGRESS
 import io.ktor.utils.io.CancellationException
@@ -38,6 +39,7 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params), KoinComponent {
 
     private val fileRepository: FileRepository by inject()
+    private val firebaseService: FirebaseService by inject()
     private lateinit var notificationManager: NotificationManager
     private lateinit var ongoingNotificationBuilder: NotificationCompat.Builder
     private lateinit var fileToUpload: java.io.File
@@ -69,6 +71,7 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
             return when (result) {
                 is CatboxResult.Error -> {
                     postResultNotification(R.string.title_upload_error)
+                    firebaseService.logUploadFailure()
                     Result.failure()
                 }
 
@@ -85,16 +88,22 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                     )
                     fileRepository.saveFile(uploadedFile)
                     postResultNotification(R.string.notif_title_upload_success)
+                    firebaseService.logUploadSuccess()
                     Result.success()
                 }
 
-                else -> Result.failure()
+                else -> {
+                    firebaseService.logUploadFailure()
+                    Result.failure()
+                }
             }
         } catch (e: Exception) {
             fileToUpload.delete()
             notificationManager.cancel(ONGOING_NOTIFICATION_ID)
             if (e is CancellationException) {
                 postResultNotification(R.string.notif_title_upload_cancelled)
+            } else {
+                firebaseService.logUploadFailure()
             }
             if (BuildConfig.DEBUG) e.printStackTrace()
             return Result.failure()
