@@ -33,7 +33,6 @@
     <string name="main_text_expired">Expired</string>
 
     <!-- About Screen -->
-    <string name="about_text_version">Version %1$s</string>
     <string name="about_text_copyleft" translatable="false">Copyleft © 2026 by Roozbeh Zarei</string>
     <string name="about_button_donate">Donate</string>
     <string name="about_button_source_code">Source Code</string>

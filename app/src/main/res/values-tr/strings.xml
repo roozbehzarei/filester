@@ -31,7 +31,6 @@
     <string name="main_text_expired">Süresi doldu</string>
 
     <!-- About Screen -->
-    <string name="about_text_version">Sürüm %1$s</string>
     <string name="about_button_donate">Bağış Yapın</string>
     <string name="about_button_source_code">Kaynak Kodu</string>
     <string name="about_button_privacy_policy">Gizlilik Politikası</string>

@@ -99,7 +99,7 @@ private fun AboutContent(
         Spacer(modifier = Modifier.height(12.dp))
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall)
         Text(
-            stringResource(R.string.about_text_version, BuildConfig.VERSION_NAME),
+            text = BuildConfig.VERSION_NAME,
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.weight(1f))
