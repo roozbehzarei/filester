@@ -23,6 +23,12 @@
     <string name="main_button_copy">Bağlantıyı Kopyala</string>
     <string name="main_button_share">Paylaş</string>
     <string name="main_button_close">Kapat</string>
+    <plurals name="main_text_expires_hours">
+        <item quantity="one">%1$d saat içinde süresi dolacak</item>
+        <item quantity="other">%1$d saat içinde süresi dolacak</item>
+    </plurals>
+    <string name="main_text_expires_soon">Yakında dolacak</string>
+    <string name="main_text_expired">Süresi doldu</string>
 
     <!-- About Screen -->
     <string name="about_text_version">Sürüm %1$s</string>

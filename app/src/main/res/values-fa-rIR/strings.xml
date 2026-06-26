@@ -24,6 +24,12 @@
     <string name="main_button_copy">کپی نشانی</string>
     <string name="main_button_share">اشتراک گذاری</string>
     <string name="main_button_close">بستن</string>
+    <plurals name="main_text_expires_hours">
+        <item quantity="one">%1$d ساعت دیگر منقضی می‌شود</item>
+        <item quantity="other">%1$d ساعت دیگر منقضی می‌شود</item>
+    </plurals>
+    <string name="main_text_expires_soon">به‌زودی منقضی می‌شود</string>
+    <string name="main_text_expired">منقضی شده</string>
 
     <!-- About Screen -->
     <string name="about_text_version">نسخه %1$s</string>

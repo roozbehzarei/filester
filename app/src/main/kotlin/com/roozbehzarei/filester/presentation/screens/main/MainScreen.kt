@@ -56,6 +56,7 @@ import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -245,6 +246,7 @@ private fun FilesList(
                     .fillMaxWidth(),
                 name = file.name,
                 size = file.size,
+                expiresAt = file.expiresAt,
                 icon = fileIconByMimeType(file.mimeType),
                 isExpanded = selectedFileId == file.id,
                 onClick = {
@@ -279,6 +281,7 @@ private fun FileItem(
     modifier: Modifier = Modifier,
     name: String,
     size: Long,
+    expiresAt: Long,
     icon: Painter,
     isExpanded: Boolean,
     onClick: () -> Unit,
@@ -311,10 +314,32 @@ private fun FileItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                    val formattedSize = Formatter.formatFileSize(context, size)
+                    val expiresText = if (expiresAt > 0L) {
+                        val remainingMs = expiresAt - System.currentTimeMillis()
+                        if (remainingMs <= 0) {
+                            stringResource(R.string.main_text_expired)
+                        } else {
+                            val hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(remainingMs)
+                            if (hours < 1) {
+                                stringResource(R.string.main_text_expires_soon)
+                            } else {
+                                pluralStringResource(R.plurals.main_text_expires_hours, hours.toInt(), hours.toInt())
+                            }
+                        }
+                    } else {
+                        null
+                    }
+                    val infoText = if (expiresText != null) {
+                        "$formattedSize • $expiresText"
+                    } else {
+                        formattedSize
+                    }
                     Text(
-                        Formatter.formatFileSize(context, size),
+                        infoText,
                         style = MaterialTheme.typography.labelMedium,
-                        maxLines = 1
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -505,6 +530,7 @@ private fun FileItemPreview() {
         FileItem(
             name = "android.mp4",
             size = 2048,
+            expiresAt = 0L,
             icon = painterResource(R.drawable.ic_filled_file_video),
             isExpanded = true,
             onClick = {},
