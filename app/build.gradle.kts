@@ -1,18 +1,9 @@
-val versionName = "3.0.0-alpha04"
-
-// Get the list of all Gradle tasks requested by the invoked build
-val taskNames = gradle.startParameter.taskNames
-// Only apply Google Services and Firebase plugins if we are NOT running a build for F-Droid or generating Dokka documentation.
-if (taskNames.all {
-        it.contains("fdroid", ignoreCase = true).not() && it.contains(
-            "dokka", ignoreCase = true
-        ).not()
-    }) {
-    with(pluginManager) {
-        apply(libs.plugins.google.services.get().pluginId)
-        apply(libs.plugins.firebase.crashlytics.get().pluginId)
-    }
-}
+val appVersionName = "3.0.0-rc01"
+val isGlobalBuild = providers
+    .gradleProperty("isGlobalBuild")
+    .map { it.toBoolean() }
+    .orElse(true)
+    .get()
 
 plugins {
     alias(libs.plugins.android.application)
@@ -25,6 +16,11 @@ plugins {
     alias(libs.plugins.room)
 }
 
+if (isGlobalBuild) {
+    apply(plugin = libs.plugins.google.services.get().pluginId)
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
+}
+
 android {
     namespace = "com.roozbehzarei.filester"
     compileSdk = 37
@@ -33,8 +29,8 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 37
-        versionCode = 14
-        versionName = versionName
+        versionCode = 15
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,11 +45,11 @@ android {
     productFlavors {
         create("global") {
             dimension = "store"
+            versionNameSuffix = "+global"
         }
         create("fdroid") {
             dimension = "store"
-            applicationIdSuffix = ".fdroid"
-            versionNameSuffix = " (f-droid)"
+            versionNameSuffix = "+fdroid"
         }
     }
 
@@ -92,7 +88,7 @@ ksp {
 // Dokka configuration for generating project documentation
 dokka {
     moduleName.set("Filester")
-    moduleVersion.set(versionName)
+    moduleVersion.set(appVersionName)
     dokkaPublications.html {
         // Suppress inherited members (e.g., functions from Any, Object, etc.)
         suppressInheritedMembers.set(true)
