@@ -40,6 +40,9 @@
     <string name="about_button_privacy_policy">Privacy Policy</string>
 
     <!-- Settings Screen -->
+    <string name="settings_label_hosting_service">File hosting service</string>
+    <string name="settings_hosting_service_catbox_litterbox" translatable="false">Catbox Litterbox</string>
+    <string name="settings_hosting_service_catbox_litterbox_description">• File size up to 1 GB is allowed\n• Uploads expire after 72 hours\n✗ .exe, .scr, .cpl, .doc*, and .jar extensions are not allowed</string>
     <string name="settings_label_language">Language</string>
     <string name="settings_label_theme">Theme</string>
     <string name="settings_label_dark">Dark</string>

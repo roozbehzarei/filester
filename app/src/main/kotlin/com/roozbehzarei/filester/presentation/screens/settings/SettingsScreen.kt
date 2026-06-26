@@ -8,35 +8,30 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.BrightnessMedium
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.ModeNight
 import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -49,17 +44,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.Theme
+import com.roozbehzarei.filester.presentation.components.SingleChoiceDialog
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import org.koin.compose.koinInject
 import java.util.Locale
@@ -107,17 +102,53 @@ private fun SettingsContent(
 ) {
 
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
+    var shouldShowHostingDialog by remember { mutableStateOf(false) }
 
     if (shouldShowLanguageDialog) {
-        LanguagePickerDialog(appLocales = appLocales, currentAppLocale = currentAppLocale) {
-            shouldShowLanguageDialog = false
-        }
+        SingleChoiceDialog(
+            title = stringResource(R.string.settings_label_language),
+            options = appLocales,
+            initialSelection = currentAppLocale,
+            optionLabel = { locale -> locale.getDisplayName(locale) },
+            onDismissRequest = { shouldShowLanguageDialog = false },
+            onConfirm = { selectedLocale ->
+                val locateListCompat = LocaleListCompat.create(selectedLocale)
+                AppCompatDelegate.setApplicationLocales(locateListCompat)
+            }
+        )
+    }
+
+    if (shouldShowHostingDialog) {
+        val catboxLabel = stringResource(R.string.settings_hosting_service_catbox_litterbox)
+        val catboxDesc = stringResource(R.string.settings_hosting_service_catbox_litterbox_description)
+        SingleChoiceDialog(
+            title = stringResource(R.string.settings_label_hosting_service),
+            options = listOf(catboxLabel),
+            initialSelection = catboxLabel,
+            optionLabel = { it },
+            optionDescription = { option ->
+                if (option == catboxLabel) catboxDesc else null
+            },
+            onDismissRequest = { shouldShowHostingDialog = false },
+            onConfirm = {}
+        )
     }
     Column(modifier = modifier) {
         SettingsItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
+                .defaultMinSize(minHeight = 64.dp),
+            title = stringResource(R.string.settings_label_hosting_service),
+            description = stringResource(R.string.settings_hosting_service_catbox_litterbox),
+            icon = Icons.Outlined.Cloud,
+            options = null,
+            onClick = { shouldShowHostingDialog = true },
+        )
+        SettingsItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
                 .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_language),
             description = currentAppLocale.displayLanguage,
@@ -253,73 +284,6 @@ private fun SettingsItem(
     }
 }
 
-@Composable
-private fun LanguagePickerDialog(
-    appLocales: List<Locale>, currentAppLocale: Locale, onDismissRequest: () -> Unit
-) {
-
-    var selectedOption by remember { mutableStateOf(currentAppLocale) }
-
-    Dialog(
-        onDismissRequest = onDismissRequest,
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)
-        ) {
-            Column {
-                Text(
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.settings_label_language),
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                appLocales.forEach { locale ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = selectedOption == locale, onClick = {
-                                    selectedOption = locale
-                                }, role = Role.RadioButton
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            modifier = Modifier.padding(12.dp),
-                            selected = selectedOption == locale,
-                            onClick = null,
-                        )
-                        Text(
-                            modifier = Modifier, text = locale.getDisplayName(locale),
-                            maxLines = 1,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    }
-                }
-                Row(Modifier.padding(16.dp)) {
-                    Spacer(Modifier.weight(1f))
-                    TextButton(onClick = {
-                        onDismissRequest()
-                    }) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                    TextButton(onClick = {
-                        val locateListCompat = LocaleListCompat.create(selectedOption)
-                        AppCompatDelegate.setApplicationLocales(locateListCompat)
-                        onDismissRequest()
-                    }) {
-                        Text(stringResource(R.string.apply))
-                    }
-                }
-            }
-        }
-    }
-}
-
 private fun getApplicationLocales(context: Context): List<Locale> {
     val locales = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         LocaleConfig(context).supportedLocales ?: LocaleList.getEmptyLocaleList()
@@ -352,24 +316,6 @@ private fun SettingsContentPreview() {
                 onDynamicColorChanged = {},
                 onTelemetryChanged = {},
                 onCrashReportChanged = {})
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun LanguagePickerDialogPreview() {
-
-    val locale1 = Locale.Builder().setLocale(Locale.ENGLISH).build()
-    val locale2 = Locale.Builder().setLocale(Locale.FRENCH).build()
-    val locale3 = Locale.Builder().setLocale(Locale.JAPANESE).build()
-    val dummyLocaleList = listOf(locale1, locale2, locale3)
-
-    FilesterAppTheme {
-        Surface {
-            LanguagePickerDialog(
-                appLocales = dummyLocaleList, currentAppLocale = Locale.ENGLISH
-            ) {}
         }
     }
 }
