@@ -73,11 +73,15 @@ class UploadWorker(private val context: Context, params: WorkerParameters) :
                 }
 
                 is CatboxResult.Success -> {
+                    val uploadedTime = System.currentTimeMillis()
+                    val expirationTime = uploadedTime + java.util.concurrent.TimeUnit.HOURS.toMillis(72)
                     val uploadedFile = File(
                         name = inputFile?.name.orEmpty(),
                         downloadUrl = result.url,
                         size = inputFile?.length() ?: 0,
-                        mimeType = inputFile?.type
+                        mimeType = inputFile?.type,
+                        uploadedAt = uploadedTime,
+                        expiresAt = expirationTime
                     )
                     fileRepository.saveFile(uploadedFile)
                     postResultNotification(R.string.notif_title_upload_success)

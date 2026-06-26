@@ -8,7 +8,7 @@ import org.koin.plugin.module.dsl.create
 
 private fun createFileDatabase(context: Context) =
     Room.databaseBuilder(context, FileDatabase::class.java, "FILE_DATABASE")
-        .fallbackToDestructiveMigration(true).build()
+        .addMigrations(FileDatabase.MIGRATION_2_3).build()
 
 private fun createFileDao(database: FileDatabase) = database.fileDao()
 

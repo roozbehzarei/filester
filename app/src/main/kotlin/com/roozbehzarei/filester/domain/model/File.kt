@@ -10,4 +10,6 @@ data class File(
     val downloadUrl: String,
     val size: Long,
     val mimeType: String?,
+    val uploadedAt: Long = 0L,
+    val expiresAt: Long = 0L,
 ) : Parcelable

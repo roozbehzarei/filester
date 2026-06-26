@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -77,6 +78,10 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 ksp {
@@ -168,11 +173,11 @@ dependencies {
     implementation(libs.slf4j.android)
     // Accompanist
     implementation(libs.accompanist.permissions)
+    // Media3
+    implementation(libs.androidx.media3.common.ktx)
     // ACRA
     "fdroidImplementation"(libs.acra.mail)
     "fdroidImplementation"(libs.acra.notification)
-    // Media3
-    implementation(libs.androidx.media3.common.ktx)
     // Firebase
     "globalImplementation"(platform(libs.firebase.bom))
     "globalImplementation"(libs.firebase.analytics)

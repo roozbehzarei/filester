@@ -10,4 +10,6 @@ data class FileEntity(
     val url: String,
     val size: Long,
     val mimeType: String?,
+    val uploadedAt: Long = 0L,
+    val expiresAt: Long = 0L,
 )
