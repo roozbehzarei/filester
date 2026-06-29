@@ -2,50 +2,64 @@ package com.roozbehzarei.filester.presentation.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
 import com.roozbehzarei.filester.domain.model.Theme
-import kotlinx.coroutines.Dispatchers
+import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SettingsViewModel(
-    private val userPreferencesRepository: UserPreferencesRepositoryImpl
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-    val getDynamicColorPref = userPreferencesRepository.getDynamicColorsPreference()
-    val getThemeModePref = userPreferencesRepository.getThemePreference()
-    val getTelemetryPref = userPreferencesRepository.getTelemetryPreference()
-    val getCrashReportPref = userPreferencesRepository.getCrashReportPreference()
+
+    val uiState: StateFlow<SettingsUiState> = with(userPreferencesRepository) {
+        combine(
+            getDynamicColorsPreference(),
+            getThemePreference(),
+            getTelemetryPreference(),
+            getCrashReportPreference()
+        ) { isDynamicColor, themeMode, isTelemetryEnabled, isCrashReportEnabled ->
+            SettingsUiState(
+                themeMode = themeMode,
+                isDynamicColor = isDynamicColor,
+                isTelemetryEnabled = isTelemetryEnabled,
+                isCrashReportEnabled = isCrashReportEnabled
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = SettingsUiState(
+                themeMode = Theme.Default,
+                isDynamicColor = false,
+                isTelemetryEnabled = false,
+                isCrashReportEnabled = true
+            )
+        )
+    }
 
     fun saveDynamicColorPref(enabled: Boolean) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                userPreferencesRepository.saveDynamicColorsPreference(enabled)
-            }
+            userPreferencesRepository.saveDynamicColorsPreference(enabled)
         }
     }
 
     fun saveThemeModePref(theme: Theme) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                userPreferencesRepository.saveThemePreference(theme)
-            }
+            userPreferencesRepository.saveThemePreference(theme)
         }
     }
 
     fun saveTelemetryPref(enabled: Boolean) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                userPreferencesRepository.saveTelemetryPreference(enabled)
-            }
+            userPreferencesRepository.saveTelemetryPreference(enabled)
         }
     }
 
     fun saveCrashReportPref(enabled: Boolean) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                userPreferencesRepository.saveCrashReportPreference(enabled)
-            }
+            userPreferencesRepository.saveCrashReportPreference(enabled)
         }
     }
-
 }

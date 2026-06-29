@@ -65,13 +65,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
-import androidx.work.WorkInfo
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.presentation.state.UploadFabStateHolder
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
+import com.roozbehzarei.filester.upload.UploadState
+import com.roozbehzarei.filester.upload.UploadStatus
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -94,13 +95,13 @@ fun MainScreen(
     }
 
     LaunchedEffect(uiState.uploadStatus) {
-        when (uiState.uploadStatus) {
-            WorkInfo.State.RUNNING -> {
+        when (uiState.uploadStatus.state) {
+            UploadState.RUNNING -> {
                 fabStateHolder.hide()
                 showUploadFailDialog = false
             }
 
-            WorkInfo.State.FAILED -> {
+            UploadState.FAILED -> {
                 fabStateHolder.show()
                 showUploadFailDialog = true
             }
@@ -141,7 +142,7 @@ private fun MainContent(
 ) {
 
     Column(modifier = modifier) {
-        if (uiState.files.isEmpty() && uiState.uploadStatus != WorkInfo.State.RUNNING) {
+        if (uiState.files.isEmpty() && uiState.uploadStatus.state != UploadState.RUNNING) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -158,9 +159,9 @@ private fun MainContent(
         }
         FilesList(
             files = uiState.files,
-            isUploadingFile = uiState.uploadStatus == WorkInfo.State.RUNNING,
+            isUploadingFile = uiState.uploadStatus.state == UploadState.RUNNING,
             uploadingFileName = uiState.uploadingFileName,
-            uploadingFileProgress = uiState.uploadProgress,
+            uploadingFileProgress = uiState.uploadStatus.progress,
             onCancelUpload = onUploadCanceled,
             onRemoveFile = { file ->
                 onFileRemoved(file)
@@ -320,11 +321,16 @@ private fun FileItem(
                         if (remainingMs <= 0) {
                             stringResource(R.string.main_text_expired)
                         } else {
-                            val hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(remainingMs)
+                            val hours =
+                                java.util.concurrent.TimeUnit.MILLISECONDS.toHours(remainingMs)
                             if (hours < 1) {
                                 stringResource(R.string.main_text_expires_soon)
                             } else {
-                                pluralStringResource(R.plurals.main_text_expires_hours, hours.toInt(), hours.toInt())
+                                pluralStringResource(
+                                    R.plurals.main_text_expires_hours,
+                                    hours.toInt(),
+                                    hours.toInt()
+                                )
                             }
                         }
                     } else {
@@ -508,7 +514,7 @@ private fun MainContentPreview2() {
             MainContent(
                 modifier = Modifier.fillMaxSize(), uiState = MainUiState(
                     files = previewFiles,
-                    uploadStatus = WorkInfo.State.RUNNING,
+                    uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
                     uploadingFileName = "filester.apk"
                 ), onShowSnackbar = {}, onUploadCanceled = {}, onFileRemoved = {})
         }

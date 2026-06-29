@@ -33,7 +33,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,8 +48,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
-import androidx.core.text.HtmlCompat
-import androidx.core.text.parseAsHtml
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.Theme
@@ -66,19 +64,13 @@ fun SettingsScreen(
     val context = LocalContext.current
     val appLocales = remember(context) { getApplicationLocales(context) }
     val currentLocale = LocalConfiguration.current.locales.get(0)
-    val isDynamicColor by viewModel.getDynamicColorPref.collectAsState(false)
-    val theme by viewModel.getThemeModePref.collectAsState(Theme.Default)
-    val isTelemetryEnabled by viewModel.getTelemetryPref.collectAsState(false)
-    val isCrashReportEnabled by viewModel.getCrashReportPref.collectAsState(true)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsContent(
         modifier = modifier.verticalScroll(rememberScrollState()),
+        uiState = uiState,
         appLocales = appLocales,
         currentAppLocale = currentLocale,
-        isDynamicColor = isDynamicColor,
-        theme = theme,
-        isTelemetryEnabled = isTelemetryEnabled,
-        isCrashReportEnabled = isCrashReportEnabled,
         onThemeChanged = { viewModel.saveThemeModePref(it) },
         onDynamicColorChanged = { viewModel.saveDynamicColorPref(it) },
         onTelemetryChanged = { viewModel.saveTelemetryPref(it) },
@@ -89,12 +81,9 @@ fun SettingsScreen(
 @Composable
 private fun SettingsContent(
     modifier: Modifier = Modifier,
+    uiState: SettingsUiState,
     appLocales: List<Locale>,
     currentAppLocale: Locale,
-    isDynamicColor: Boolean,
-    theme: Theme,
-    isTelemetryEnabled: Boolean,
-    isCrashReportEnabled: Boolean,
     onThemeChanged: (Theme) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
     onTelemetryChanged: (Boolean) -> Unit,
@@ -114,13 +103,13 @@ private fun SettingsContent(
             onConfirm = { selectedLocale ->
                 val locateListCompat = LocaleListCompat.create(selectedLocale)
                 AppCompatDelegate.setApplicationLocales(locateListCompat)
-            }
-        )
+            })
     }
 
     if (shouldShowHostingDialog) {
         val catboxLabel = stringResource(R.string.settings_hosting_service_catbox_litterbox)
-        val catboxDesc = stringResource(R.string.settings_hosting_service_catbox_litterbox_description)
+        val catboxDesc =
+            stringResource(R.string.settings_hosting_service_catbox_litterbox_description)
         SingleChoiceDialog(
             title = stringResource(R.string.settings_label_hosting_service),
             options = listOf(catboxLabel),
@@ -130,8 +119,7 @@ private fun SettingsContent(
                 if (option == catboxLabel) catboxDesc else null
             },
             onDismissRequest = { shouldShowHostingDialog = false },
-            onConfirm = {}
-        )
+            onConfirm = {})
     }
     Column(modifier = modifier) {
         SettingsItem(
@@ -162,7 +150,7 @@ private fun SettingsContent(
                 .padding(vertical = 8.dp)
                 .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_theme),
-            description = when (theme) {
+            description = when (uiState.themeMode) {
                 Theme.Light -> stringResource(R.string.settings_label_light)
                 Theme.Dark -> stringResource(R.string.settings_label_dark)
                 Theme.Default -> stringResource(R.string.settings_label_system_default)
@@ -180,7 +168,7 @@ private fun SettingsContent(
                                 index = index, count = options.size
                             ),
                             onClick = { onThemeChanged(Theme.fromIndexOrDefault(index)) },
-                            selected = index == theme.index,
+                            selected = index == uiState.themeMode.index,
                             label = { Icon(icon, null) })
                     }
                 }
@@ -199,7 +187,7 @@ private fun SettingsContent(
                 options = { modifier ->
                     Switch(
                         modifier = modifier,
-                        checked = isDynamicColor,
+                        checked = uiState.isDynamicColor,
                         onCheckedChange = { onDynamicColorChanged(it) })
                 },
                 onClick = null
@@ -217,7 +205,8 @@ private fun SettingsContent(
                 options = { modifier ->
                     Switch(
                         modifier = modifier,
-                        checked = isTelemetryEnabled, onCheckedChange = { onTelemetryChanged(it) })
+                        checked = uiState.isTelemetryEnabled,
+                        onCheckedChange = { onTelemetryChanged(it) })
                 },
                 onClick = null
             )
@@ -232,7 +221,7 @@ private fun SettingsContent(
                 options = { modifier ->
                     Switch(
                         modifier = modifier,
-                        checked = isCrashReportEnabled,
+                        checked = uiState.isCrashReportEnabled,
                         onCheckedChange = { onCrashReportChanged(it) })
                 },
                 onClick = null
@@ -245,8 +234,10 @@ private fun SettingsContent(
 private fun SettingsItem(
     modifier: Modifier = Modifier,
     title: String,
-    description: String, maxLines: Int = Int.MAX_VALUE,
-    icon: ImageVector, options: (@Composable (modifier: Modifier) -> Unit)?,
+    description: String,
+    maxLines: Int = Int.MAX_VALUE,
+    icon: ImageVector,
+    options: (@Composable (modifier: Modifier) -> Unit)?,
     onClick: (() -> Unit)?
 ) {
     val finalModifier = if (onClick != null) {
@@ -269,13 +260,14 @@ private fun SettingsItem(
         )
         Column(Modifier.weight(1f)) {
             Text(
-                title,
+                text = title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                description, maxLines = maxLines,
+                text = description,
+                maxLines = maxLines,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -306,12 +298,14 @@ private fun SettingsContentPreview() {
         Surface(modifier = Modifier.fillMaxSize()) {
             SettingsContent(
                 modifier = Modifier.fillMaxSize(),
+                uiState = (SettingsUiState(
+                    themeMode = Theme.Default,
+                    isDynamicColor = false,
+                    isTelemetryEnabled = false,
+                    isCrashReportEnabled = true
+                )),
                 appLocales = emptyList(),
                 currentAppLocale = LocalConfiguration.current.locales.get(0),
-                isDynamicColor = false,
-                theme = Theme.Default,
-                isTelemetryEnabled = false,
-                isCrashReportEnabled = false,
                 onThemeChanged = {},
                 onDynamicColorChanged = {},
                 onTelemetryChanged = {},

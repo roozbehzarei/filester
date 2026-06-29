@@ -9,9 +9,9 @@ import org.acra.config.notification
 import org.acra.data.StringFormat
 import org.acra.ktx.initAcra
 
-class AcraServiceImpl : AcraService {
+class AcraServiceImpl(private val application: Application) : AcraService {
 
-    override fun initialize(application: Application) {
+    override fun initialize() {
         application.initAcra {
             buildConfigClass = BuildConfig::class.java
             reportFormat = StringFormat.KEY_VALUE_LIST

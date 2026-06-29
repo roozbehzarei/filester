@@ -1,8 +1,5 @@
 package com.roozbehzarei.filester.presentation
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
 import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
@@ -59,24 +55,6 @@ class MainActivity : AppCompatActivity() {
             ) {
                 FilesterApp(context = this)
             }
-        }
-        createNotificationChannel()
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.notif_label_channel_name)
-            val descriptionText = getString(R.string.notif_description_channel)
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(
-                getString(R.string.notification_channel_id), name, importance
-            ).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
         }
     }
 

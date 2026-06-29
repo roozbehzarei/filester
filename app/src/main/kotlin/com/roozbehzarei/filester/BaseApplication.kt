@@ -35,8 +35,8 @@ class BaseApplication : Application(), KoinComponent {
         super.attachBaseContext(base)
 
         // Initialize ACRA crash reporting
-        val acraService = AcraServiceImpl()
-        acraService.initialize(this)
+        val acraService = AcraServiceImpl(this)
+        acraService.initialize()
     }
 
     override fun onCreate() {
@@ -57,14 +57,17 @@ class BaseApplication : Application(), KoinComponent {
             )
         }
 
-        applicationScope.launch {
-            userPreferencesRepository.getTelemetryPreference().collect { isEnabled ->
-                firebaseService.setAnalyticsCollectionEnabled(isEnabled)
+        if (BuildConfig.DEBUG.not()) {
+            applicationScope.launch {
+                userPreferencesRepository.getTelemetryPreference().collect { isEnabled ->
+                    firebaseService.setAnalyticsCollectionEnabled(isEnabled)
+                    firebaseService.setPerformanceMonitoringEnabled(isEnabled)
+                }
             }
-        }
-        applicationScope.launch {
-            userPreferencesRepository.getCrashReportPreference().collect { isEnabled ->
-                firebaseService.setCrashlyticsCollectionEnabled(isEnabled)
+            applicationScope.launch {
+                userPreferencesRepository.getCrashReportPreference().collect { isEnabled ->
+                    firebaseService.setCrashlyticsCollectionEnabled(isEnabled)
+                }
             }
         }
     }
