@@ -1,9 +1,13 @@
 package com.roozbehzarei.filester.upload
 
 import android.content.Context
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.os.Build
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.roozbehzarei.filester.BuildConfig
@@ -12,40 +16,71 @@ import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.domain.service.FirebaseService
-import io.ktor.utils.io.CancellationException
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import kotlinx.coroutines.withContext
+import okio.FileNotFoundException
 import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.milliseconds
 
 class UploadWorker(
     private val context: Context,
-    private val notificationHelper: UploadNotificationHelper,
+    private val notificationFactory: UploadNotificationFactory,
+    private val fileRepository: FileRepository,
+    private val firebaseService: FirebaseService,
     params: WorkerParameters
-) : CoroutineWorker(context, params), KoinComponent {
+) : CoroutineWorker(context, params) {
 
-    private val fileRepository: FileRepository by inject()
-    private val firebaseService: FirebaseService by inject()
+    val ongoingNotificationId = id.hashCode()
+    val resultNotificationId = ongoingNotificationId + 1
 
     override suspend fun doWork(): Result {
 
-        setForeground(notificationHelper.createForegroundInfo())
+        setForeground(
+            createForegroundInfo(
+                title = applicationContext.getString(R.string.notif_title_start),
+                text = "",
+                progress = 0
+            )
+        )
 
         val inputFileUri = inputData.getString(KEY_FILE_URI)?.toUri() ?: return Result.failure()
-        val inputFile = DocumentFile.fromSingleUri(context, inputFileUri)
-        val fileToUpload = java.io.File(context.cacheDir, inputFile?.name.orEmpty())
+        val inputFile = DocumentFile.fromSingleUri(context, inputFileUri) ?: return Result.failure()
+        val fileName =
+            inputFile.name?.takeIf { it.isNotBlank() } ?: "file_${System.currentTimeMillis()}"
+        val fileSize = inputFile.length()
+        val fileType = inputFile.type
+        val fileToUpload = java.io.File(context.cacheDir, fileName)
         try {
-            context.contentResolver.openInputStream(inputFileUri)?.use { inputStream ->
-                FileOutputStream(fileToUpload).use { outputStream ->
-                    inputStream.copyTo(outputStream)
+            withContext(Dispatchers.IO) {
+                val inputStream = context.contentResolver.openInputStream(inputFileUri)
+                    ?: throw FileNotFoundException()
+                inputStream.use {
+                    FileOutputStream(fileToUpload).use { outputStream ->
+                        val buffer = ByteArray(8192)
+                        var bytesRead = inputStream.read(buffer)
+                        while (bytesRead >= 0) {
+                            ensureActive()
+                            outputStream.write(buffer, 0, bytesRead)
+                            bytesRead = inputStream.read(buffer)
+                        }
+                    }
                 }
             }
             val result = fileRepository.uploadFile(fileToUpload).onEach { result ->
                 if (result is CatboxResult.Loading) {
-                    notificationHelper.updateOngoingNotification(
-                        R.string.notif_title_in_progress, result.progress
+                    setForeground(
+                        createForegroundInfo(
+                            title = applicationContext.getString(R.string.notif_title_in_progress),
+                            text = "",
+                            progress = result.progress
+                        )
                     )
                     setProgress(workDataOf(KEY_WORK_PROGRESS to result.progress))
                 }
@@ -55,7 +90,11 @@ class UploadWorker(
 
             return when (result) {
                 is CatboxResult.Error -> {
-                    notificationHelper.postResultNotification(R.string.title_upload_error)
+                    notificationFactory.createResultAndNotify(
+                        id = resultNotificationId,
+                        title = applicationContext.getString(R.string.notif_title_upload_failed),
+                        text = ""
+                    )
                     firebaseService.logUploadFailure()
                     Result.failure()
                 }
@@ -64,15 +103,19 @@ class UploadWorker(
                     val uploadedTime = System.currentTimeMillis()
                     val expirationTime = uploadedTime + TimeUnit.HOURS.toMillis(72)
                     val uploadedFile = File(
-                        name = inputFile?.name.orEmpty(),
+                        name = fileName,
                         downloadUrl = result.url,
-                        size = inputFile?.length() ?: 0,
-                        mimeType = inputFile?.type,
+                        size = fileSize,
+                        mimeType = fileType,
                         uploadedAt = uploadedTime,
                         expiresAt = expirationTime
                     )
                     fileRepository.saveFile(uploadedFile)
-                    notificationHelper.postResultNotification(R.string.notif_title_upload_success)
+                    notificationFactory.createResultAndNotify(
+                        id = resultNotificationId,
+                        title = applicationContext.getString(R.string.notif_title_upload_success),
+                        text = ""
+                    )
                     firebaseService.logUploadSuccess()
                     Result.success()
                 }
@@ -83,15 +126,45 @@ class UploadWorker(
                 }
             }
         } catch (e: Exception) {
-            fileToUpload.delete()
-            notificationHelper.cancelOngoingNotification()
-            if (e is CancellationException) {
-                notificationHelper.postResultNotification(R.string.notif_title_upload_cancelled)
-            } else {
-                firebaseService.logUploadFailure()
+            withContext(NonCancellable) {
+                fileToUpload.delete()
+                if (e is CancellationException) {
+                    notificationFactory.createResultAndNotify(
+                        id = resultNotificationId,
+                        title = applicationContext.getString(R.string.notif_title_upload_cancelled),
+                        text = ""
+                    )
+                    delay(200.milliseconds)
+                    throw e
+                } else {
+                    notificationFactory.createResultAndNotify(
+                        id = resultNotificationId,
+                        title = applicationContext.getString(R.string.notif_title_upload_failed),
+                        text = ""
+                    )
+                    firebaseService.logUploadFailure()
+                    delay(200.milliseconds)
+                }
             }
             if (BuildConfig.DEBUG) e.printStackTrace()
             return Result.failure()
+        }
+    }
+
+    private fun createForegroundInfo(title: String, text: String, progress: Int): ForegroundInfo {
+        val intent = WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ForegroundInfo(
+                ongoingNotificationId, notificationFactory.createOngoing(
+                    title = title, text = text, progress = progress, cancelIntent = intent
+                ), FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            )
+        } else {
+            ForegroundInfo(
+                ongoingNotificationId, notificationFactory.createOngoing(
+                    title = title, text = text, progress = progress, cancelIntent = intent
+                )
+            )
         }
     }
 

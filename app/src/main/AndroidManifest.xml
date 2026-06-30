@@ -28,14 +28,6 @@
             android:name="firebase_performance_collection_enabled"
             android:value="false" />
 
-        <receiver
-            android:name=".framework.FilesterBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="FILESTER_STOP_UPLOAD" />
-            </intent-filter>
-        </receiver>
-
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

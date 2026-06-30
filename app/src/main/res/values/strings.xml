@@ -61,6 +61,7 @@
     <string name="notif_title_in_progress">Uploading…</string>
     <string name="notif_title_upload_success">Upload successful</string>
     <string name="notif_title_upload_cancelled">Upload cancelled</string>
+    <string name="notif_title_upload_failed">Upload failure</string>
 
     <!-- Crash Reporting -->
     <string name="crash_text_mail_subject">Filester Crash Report</string>
