@@ -1,4 +1,4 @@
-val appVersionName = "3.0.0-rc01"
+val appVersionName = "3.0.0"
 val isGlobalBuild = providers
     .gradleProperty("isGlobalBuild")
     .map { it.toBoolean() }
@@ -29,7 +29,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 37
-        versionCode = 15
+        versionCode = 16
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
