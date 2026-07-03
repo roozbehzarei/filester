@@ -45,9 +45,9 @@
     <string name="settings_label_system_default">Sistem varsayılanı</string>
     <string name="settings_label_dynamic_colors">Dinamik renkler</string>
     <string name="settings_description_dynamic_colors">Renkleri otomatik olarak cihazınızın duvar kağıdıyla uyumlu hale getirin</string>
-    <string name="settings_label_telemetry">Telemetri</string>
+    <string name="settings_label_telemetry">Analitik</string>
     <string name="settings_description_telemetry">Uygulamanın nasıl kullanıldığını anlamamıza ve özellikleri geliştirmemize yardımcı olmak için anonim kullanım verilerini paylaşın.</string>
-    <string name="settings_label_crash_report">Çökme raporlama ve performans izleme</string>
+    <string name="settings_label_crash_report">Tanılama</string>
     <string name="settings_description_crash_report">Hataları gidermemize ve kararlılığı artırmamıza yardımcı olmak için anonim çökme raporları ve performans verileri gönderin.</string>
 
     <!-- Notifications -->
