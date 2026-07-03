@@ -2,7 +2,7 @@
 .gradle/
 build/
 
-# Local configuration file (sdk path, etc)
+# Local configuration files (sdk path, etc)
 local.properties
 key.properties
 
@@ -13,8 +13,9 @@ key.properties
 captures/
 .externalNativeBuild/
 .cxx/
+*.aab
 *.apk
-output.json
+output-metadata.json
 
 # IntelliJ
 *.iml
@@ -26,6 +27,12 @@ render.experimental.xml
 # Keystore files
 *.jks
 *.keystore
+
+# Google Services
+google-services.json
+
+# Kotzilla
+kotzilla.json
 
 # Android Profiling
 *.hprof
