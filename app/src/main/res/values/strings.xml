@@ -14,7 +14,7 @@
     <string name="main_menu_about">About</string>
     <string name="main_text_upload_success">File uploaded successfully.</string>
     <string name="main_text_upload_error">Something went wrong. Please try again.</string>
-    <string name="main_text_upload_cancelled">You have cancelled the upload process.</string>
+    <string name="main_text_upload_cancelled">You have canceled the upload process.</string>
     <string name="main_snackbar_clipboard">Link copied to clipboard</string>
     <string name="main_text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
     <string name="main_button_delete">Remove</string>
@@ -51,8 +51,8 @@
     <string name="settings_description_dynamic_colors">Adapt colors to match your device\'s wallpaper automatically</string>
     <string name="settings_label_telemetry">Telemetry</string>
     <string name="settings_description_telemetry">Share anonymous usage data to help us understand how the app is used and improve features.</string>
-    <string name="settings_label_crash_report">Crash Reports</string>
-    <string name="settings_description_crash_report">Send anonymous crash reports so we can fix bugs and improve stability.</string>
+    <string name="settings_label_crash_report">Crash reporting &amp; performance monitoring</string>
+    <string name="settings_description_crash_report">Send anonymous crash reports and performance data so we can fix bugs and improve stability.</string>
 
     <!-- Notifications -->
     <string name="notif_label_channel_name">Upload progress status</string>

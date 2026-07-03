@@ -48,8 +48,8 @@
     <string name="settings_description_dynamic_colors">انطباق خودکار رنگ‌ها با تصویر پس‌زمینه دستگاه</string>
     <string name="settings_label_telemetry">داده‌های دورسنجی</string>
     <string name="settings_description_telemetry">به‌اشتراک‌گذاری ناشناس داده‌های استفاده برای کمک به درک نحوه استفاده از برنامه و بهبود ویژگی‌ها.</string>
-    <string name="settings_label_crash_report">گزارش‌های خرابی</string>
-    <string name="settings_description_crash_report">ارسال گزارش‌های خرابی ناشناس برای کمک به رفع باگ‌ها و بهبود پایداری برنامه.</string>
+    <string name="settings_label_crash_report">گزارش‌دهی خرابی و پایش عملکرد</string>
+    <string name="settings_description_crash_report">ارسال گزارش‌های خرابی و داده‌های عملکرد به‌صورت ناشناس برای کمک به رفع باگ‌ها و بهبود پایداری برنامه.</string>
 
     <!-- Notifications -->
     <string name="notif_label_channel_name">وضعیت پیشرفت بارگذاری</string>
