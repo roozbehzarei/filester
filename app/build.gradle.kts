@@ -111,8 +111,6 @@ dokka {
     }
 }
 
-kotzilla { site = "http://127.0.0.1:8080" }
-
 dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
