@@ -1,9 +1,4 @@
 val appVersionName = "3.0.0"
-val isGlobalBuild = providers
-    .gradleProperty("isGlobalBuild")
-    .map { it.toBoolean() }
-    .orElse(true)
-    .get()
 
 plugins {
     alias(libs.plugins.android.application)
@@ -12,13 +7,9 @@ plugins {
     alias(libs.plugins.kotlin.dokka)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotzilla)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
-}
-
-if (isGlobalBuild) {
-    apply(plugin = libs.plugins.google.services.get().pluginId)
-    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 android {
@@ -120,6 +111,8 @@ dokka {
     }
 }
 
+kotzilla { site = "http://127.0.0.1:8080" }
+
 dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
@@ -171,14 +164,9 @@ dependencies {
     implementation(libs.accompanist.permissions)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
-    // ACRA
-    "fdroidImplementation"(libs.acra.mail)
-    "fdroidImplementation"(libs.acra.notification)
     // Firebase
     "globalImplementation"(platform(libs.firebase.bom))
     "globalImplementation"(libs.firebase.analytics)
-    "globalImplementation"(libs.firebase.crashlytics)
-    "globalImplementation"(libs.firebase.perf)
     // dokka
     dokkaPlugin(libs.android.documentation.plugin)
 }

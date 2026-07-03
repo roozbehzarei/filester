@@ -5,6 +5,5 @@ import com.roozbehzarei.filester.domain.model.Theme
 data class SettingsUiState(
     val themeMode: Theme,
     val isDynamicColor: Boolean,
-    val isTelemetryEnabled: Boolean,
-    val isCrashReportEnabled: Boolean
+    val isTelemetryEnabled: Boolean
 )

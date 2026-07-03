@@ -11,14 +11,10 @@ interface UserPreferencesRepository {
 
     fun getTelemetryPreference(): Flow<Boolean>
 
-    fun getCrashReportPreference(): Flow<Boolean>
-
     suspend fun saveDynamicColorsPreference(isDynamic: Boolean)
 
     suspend fun saveThemePreference(theme: Theme)
 
     suspend fun saveTelemetryPreference(isEnabled: Boolean)
-
-    suspend fun saveCrashReportPreference(isEnabled: Boolean)
 
 }

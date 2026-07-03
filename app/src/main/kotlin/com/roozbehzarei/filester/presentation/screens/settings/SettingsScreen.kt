@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
@@ -73,9 +74,7 @@ fun SettingsScreen(
         currentAppLocale = currentLocale,
         onThemeChanged = { viewModel.saveThemeModePref(it) },
         onDynamicColorChanged = { viewModel.saveDynamicColorPref(it) },
-        onTelemetryChanged = { viewModel.saveTelemetryPref(it) },
-        onCrashReportChanged = { viewModel.saveCrashReportPref(it) })
-
+        onTelemetryChanged = { viewModel.saveTelemetryPref(it) })
 }
 
 @Composable
@@ -86,8 +85,7 @@ private fun SettingsContent(
     currentAppLocale: Locale,
     onThemeChanged: (Theme) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
-    onTelemetryChanged: (Boolean) -> Unit,
-    onCrashReportChanged: (Boolean) -> Unit
+    onTelemetryChanged: (Boolean) -> Unit
 ) {
 
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
@@ -193,6 +191,20 @@ private fun SettingsContent(
                 onClick = null
             )
         }
+        SettingsItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .defaultMinSize(minHeight = 64.dp),
+            title = stringResource(R.string.settings_label_crash_report),
+            description = stringResource(R.string.settings_description_crash_report),
+            icon = Icons.Outlined.BugReport,
+            options = { modifier ->
+                Switch(
+                    modifier = modifier, checked = true, enabled = false, onCheckedChange = {})
+            },
+            onClick = null
+        )
         if (BuildConfig.FLAVOR == "global") {
             SettingsItem(
                 modifier = Modifier
@@ -207,22 +219,6 @@ private fun SettingsContent(
                         modifier = modifier,
                         checked = uiState.isTelemetryEnabled,
                         onCheckedChange = { onTelemetryChanged(it) })
-                },
-                onClick = null
-            )
-            SettingsItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .defaultMinSize(minHeight = 64.dp),
-                title = stringResource(R.string.settings_label_crash_report),
-                description = stringResource(R.string.settings_description_crash_report),
-                icon = Icons.Outlined.BugReport,
-                options = { modifier ->
-                    Switch(
-                        modifier = modifier,
-                        checked = uiState.isCrashReportEnabled,
-                        onCheckedChange = { onCrashReportChanged(it) })
                 },
                 onClick = null
             )
@@ -263,7 +259,10 @@ private fun SettingsItem(
                 text = title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                autoSize = TextAutoSize.StepBased(
+                    maxFontSize = MaterialTheme.typography.titleMedium.fontSize
+                )
             )
             Text(
                 text = description,
@@ -299,17 +298,13 @@ private fun SettingsContentPreview() {
             SettingsContent(
                 modifier = Modifier.fillMaxSize(),
                 uiState = (SettingsUiState(
-                    themeMode = Theme.Default,
-                    isDynamicColor = false,
-                    isTelemetryEnabled = false,
-                    isCrashReportEnabled = true
+                    themeMode = Theme.Default, isDynamicColor = false, isTelemetryEnabled = false
                 )),
                 appLocales = emptyList(),
                 currentAppLocale = LocalConfiguration.current.locales.get(0),
                 onThemeChanged = {},
                 onDynamicColorChanged = {},
-                onTelemetryChanged = {},
-                onCrashReportChanged = {})
+                onTelemetryChanged = {})
         }
     }
 }

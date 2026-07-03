@@ -18,14 +18,12 @@ class SettingsViewModel(
         combine(
             getDynamicColorsPreference(),
             getThemePreference(),
-            getTelemetryPreference(),
-            getCrashReportPreference()
-        ) { isDynamicColor, themeMode, isTelemetryEnabled, isCrashReportEnabled ->
+            getTelemetryPreference()
+        ) { isDynamicColor, themeMode, isTelemetryEnabled ->
             SettingsUiState(
                 themeMode = themeMode,
                 isDynamicColor = isDynamicColor,
-                isTelemetryEnabled = isTelemetryEnabled,
-                isCrashReportEnabled = isCrashReportEnabled
+                isTelemetryEnabled = isTelemetryEnabled
             )
         }.stateIn(
             scope = viewModelScope,
@@ -33,8 +31,7 @@ class SettingsViewModel(
             initialValue = SettingsUiState(
                 themeMode = Theme.Default,
                 isDynamicColor = false,
-                isTelemetryEnabled = false,
-                isCrashReportEnabled = true
+                isTelemetryEnabled = false
             )
         )
     }
@@ -54,12 +51,6 @@ class SettingsViewModel(
     fun saveTelemetryPref(enabled: Boolean) {
         viewModelScope.launch {
             userPreferencesRepository.saveTelemetryPreference(enabled)
-        }
-    }
-
-    fun saveCrashReportPref(enabled: Boolean) {
-        viewModelScope.launch {
-            userPreferencesRepository.saveCrashReportPreference(enabled)
         }
     }
 }

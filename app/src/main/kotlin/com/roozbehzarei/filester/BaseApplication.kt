@@ -1,7 +1,6 @@
 package com.roozbehzarei.filester
 
 import android.app.Application
-import android.content.Context
 import com.roozbehzarei.filester.di.databaseModule
 import com.roozbehzarei.filester.di.networkModule
 import com.roozbehzarei.filester.di.presentationModule
@@ -10,7 +9,8 @@ import com.roozbehzarei.filester.di.serviceModule
 import com.roozbehzarei.filester.di.workerModule
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import com.roozbehzarei.filester.domain.service.FirebaseService
-import com.roozbehzarei.filester.service.AcraServiceImpl
+import io.kotzilla.generated.monitoring
+import io.kotzilla.sdk.config.Environment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -31,14 +31,6 @@ class BaseApplication : Application(), KoinComponent {
     val userPreferencesRepository: UserPreferencesRepository by inject()
     val firebaseService: FirebaseService by inject()
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-
-        // Initialize ACRA crash reporting
-        val acraService = AcraServiceImpl(this)
-        acraService.initialize()
-    }
-
     override fun onCreate() {
         super.onCreate()
 
@@ -55,18 +47,21 @@ class BaseApplication : Application(), KoinComponent {
                 presentationModule,
                 workerModule
             )
+            monitoring {
+                if (BuildConfig.DEBUG) {
+                    setEnvironment(Environment.Dev())
+                    setDebugBuild(true)
+                } else {
+                    setEnvironment(Environment.Prod)
+                    setDebugBuild(false)
+                }
+            }
         }
 
         if (BuildConfig.DEBUG.not()) {
             applicationScope.launch {
                 userPreferencesRepository.getTelemetryPreference().collect { isEnabled ->
                     firebaseService.setAnalyticsCollectionEnabled(isEnabled)
-                    firebaseService.setPerformanceMonitoringEnabled(isEnabled)
-                }
-            }
-            applicationScope.launch {
-                userPreferencesRepository.getCrashReportPreference().collect { isEnabled ->
-                    firebaseService.setCrashlyticsCollectionEnabled(isEnabled)
                 }
             }
         }
