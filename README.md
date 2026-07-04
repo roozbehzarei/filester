@@ -26,7 +26,7 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 * **Privacy-first:** We are open-source and do not have access to your files.
 * **Ad-free experience:** Focus on what matters without annoying interruptions.
 * **No account required:** Get started instantly, no sign-ups or commitments.
-* **Universal compatibility:** Works across a wide range of devices.
+* **Universal compatibility:** Available on a wide range of devices.
 
 ## Screenshots
 
@@ -43,10 +43,10 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 
 ## Download
 
-[<img src=".github/ASSETS/f-droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
-[<img src=".github/ASSETS/getapps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
-[<img src=".github/ASSETS/uptodown.png" alt="Get it on Uptodown" height="60">](https://filester.en.uptodown.com/android)
-[<img src=".github/ASSETS/github.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
+[<img src=".assets/F-Droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
+[<img src=".assets/IzzyOnDroid.webp" alt="Get it on IzzyOnDroid" height="60">](https://apt.izzysoft.de/fdroid/index/apk/com.roozbehzarei.filester)
+[<img src=".assets/GetApps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
+[<img src=".assets/GitHub.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
 
 ## Build
 
