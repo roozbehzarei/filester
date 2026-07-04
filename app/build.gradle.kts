@@ -1,94 +1,170 @@
+val appVersionName = "3.0.0"
+
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.koin.compiler)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.dokka)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotzilla)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "com.roozbehzarei.filester"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
-        minSdk = 21
-        targetSdk = 35
-        versionCode = 10
-        versionName = "2.3.4"
+        minSdk = 24
+        targetSdk = 37
+        versionCode = 16
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
-        viewBinding = true
+        compose = true
+        buildConfig = true
+    }
+
+    flavorDimensions += listOf("store")
+
+    productFlavors {
+        create("global") {
+            dimension = "store"
+            versionNameSuffix = "+global"
+        }
+        create("fdroid") {
+            dimension = "store"
+            versionNameSuffix = "+fdroid"
+        }
     }
 
     buildTypes {
-        getByName("release") {
+        getByName("debug") {
             isMinifyEnabled = false
+        }
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
     androidResources {
         generateLocaleConfig = true
     }
 }
 
-dependencies {
-    val navVersion = "2.8.4"
-    val activityVersion = "1.9.3"
-    val fragmentVersion = "1.8.5"
-    val lifecycleVersion = "2.8.7"
-    val retrofitVersion = "2.9.0"
-    val workVersion = "2.10.0"
-    val roomVersion = "2.6.1"
-    val preferenceVersion = "1.2.1"
-    val acraVersion = "5.11.3"
+room {
+    schemaDirectory("$projectDir/schemas")
+}
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-    // Fragment
-    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
-    // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    // Retrofit 2
-    implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-    // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
-    // WorkManager
-    implementation("androidx.work:work-runtime-ktx:$workVersion")
-    // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+}
+
+// Dokka configuration for generating project documentation
+dokka {
+    moduleName.set("Filester")
+    moduleVersion.set(appVersionName)
+    dokkaPublications.html {
+        // Suppress inherited members (e.g., functions from Any, Object, etc.)
+        suppressInheritedMembers.set(true)
+        // Fail the build on Dokka warnings
+        failOnWarning.set(true)
+        // Set output directory
+        outputDirectory.set(layout.projectDirectory.dir("../docs/"))
+    }
+    dokkaSourceSets.configureEach {
+        suppress.set(name != "globalRelease")
+
+        if (name == "globalRelease") {
+            sourceLink {
+                localDirectory.set(file("src/main/java"))
+                remoteUrl("https://github.com/roozbehzarei/filester/tree/main/app/src/main/java")
+                remoteLineSuffix.set("#L")
+            }
+        }
+
+        // Suppress generated files
+        suppressGeneratedFiles.set(true)
+        // Define options for specific packages, overriding global settings
+        perPackageOption {
+            // Regex matching Koin’s KSP-generated code packages
+            matchingRegex.set("org\\.koin\\.ksp\\.generated(\\..*)?")
+            // Hide any code in packages that match the regex
+            suppress.set(true)
+        }
+    }
+}
+
+dependencies {
+    // Core
+    implementation(libs.androidx.core.ktx)
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.runtime)
+    implementation(libs.androidx.material.icons.extended)
     // Activity
-    implementation("androidx.activity:activity-ktx:$activityVersion")
+    implementation(libs.androidx.activity.compose)
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    // Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
+    // Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    // Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
     // SplashScreen
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    // Preference
-    implementation("androidx.preference:preference-ktx:$preferenceVersion")
+    implementation(libs.androidx.core.splashscreen)
+    // Google Fonts
+    implementation(libs.androidx.ui.text.google.fonts)
     // Browser
-    implementation("androidx.browser:browser:1.8.0")
-    // Aptabase
-    implementation("com.github.aptabase:aptabase-kotlin:0.0.8")
-    // ACRA
-    implementation("ch.acra:acra-mail:$acraVersion")
-    implementation("ch.acra:acra-notification:$acraVersion")
+    implementation(libs.androidx.browser)
+    // DocumentFile
+    implementation(libs.androidx.documentfile)
+    // kotlinx.serialization
+    implementation(libs.kotlinx.serialization.json)
+    // Koin
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.androidx.workmanager)
+    // Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging)
+    // Apache Log4j
+    implementation(libs.slf4j.android)
+    // Accompanist
+    implementation(libs.accompanist.permissions)
+    // Media3
+    implementation(libs.androidx.media3.common.ktx)
+    // Firebase
+    "globalImplementation"(platform(libs.firebase.bom))
+    "globalImplementation"(libs.firebase.analytics)
+    // dokka
+    dokkaPlugin(libs.android.documentation.plugin)
 }

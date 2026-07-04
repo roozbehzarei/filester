@@ -26,7 +26,7 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 * **Privacy-first:** We are open-source and do not have access to your files.
 * **Ad-free experience:** Focus on what matters without annoying interruptions.
 * **No account required:** Get started instantly, no sign-ups or commitments.
-* **Universal compatibility:** Works across a wide range of devices.
+* **Universal compatibility:** Available on a wide range of devices.
 
 ## Screenshots
 
@@ -43,25 +43,22 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 
 ## Download
 
-[<img src=".github/ASSETS/f-droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
-[<img src=".github/ASSETS/getapps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
-[<img src=".github/ASSETS/uptodown.png" alt="Get it on Uptodown" height="60">](https://filester.en.uptodown.com/android)
-[<img src=".github/ASSETS/github.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
+[<img src=".assets/F-Droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
+[<img src=".assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="60">](https://apt.izzysoft.de/fdroid/index/apk/com.roozbehzarei.filester)
+[<img src=".assets/GetApps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
+[<img src=".assets/GitHub.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
 
 ## Build
 
 1. Click the **Code** button, which brings up a dialog.
 2. In the dialog, click the **Download ZIP** button to save the project to your computer. Wait for
    the download to complete.
-3. Locate the file on your computer (likely in the **Downloads** folder).
-4. Double-click the ZIP file to unpack it. This creates a new folder that contains the project
-   files.
-5. Start Android Studio.
-6. In the **Welcome to Android Studio** window, click **Open an existing Android Studio project**.
-7. In the **Import Project** dialog, navigate to where the unzipped project folder is located.
-8. Double-click on that project folder.
-9. Wait for Android Studio to open the project.
-10. Click the **Make Project** button to build the app.
+3. Locate the file on your computer (likely in the **Downloads** folder) and unpack it.
+4. Start Android Studio.
+5. In the **Welcome to Android Studio** window, click **Open**.
+6. In the **Open File or Project** dialog, navigate to where the unzipped project folder is located and click **Ok**.
+7. Wait for Android Studio to open the project.
+8. Click the **assemble 'app' Run Configuration** button to build the app.
 
 ## Contributors
 

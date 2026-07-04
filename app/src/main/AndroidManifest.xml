@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:name=".BaseApplication"
@@ -15,13 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Filester.Starting">
 
-        <receiver
-            android:name=".FilesterBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="FILESTER_STOP_UPLOAD" />
-            </intent-filter>
-        </receiver>
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
@@ -38,7 +46,7 @@
         </service>
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
 

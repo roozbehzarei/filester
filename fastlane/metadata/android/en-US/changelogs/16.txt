@@ -1,0 +1,9 @@
+* Introducing Catbox Litterbox: A more stable and reliable temporary storage solution for your files
+* Fixed a crash when uploading very large files
+* Uploads that take over several hours will now cross the finish line instead of giving up halfway
+* Enhanced Upload Feedback: See which file is being uploaded and track its progress in real time
+* File Expiration Countdown: See exactly when your uploaded files will be removed, so nothing disappears on you unexpectedly
+* Material You Design: The app can now follow your device's wallpaper colors for a personalized look (Android 12+)
+* Android 16 & 17 Ready
+* File sizes are now shown using accurate units
+* Various bug fixes and user experience improvements

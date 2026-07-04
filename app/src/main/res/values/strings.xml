@@ -1,61 +1,73 @@
 <resources>
+
+    <!-- Common -->
     <string name="app_name">Filester</string>
-    <string name="app_description">Simple File Uploader</string>
-    <string name="app_version">Version %1$s</string>
-    <string name="app_copyleft">Copyleft © 2024 by Roozbeh Zarei</string>
-    <string name="menu_about">About</string>
-    <string name="link_transfer" translatable="false">transfer.sh</string>
-    <string name="link_oshi" translatable="false">oshi.at</string>
-    <string name="link_donate">Donate</string>
-    <string name="link_website">Website</string>
-    <string name="link_privacy_policy">Privacy Policy</string>
-    <string name="title_upload_success">Upload successful</string>
-    <string name="message_upload_success">Your uploaded file will be available for the next 30 days.</string>
-    <string name="dialog_button_copy">Copy Link</string>
-    <string name="dialog_button_close">Close</string>
-    <string name="title_upload_error">Upload failed</string>
-    <string name="message_upload_error">Something went wrong. Please try again.</string>
-    <string name="title_upload_cancelled">Upload cancelled</string>
-    <string name="message_upload_cancelled">You have cancelled the upload process.</string>
-    <string name="snackbar_clipboard">Link copied to clipboard</string>
-    <string name="snackbar_uploading">Uploading file, please wait.</string>
-    <string name="text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
-    <string name="channel_name">Upload progress status</string>
-    <string name="channel_description">Notify when upload is in progress, successful or failed.</string>
-    <string name="fab_label">Upload a file</string>
     <string name="settings">Settings</string>
     <string name="empty" translatable="false" />
     <string name="notification_channel_id" translatable="false">filester_notification_id</string>
-    <string name="notification_title_start">Initializing upload…</string>
-    <string name="notification_title_in_progress">Uploading…</string>
-    <string name="english">English</string>
-    <string name="persian">Persian</string>
-    <string name="turkish">Turkish</string>
-    <string name="dark">Dark</string>
-    <string name="light">Light</string>
-    <string name="system_default">System default</string>
-    <string name="language">Language</string>
-    <string name="theme">Theme</string>
-    <string name="button_cancel">Cancel</string>
-    <string name="button_delete">Remove</string>
-    <string name="file_hosting_service">File hosting service</string>
-    <string name="message_shared_with_filester">Shared with Filester secure uploader.</string>
-    <string name="dialog_delete_title">Remove this file?</string>
-    <string name="dialog_delete_message">\"%1s\" will be removed from your upload history.</string>
-    <string name="snackbar_delete_successful">File removed from history.</string>
-    <string name="copy_address">Copy Link</string>
-    <string name="share">Share</string>
-    <string name="update">Update</string>
-    <string name="dialog_title_update">Update available</string>
-    <string name="dialog_message_update">To use this app, download the latest version.</string>
-    <string name="toast_app_not_found">No app found to open URL</string>
-    <string name="status">Status</string>
-    <string name="refresh">Refresh</string>
-    <string name="not_now">Not Now</string>
-    <string name="crash_mail_subject">Filester Crash Report</string>
-    <string name="crash_mail_body">The report file is attached to this email.</string>
-    <string name="send">Send</string>
-    <string name="crash_notification_title">Application crashed</string>
-    <string name="crash_notification_text">Please send a report to the developer.</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="toast_app_not_found">No app found to open link</string>
+    <string name="title_upload_error">Upload failed</string>
+
+    <!-- Main Screen -->
+    <string name="main_menu_about">About</string>
+    <string name="main_text_upload_success">File uploaded successfully.</string>
+    <string name="main_text_upload_error">Something went wrong. Please try again.</string>
+    <string name="main_text_upload_cancelled">You have canceled the upload process.</string>
+    <string name="main_snackbar_clipboard">Link copied to clipboard</string>
+    <string name="main_text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
+    <string name="main_button_delete">Remove</string>
+    <string name="main_text_shared_with_filester">Shared with Filester secure uploader.</string>
+    <string name="main_dialog_title_delete">Remove this file?</string>
+    <string name="main_dialog_text_delete">\"%1$s\" will be removed from your upload history.</string>
+    <string name="main_snackbar_delete_successful">File removed from history.</string>
+    <string name="main_button_copy">Copy Link</string>
+    <string name="main_button_share">Share</string>
+    <string name="main_button_close">Close</string>
+    <plurals name="main_text_expires_hours">
+        <item quantity="one">Expires in %1$d hour</item>
+        <item quantity="other">Expires in %1$d hours</item>
+    </plurals>
+    <string name="main_text_expires_soon">Expires soon</string>
+    <string name="main_text_expired">Expired</string>
+
+    <!-- About Screen -->
+    <string name="about_text_copyleft" translatable="false">Copyleft © 2026 by Roozbeh Zarei</string>
+    <string name="about_button_donate">Donate</string>
+    <string name="about_button_source_code">Source Code</string>
+    <string name="about_button_privacy_policy">Privacy Policy</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_label_hosting_service">File hosting service</string>
+    <string name="settings_hosting_service_catbox_litterbox" translatable="false">Catbox Litterbox</string>
+    <string name="settings_hosting_service_catbox_litterbox_description">• File size up to 1 GB is allowed\n• Uploads expire after 72 hours\n✗ .exe, .scr, .cpl, .doc*, and .jar extensions are not allowed</string>
+    <string name="settings_label_language">Language</string>
+    <string name="settings_label_theme">Theme</string>
+    <string name="settings_label_dark">Dark</string>
+    <string name="settings_label_light">Light</string>
+    <string name="settings_label_system_default">System default</string>
+    <string name="settings_label_dynamic_colors">Dynamic colors</string>
+    <string name="settings_description_dynamic_colors">Adapt colors to match your device\'s wallpaper automatically</string>
+    <string name="settings_label_telemetry">Analytics</string>
+    <string name="settings_description_telemetry">Share anonymous usage data to help us understand how the app is used and improve features.</string>
+    <string name="settings_label_crash_report">Diagnostics</string>
+    <string name="settings_description_crash_report">Send anonymous crash reports and performance data so we can fix bugs and improve stability.</string>
+
+    <!-- Notifications -->
+    <string name="notif_label_channel_name">Upload progress status</string>
+    <string name="notif_description_channel">Notify when upload is in progress, successful or failed.</string>
+    <string name="notif_title_start">Initializing upload…</string>
+    <string name="notif_title_in_progress">Uploading…</string>
+    <string name="notif_title_upload_success">Upload successful</string>
+    <string name="notif_title_upload_cancelled">Upload canceled</string>
+    <string name="notif_title_upload_failed">Upload failure</string>
+
+    <!-- Crash Reporting -->
+    <string name="crash_text_mail_subject">Filester Crash Report</string>
+    <string name="crash_text_mail_body">The report file is attached to this email.</string>
+    <string name="crash_button_send">Send</string>
+    <string name="crash_title_notification">Application crashed</string>
+    <string name="crash_text_notification">Please send a report to the developer.</string>
 
 </resources>

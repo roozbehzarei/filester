@@ -2,7 +2,11 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 
 <b>Features</b>
 
- * <b>Privacy-first:</b> We do not have access to your files.
+ * <b>Privacy-first:</b> We do NOT process, inspect, or share your files with others.
  * <b>Ad-free experience:</b> Focus on what matters without annoying interruptions.
  * <b>No account required:</b> Get started instantly, no sign-ups or commitments.
- * <b>Universal compatibility:</b> Works across a wide range of devices.
+ * <b>Universal compatibility:</b> Available on a wide range of devices.
+ 
+ <b>Disclaimer</b>
+ 
+ This app relies on first-party, as well as third-party file hosting services and does not function otherwise.

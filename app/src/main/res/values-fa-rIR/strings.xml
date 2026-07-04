@@ -1,58 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Common -->
     <string name="app_name">فایلستر</string>
-    <string name="app_description">بارگذاری آسان فایل</string>
-    <string name="app_version">نسخه %1$s</string>
-    <string name="app_copyleft">کپی‌لفت © 2024 توسط روزبه زارعی</string>
-    <string name="menu_about">درباره</string>
-    <string name="link_donate">حمایت مالی</string>
-    <string name="link_website">وبسایت</string>
-    <string name="link_privacy_policy">سیاست حفظ حریم خصوصی</string>
-    <string name="title_upload_success">بارگذاری انجام شد</string>
-    <string name="message_upload_success">فایل آپلود شده برای 30 روز آینده در دسترس خواهد بود.</string>
-    <string name="dialog_button_copy">کپی نشانی</string>
-    <string name="dialog_button_close">بستن</string>
-    <string name="title_upload_error">بارگذاری انجام نشد</string>
-    <string name="message_upload_error">خطایی رخ داده است. لطفا دوباره تلاش نمایید.</string>
-    <string name="title_upload_cancelled">بارگذاری لغو شد</string>
-    <string name="message_upload_cancelled">شما فرآیند بارگذاری فایل را لغو کردید.</string>
-    <string name="snackbar_clipboard">نشانی کپی شد</string>
-    <string name="snackbar_uploading">در حال بارگذاری فایل، لطفا صبر نمایید.</string>
-    <string name="text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا فایلی را بارگذاری نمایید.</string>
-    <string name="channel_name">اطلاع رسانی درباره وضعیت بارگذاری</string>
-    <string name="channel_description">اطلاع رسانی درباره موفقیت آمیز بودن و یا با خطا مواجه شدن بارگذاری</string>
-    <string name="fab_label">بارگذاری فایل</string>
     <string name="settings">تنظیمات</string>
-    <string name="notification_title_start">در حال آماده سازی بارگذاری…</string>
-    <string name="notification_title_in_progress">در حال بارگذاری…</string>
-    <string name="english">انگلیسی</string>
-    <string name="persian">پارسی</string>
-    <string name="dark">تاریک</string>
-    <string name="light">روشن</string>
-    <string name="system_default">پیش فرض سیستم</string>
-    <string name="language">زبان</string>
-    <string name="theme">حالت نمایش</string>
-    <string name="button_cancel">لغو</string>
-    <string name="button_delete">حذف</string>
-    <string name="file_hosting_service">سرویس میزبانی فایل</string>
-    <string name="message_shared_with_filester">بارگذاری شده با امنیت توسط فایلستر.</string>
-    <string name="dialog_delete_title">فایل پاک شود؟</string>
-    <string name="dialog_delete_message">%s از تاریخچه دستگاه حذف خواهد شد.</string>
-    <string name="snackbar_delete_successful">فایل از تاریخچه پاک شد.</string>
-    <string name="copy_address">کپی نشانی</string>
-    <string name="share">اشتراک گذاری</string>
-    <string name="update">به‌روزرسانی</string>
-    <string name="dialog_title_update">به‌روزرسانی موجود است</string>
-    <string name="dialog_message_update">برای استفاده از برنامه، آخرین نسخه را دانلود نمایید.</string>
-    <string name="toast_app_not_found">برنامه‌ای برای باز کردن آدرس اینترنتی یافت نشد</string>
-    <string name="status">وضعیت</string>
-    <string name="refresh">تازه کردن</string>
-    <string name="not_now">بعدا</string>
-    <string name="crash_mail_subject">گزارش مشکل فایلستر</string>
-    <string name="crash_mail_body">فایل گزارش به این ایمیل ضمیمه شده است.</string>
-    <string name="send">ارسال</string>
-    <string name="crash_notification_title">برنامه با خطا مواجه شد</string>
-    <string name="crash_notification_text">لطفا گزارش خطا را به توسعه دهنده ارسال نمایید.</string>
-    <string name="turkish">ترکی</string>
+    <string name="cancel">لغو</string>
+    <string name="apply">اعمال</string>
+    <string name="toast_app_not_found">برنامه‌ای برای باز کردن پیوند یافت نشد</string>
+    <string name="title_upload_error">بارگذاری ناموفق بود</string>
+
+    <!-- Main Screen -->
+    <string name="main_menu_about">درباره</string>
+    <string name="main_text_upload_success">فایل با موفقیت بارگذاری شد.</string>
+    <string name="main_text_upload_error">خطایی رخ داد. لطفاً دوباره تلاش کنید.</string>
+    <string name="main_text_upload_cancelled">شما فرآیند بارگذاری را لغو کردید.</string>
+    <string name="main_snackbar_clipboard">پیوند کپی شد</string>
+    <string name="main_text_empty_history">هنوز فایلی بارگذاری نکرده‌اید.\nابتدا یک فایل بارگذاری کنید.</string>
+    <string name="main_button_delete">حذف</string>
+    <string name="main_text_shared_with_filester">بارگذاری شده توسط فایلستر.</string>
+    <string name="main_dialog_title_delete">حذف این فایل؟</string>
+    <string name="main_dialog_text_delete">«%1$s» از تاریخچه بارگذاری شما حذف خواهد شد.</string>
+    <string name="main_snackbar_delete_successful">فایل از تاریخچه حذف شد.</string>
+    <string name="main_button_copy">کپی پیوند</string>
+    <string name="main_button_share">اشتراک‌گذاری</string>
+    <string name="main_button_close">بستن</string>
+    <plurals name="main_text_expires_hours">
+        <item quantity="one">%1$d ساعت دیگر منقضی می‌شود</item>
+        <item quantity="other">%1$d ساعت دیگر منقضی می‌شود</item>
+    </plurals>
+    <string name="main_text_expires_soon">به‌زودی منقضی می‌شود</string>
+    <string name="main_text_expired">منقضی‌شده</string>
+
+    <!-- About Screen -->
+    <string name="about_button_donate">حمایت مالی</string>
+    <string name="about_button_source_code">کد منبع</string>
+    <string name="about_button_privacy_policy">سیاست حریم خصوصی</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_label_hosting_service">سرویس میزبانی فایل</string>
+    <string name="settings_hosting_service_catbox_litterbox_description">• فایل تا حجم ۱ گیگابایت مجاز است\n• فایل‌های بارگذاری‌شده پس از ۷۲ ساعت منقضی می‌شوند\n✗ پسوندهای .exe، .scr، .cpl، .doc* و .jar مجاز نیستند</string>
+    <string name="settings_label_language">زبان</string>
+    <string name="settings_label_theme">پوسته</string>
+    <string name="settings_label_dark">تاریک</string>
+    <string name="settings_label_light">روشن</string>
+    <string name="settings_label_system_default">پیش‌فرض سیستم</string>
+    <string name="settings_label_dynamic_colors">رنگ‌های پویا</string>
+    <string name="settings_description_dynamic_colors">انطباق خودکار رنگ‌ها با تصویر پس‌زمینه دستگاه</string>
+    <string name="settings_label_telemetry">تجزیه و تحلیل</string>
+    <string name="settings_description_telemetry">به‌اشتراک‌گذاری ناشناس داده‌های استفاده برای کمک به درک نحوه استفاده از برنامه و بهبود ویژگی‌ها.</string>
+    <string name="settings_label_crash_report">عیب‌یابی</string>
+    <string name="settings_description_crash_report">ارسال گزارش‌های خرابی و داده‌های عملکرد به‌صورت ناشناس برای کمک به رفع باگ‌ها و بهبود پایداری برنامه.</string>
+
+    <!-- Notifications -->
+    <string name="notif_label_channel_name">وضعیت پیشرفت بارگذاری</string>
+    <string name="notif_description_channel">اطلاع‌رسانی هنگام در جریان بودن، موفقیت‌آمیز بودن یا شکست بارگذاری.</string>
+    <string name="notif_title_start">در حال آماده‌سازی بارگذاری…</string>
+    <string name="notif_title_in_progress">در حال بارگذاری…</string>
+    <string name="notif_title_upload_success">بارگذاری با موفقیت انجام شد</string>
+    <string name="notif_title_upload_cancelled">بارگذاری لغو شد</string>
+    <string name="notif_title_upload_failed">بارگذاری ناموفق بود</string>
+
+    <!-- Crash Reporting -->
+    <string name="crash_text_mail_subject">گزارش خرابی فایلستر</string>
+    <string name="crash_text_mail_body">فایل گزارش به این ایمیل ضمیمه شده است.</string>
+    <string name="crash_button_send">ارسال</string>
+    <string name="crash_title_notification">برنامه متوقف شد</string>
+    <string name="crash_text_notification">لطفاً گزارش خرابی را برای توسعه‌دهنده ارسال کنید.</string>
 
 </resources>
