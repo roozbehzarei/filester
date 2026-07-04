@@ -36,9 +36,9 @@ data object AboutRoute
  * @property labelResource String resource ID for displaying text in UI components
  * @property route Navigation route associated with this destination
  *
- * @sample TopLevelDestination.MAIN Primary entry point
- * @sample TopLevelDestination.SETTINGS App settings and preferences screen
- * @sample TopLevelDestination.ABOUT App information screen
+ * @see TopLevelDestination.MAIN Primary entry point
+ * @see TopLevelDestination.SETTINGS App settings and preferences screen
+ * @see TopLevelDestination.ABOUT App information screen
  */
 enum class TopLevelDestination(
     val labelResource: Int,
