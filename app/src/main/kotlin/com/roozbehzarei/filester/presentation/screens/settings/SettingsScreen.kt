@@ -191,21 +191,21 @@ private fun SettingsContent(
                 onClick = null
             )
         }
-        SettingsItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .defaultMinSize(minHeight = 64.dp),
-            title = stringResource(R.string.settings_label_crash_report),
-            description = stringResource(R.string.settings_description_crash_report),
-            icon = Icons.Outlined.BugReport,
-            options = { modifier ->
-                Switch(
-                    modifier = modifier, checked = true, enabled = false, onCheckedChange = {})
-            },
-            onClick = null
-        )
         if (BuildConfig.FLAVOR == "global") {
+            SettingsItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .defaultMinSize(minHeight = 64.dp),
+                title = stringResource(R.string.settings_label_crash_report),
+                description = stringResource(R.string.settings_description_crash_report),
+                icon = Icons.Outlined.BugReport,
+                options = { modifier ->
+                    Switch(
+                        modifier = modifier, checked = true, enabled = false, onCheckedChange = {})
+                },
+                onClick = null
+            )
             SettingsItem(
                 modifier = Modifier
                     .fillMaxWidth()

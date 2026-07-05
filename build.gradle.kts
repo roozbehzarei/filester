@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.dokka) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
-    alias(libs.plugins.kotzilla) apply true
+    alias(libs.plugins.kotzilla) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room) apply false
 }

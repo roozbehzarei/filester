@@ -1,9 +1,9 @@
 package com.roozbehzarei.filester.domain.service
 
 
-interface FirebaseService {
+interface AnalyticsService {
 
-    fun setAnalyticsCollectionEnabled(isEnabled: Boolean)
+    fun setEnabled(enable: Boolean)
 
     fun logUploadSuccess()
 

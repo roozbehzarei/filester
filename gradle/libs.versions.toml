@@ -1,6 +1,5 @@
 [versions]
 accompanist = "0.37.3"
-acraVersion = "5.13.1"
 activity = "1.13.0"
 agp = "9.2.1"
 browser = "1.10.0"

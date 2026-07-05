@@ -8,9 +8,7 @@ import com.roozbehzarei.filester.di.repositoryModule
 import com.roozbehzarei.filester.di.serviceModule
 import com.roozbehzarei.filester.di.workerModule
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
-import com.roozbehzarei.filester.domain.service.FirebaseService
-import io.kotzilla.generated.monitoring
-import io.kotzilla.sdk.config.Environment
+import com.roozbehzarei.filester.domain.service.AnalyticsService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,7 +27,7 @@ class BaseApplication : Application(), KoinComponent {
 
     val applicationScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     val userPreferencesRepository: UserPreferencesRepository by inject()
-    val firebaseService: FirebaseService by inject()
+    val analyticsService: AnalyticsService by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -47,21 +45,13 @@ class BaseApplication : Application(), KoinComponent {
                 presentationModule,
                 workerModule
             )
-            monitoring {
-                if (BuildConfig.DEBUG) {
-                    setEnvironment(Environment.Dev())
-                    setDebugBuild(true)
-                } else {
-                    setEnvironment(Environment.Prod)
-                    setDebugBuild(false)
-                }
-            }
+            setupMonitoring()
         }
 
         if (BuildConfig.DEBUG.not()) {
             applicationScope.launch {
                 userPreferencesRepository.getTelemetryPreference().collect { isEnabled ->
-                    firebaseService.setAnalyticsCollectionEnabled(isEnabled)
+                    analyticsService.setEnabled(isEnabled)
                 }
             }
         }
