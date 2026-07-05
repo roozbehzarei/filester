@@ -2,13 +2,13 @@ package com.roozbehzarei.filester.service
 
 import android.content.Context
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.roozbehzarei.filester.domain.service.FirebaseService
+import com.roozbehzarei.filester.domain.service.AnalyticsService
 
-class FirebaseServiceImpl(context: Context) : FirebaseService {
+class AnalyticsServiceImpl(context: Context) : AnalyticsService {
     private val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
-    override fun setAnalyticsCollectionEnabled(isEnabled: Boolean) {
-        firebaseAnalytics.setAnalyticsCollectionEnabled(isEnabled)
+    override fun setEnabled(enable: Boolean) {
+        firebaseAnalytics.setAnalyticsCollectionEnabled(enable)
     }
 
     override fun logUploadSuccess() {

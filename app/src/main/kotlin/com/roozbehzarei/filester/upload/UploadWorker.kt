@@ -15,7 +15,7 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.repository.FileRepository
-import com.roozbehzarei.filester.domain.service.FirebaseService
+import com.roozbehzarei.filester.domain.service.AnalyticsService
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -33,7 +33,7 @@ class UploadWorker(
     private val context: Context,
     private val notificationFactory: UploadNotificationFactory,
     private val fileRepository: FileRepository,
-    private val firebaseService: FirebaseService,
+    private val analyticsService: AnalyticsService,
     params: WorkerParameters
 ) : CoroutineWorker(context, params) {
 
@@ -95,7 +95,7 @@ class UploadWorker(
                         title = applicationContext.getString(R.string.notif_title_upload_failed),
                         text = ""
                     )
-                    firebaseService.logUploadFailure()
+                    analyticsService.logUploadFailure()
                     Result.failure()
                 }
 
@@ -116,12 +116,12 @@ class UploadWorker(
                         title = applicationContext.getString(R.string.notif_title_upload_success),
                         text = ""
                     )
-                    firebaseService.logUploadSuccess()
+                    analyticsService.logUploadSuccess()
                     Result.success()
                 }
 
                 else -> {
-                    firebaseService.logUploadFailure()
+                    analyticsService.logUploadFailure()
                     Result.failure()
                 }
             }
@@ -142,7 +142,7 @@ class UploadWorker(
                         title = applicationContext.getString(R.string.notif_title_upload_failed),
                         text = ""
                     )
-                    firebaseService.logUploadFailure()
+                    analyticsService.logUploadFailure()
                     delay(200.milliseconds)
                 }
             }

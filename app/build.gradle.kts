@@ -1,4 +1,9 @@
-val appVersionName = "3.0.0"
+val appVersionName = "3.0.1"
+val isGlobalBuild = providers
+    .gradleProperty("isGlobalBuild")
+    .map { it.toBoolean() }
+    .orElse(true)
+    .get()
 
 plugins {
     alias(libs.plugins.android.application)
@@ -7,9 +12,12 @@ plugins {
     alias(libs.plugins.kotlin.dokka)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotzilla)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+}
+
+if (isGlobalBuild) {
+    apply(plugin = libs.plugins.kotzilla.get().pluginId)
 }
 
 android {
@@ -20,7 +28,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 37
-        versionCode = 16
+        versionCode = 17
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
