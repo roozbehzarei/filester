@@ -1,9 +1,9 @@
 val appVersionName = "3.0.1"
-val isGlobalBuild = providers
-    .gradleProperty("isGlobalBuild")
-    .map { it.toBoolean() }
-    .orElse(true)
-    .get()
+val isProprietaryDistribution =
+    providers.gradleProperty("isProprietaryDistribution")
+        .map { it.toBoolean() }
+        .orElse(true)
+        .get()
 
 plugins {
     alias(libs.plugins.android.application)
@@ -16,7 +16,7 @@ plugins {
     alias(libs.plugins.room)
 }
 
-if (isGlobalBuild) {
+if (isProprietaryDistribution) {
     apply(plugin = libs.plugins.kotzilla.get().pluginId)
 }
 
@@ -39,16 +39,15 @@ android {
         buildConfig = true
     }
 
-    flavorDimensions += listOf("store")
+    flavorDimensions += listOf("distribution")
 
     productFlavors {
-        create("global") {
-            dimension = "store"
-            versionNameSuffix = "+global"
+        create("proprietary") {
+            dimension = "distribution"
         }
-        create("fdroid") {
-            dimension = "store"
-            versionNameSuffix = "+fdroid"
+        create("foss") {
+            dimension = "distribution"
+            versionNameSuffix = "-foss"
         }
     }
 
@@ -97,9 +96,9 @@ dokka {
         outputDirectory.set(layout.projectDirectory.dir("../docs/"))
     }
     dokkaSourceSets.configureEach {
-        suppress.set(name != "globalRelease")
+        suppress.set(name != "proprietaryRelease")
 
-        if (name == "globalRelease") {
+        if (name == "proprietaryRelease") {
             sourceLink {
                 localDirectory.set(file("src/main/java"))
                 remoteUrl("https://github.com/roozbehzarei/filester/tree/main/app/src/main/java")
@@ -109,7 +108,7 @@ dokka {
 
         // Suppress generated files
         suppressGeneratedFiles.set(true)
-        // Define options for specific packages, overriding global settings
+        // Define options for specific packages, overriding proprietary settings
         perPackageOption {
             // Regex matching Koin’s KSP-generated code packages
             matchingRegex.set("org\\.koin\\.ksp\\.generated(\\..*)?")
@@ -171,8 +170,8 @@ dependencies {
     // Media3
     implementation(libs.androidx.media3.common.ktx)
     // Firebase
-    "globalImplementation"(platform(libs.firebase.bom))
-    "globalImplementation"(libs.firebase.analytics)
+    "proprietaryImplementation"(platform(libs.firebase.bom))
+    "proprietaryImplementation"(libs.firebase.analytics)
     // dokka
     dokkaPlugin(libs.android.documentation.plugin)
 }

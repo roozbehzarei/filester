@@ -191,7 +191,7 @@ private fun SettingsContent(
                 onClick = null
             )
         }
-        if (BuildConfig.FLAVOR == "global") {
+        if (BuildConfig.FLAVOR == "proprietary") {
             SettingsItem(
                 modifier = Modifier
                     .fillMaxWidth()
