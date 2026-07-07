@@ -45,6 +45,7 @@ import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
 import com.roozbehzarei.filester.presentation.screens.main.MainViewModel
 import com.roozbehzarei.filester.presentation.state.UploadFabStateHolder
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
 
@@ -61,7 +62,7 @@ private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilesterApp(context: Context) {
-    val viewModel: MainViewModel = koinInject()
+    val viewModel: MainViewModel = koinViewModel()
     val uploadFabStateHolder: UploadFabStateHolder = koinInject()
     val snackbarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()

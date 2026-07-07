@@ -75,11 +75,13 @@ import com.roozbehzarei.filester.upload.UploadState
 import com.roozbehzarei.filester.upload.UploadStatus
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = koinInject(), fabStateHolder: UploadFabStateHolder = koinInject(),
+    viewModel: MainViewModel = koinViewModel(),
+    fabStateHolder: UploadFabStateHolder = koinInject(),
     snackbarHostState: SnackbarHostState
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -327,9 +329,7 @@ private fun FileItem(
                                 stringResource(R.string.main_text_expires_soon)
                             } else {
                                 pluralStringResource(
-                                    R.plurals.main_text_expires_hours,
-                                    hours.toInt(),
-                                    hours.toInt()
+                                    R.plurals.main_text_expires_hours, hours.toInt(), hours.toInt()
                                 )
                             }
                         }
@@ -427,8 +427,7 @@ private fun FileUploadCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth(),
-                    progress = {
+                    modifier = Modifier.fillMaxWidth(), progress = {
                         (uploadProgress.toFloat() / 100)
                     }, trackColor = Color.Transparent
                 )
@@ -438,8 +437,7 @@ private fun FileUploadCard(
                     onCancel()
                 }) {
                 Text(
-                    stringResource(R.string.cancel),
-                    style = MaterialTheme.typography.labelLarge
+                    stringResource(R.string.cancel), style = MaterialTheme.typography.labelLarge
                 )
             }
         }
@@ -513,10 +511,10 @@ private fun MainContentPreview2() {
         Surface {
             MainContent(
                 modifier = Modifier.fillMaxSize(), uiState = MainUiState(
-                    files = previewFiles,
-                    uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
-                    uploadingFileName = "filester.apk"
-                ), onShowSnackbar = {}, onUploadCanceled = {}, onFileRemoved = {})
+                files = previewFiles,
+                uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
+                uploadingFileName = "filester.apk"
+            ), onShowSnackbar = {}, onUploadCanceled = {}, onFileRemoved = {})
         }
     }
 }

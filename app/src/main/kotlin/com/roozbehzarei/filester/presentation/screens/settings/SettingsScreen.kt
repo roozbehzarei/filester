@@ -55,12 +55,12 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.presentation.components.SingleChoiceDialog
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier, viewModel: SettingsViewModel = koinInject()
+    modifier: Modifier = Modifier, viewModel: SettingsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val appLocales = remember(context) { getApplicationLocales(context) }
