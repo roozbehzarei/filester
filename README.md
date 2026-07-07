@@ -46,7 +46,7 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 [<img src=".assets/F-Droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
 [<img src=".assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="60">](https://apt.izzysoft.de/fdroid/index/apk/com.roozbehzarei.filester)
 [<img src=".assets/GetApps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
-[<img src=".assets/GitHub.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester.apk)
+[<img src=".assets/GitHub.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester-universal.apk)
 
 ## Build
 
