@@ -2,7 +2,7 @@ val appVersionName = "3.0.2"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
-        .orElse(true)
+        .orElse(false)
         .get()
 
 plugins {
