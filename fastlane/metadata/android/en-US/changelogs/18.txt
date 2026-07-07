@@ -1,1 +1,2 @@
-* Update privacy policy and donation links.
+* Improved dynamic content loading
+* Fixed a potential bug
