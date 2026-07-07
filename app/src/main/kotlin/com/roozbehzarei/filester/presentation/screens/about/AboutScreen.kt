@@ -1,8 +1,8 @@
 package com.roozbehzarei.filester.presentation.screens.about
 
-import android.content.Intent
-import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AttachMoney
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,43 +38,50 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
+import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
+import org.koin.compose.viewmodel.koinViewModel
 
 private enum class AboutUrls(val link: String) {
-    SOURCE_CODE("https://github.com/roozbehzarei/filester"), DONATE("https://roozbehzarei.com/donate"), PRIVACY_POLICY(
-        "https://roozbehzarei.com/filester/privacy-policy"
+    DONATE("https://filester.roozbehzarei.com/donate.html"), PRIVACY_POLICY(
+        "https://filester.roozbehzarei.com/privacy-policy.html"
     )
 }
 
 @Composable
-fun AboutScreen(modifier: Modifier = Modifier) {
+fun AboutScreen(
+    modifier: Modifier = Modifier, viewModel: AboutViewModel = koinViewModel()
+) {
 
     val context = LocalContext.current
-    val appNotFoundLabel = stringResource(R.string.toast_app_not_found)
-    val launchUrl = remember(context) {
-        { url: String ->
-            val intent = Intent(
-                Intent.ACTION_VIEW, url.toUri()
-            )
-            try {
-                context.startActivity(intent)
-            } catch (e: Exception) {
-                if (BuildConfig.DEBUG) e.printStackTrace()
-                Toast.makeText(
-                    context, appNotFoundLabel, Toast.LENGTH_SHORT
-                ).show()
-            }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val isAppInDarkTheme = remember(uiState.themeMode, isSystemInDarkTheme) {
+        when (uiState.themeMode) {
+            Theme.Default -> isSystemInDarkTheme
+            Theme.Light -> false
+            Theme.Dark -> true
         }
     }
+    val intent = remember(isAppInDarkTheme) {
+        CustomTabsIntent.Builder().setColorScheme(
+            if (isAppInDarkTheme) CustomTabsIntent.COLOR_SCHEME_DARK
+            else CustomTabsIntent.COLOR_SCHEME_LIGHT
+        ).build()
+    }
 
-    AboutContent(modifier = modifier, onSourceCodeClick = {
-        launchUrl(AboutUrls.SOURCE_CODE.link)
-    }, onDonateClick = {
-        launchUrl(AboutUrls.DONATE.link)
+    AboutContent(modifier = modifier, onDonateClick = {
+        val uri = AboutUrls.DONATE.link.toUri()
+        intent.launchUrl(
+            context, uri
+        )
     }, onPrivacyPolicyClick = {
-        launchUrl(AboutUrls.PRIVACY_POLICY.link)
+        val uri = AboutUrls.PRIVACY_POLICY.link.toUri().buildUpon()
+            .appendQueryParameter("standalone", "true").build()
+        intent.launchUrl(context, uri)
     })
 
 }
@@ -81,7 +89,6 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun AboutContent(
     modifier: Modifier,
-    onSourceCodeClick: () -> Unit,
     onDonateClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
 ) {
@@ -99,20 +106,13 @@ private fun AboutContent(
         Spacer(modifier = Modifier.height(12.dp))
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall)
         Text(
-            text = BuildConfig.VERSION_NAME,
-            style = MaterialTheme.typography.bodySmall
+            text = BuildConfig.VERSION_NAME, style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.weight(1f))
         Row {
             AboutActionButton(
                 modifier = Modifier.weight(1f),
-                icon = Icons.Outlined.Code,
-                label = stringResource(R.string.about_button_source_code),
-                onClick = onSourceCodeClick
-            )
-            AboutActionButton(
-                modifier = Modifier.weight(1f),
-                icon = Icons.Outlined.AttachMoney,
+                icon = Icons.Outlined.FavoriteBorder,
                 label = stringResource(R.string.about_button_donate),
                 onClick = onDonateClick
             )
@@ -162,7 +162,6 @@ private fun AboutContentPreview() {
         Surface {
             AboutContent(
                 modifier = Modifier.fillMaxSize(),
-                onSourceCodeClick = {},
                 onDonateClick = {},
                 onPrivacyPolicyClick = {})
         }

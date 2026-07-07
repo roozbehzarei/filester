@@ -1,0 +1,2 @@
+* Improved dynamic content loading
+* Fixed a potential bug

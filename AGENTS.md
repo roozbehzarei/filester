@@ -20,28 +20,23 @@ files to third-party cloud storage services for temporary hosting.
 
 - Powered by Koin, using Compiler Plugin DSL approach which provides auto-wiring and compile-time
   safety. Setup modules are declared
-  under [di package](file:///home/roozbehzarei-work/AndroidStudioProjects/filester/app/src/main/kotlin/com/roozbehzarei/filester/di/).
+  under di package.
 
 ### 3. Background Upload & Notifications
 
 - Upload operations are executed via
-  `WorkManager` ([UploadWorker.kt](file:///home/roozbehzarei-work/AndroidStudioProjects/filester/app/src/main/kotlin/com/roozbehzarei/filester/upload/UploadWorker.kt))
+  `WorkManager` (UploadWorker.kt)
   running as a Foreground Service with type `ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC`.
 - Real-time progress updates are shown in notification drawer
-  through [UploadNotificationHelper.kt](file:///home/roozbehzarei-work/AndroidStudioProjects/filester/app/src/main/kotlin/com/roozbehzarei/filester/upload/UploadNotificationHelper.kt)
+  through UploadNotificationHelper.kt
   and can be canceled
-  via [FilesterBroadcastReceiver.kt](file:///home/roozbehzarei-work/AndroidStudioProjects/filester/app/src/main/kotlin/com/roozbehzarei/filester/framework/FilesterBroadcastReceiver.kt).
+  via FilesterBroadcastReceiver.kt.
 
 ### 4. Build Configuration
 
 Gradle build scripts are written in Kotlin DSL. Also, the project divides flavor-specific
 dependencies and source implementations:
 
-- **`global` Flavor**: Depends on Firebase (Analytics, Performance, Crashlytics).
-  Stubbed/no-op implementation
-  of [AcraServiceImpl.kt](file:///home/roozbehzarei-work/AndroidStudioProjects/filester/app/src/global/kotlin/com/roozbehzarei/filester/service/AcraServiceImpl.kt)
-  is used.
-- **`fdroid` Flavor**: Exclusive to F-Droid store. built with `-PisGlobalBuild=false` argument.
-  Depends on ACRA for crash notification & mail-based crash reports. Stubbed/no-op implementation
-  of [FirebaseServiceImpl.kt](file:///home/roozbehzarei-work/AndroidStudioProjects/filester/app/src/fdroid/kotlin/com/roozbehzarei/filester/service/FirebaseServiceImpl.kt)
-  is used.
+- **`proprietary` Flavor**: Depends on Firebase (Analytics) and Kotzilla monitoring.
+- **`foss` Flavor**: Exclusive to F-Droid/IzzyOnDroid distribution. Built with `-PisProprietaryDistribution=false` argument.
+  Uses a stubbed/no-op implementation of AnalyticsServiceImpl.kt. Does not instantiate Kotzilla monitoring via `KoinApplication.setupMonitoring() {}` extension function in Extensions.kt. 

@@ -1,1 +1,1 @@
-sourceset_dependencies='{":app/globalRelease":[]}'
+sourceset_dependencies='{":app/proprietaryRelease":[]}'
