@@ -9,7 +9,6 @@ import com.roozbehzarei.filester.upload.UploadWorker
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create
-import org.koin.plugin.module.dsl.factory
 import org.koin.plugin.module.dsl.single
 import org.koin.plugin.module.dsl.worker
 
@@ -17,7 +16,7 @@ private fun provideWorkManager(context: Context) = WorkManager.getInstance(conte
 
 val workerModule = module {
     single<UploadNotificationFactory>()
-    factory<UploadManagerImpl>() bind UploadManager::class
-    factory { create(::provideWorkManager) }
+    single<UploadManagerImpl>() bind UploadManager::class
+    single { create(::provideWorkManager) }
     worker<UploadWorker>()
 }
