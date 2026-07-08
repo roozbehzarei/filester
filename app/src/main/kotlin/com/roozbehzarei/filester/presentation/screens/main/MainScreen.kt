@@ -4,8 +4,12 @@ import android.Manifest
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.provider.OpenableColumns
 import android.text.format.Formatter
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteForever
@@ -31,9 +36,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,6 +50,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -69,19 +78,19 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
-import com.roozbehzarei.filester.presentation.state.UploadFabStateHolder
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import com.roozbehzarei.filester.upload.UploadState
 import com.roozbehzarei.filester.upload.UploadStatus
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = koinViewModel(),
-    fabStateHolder: UploadFabStateHolder = koinInject(),
     snackbarHostState: SnackbarHostState
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -97,20 +106,17 @@ fun MainScreen(
     }
 
     LaunchedEffect(uiState.uploadStatus) {
-        when (uiState.uploadStatus.state) {
+        showUploadFailDialog = when (uiState.uploadStatus.state) {
             UploadState.RUNNING -> {
-                fabStateHolder.hide()
-                showUploadFailDialog = false
+                false
             }
 
             UploadState.FAILED -> {
-                fabStateHolder.show()
-                showUploadFailDialog = true
+                true
             }
 
             else -> {
-                fabStateHolder.show()
-                showUploadFailDialog = false
+                false
             }
         }
     }
@@ -130,8 +136,9 @@ fun MainScreen(
         uiState = uiState,
         onShowSnackbar = { message -> coroutineScope.launch { snackbarHostState.showSnackbar(message) } },
         onUploadCanceled = viewModel::cancelUpload,
-        onFileRemoved = { viewModel.deleteFile(it) })
-
+        onFileRemoved = { viewModel.deleteFile(it) },
+        onInitializeUpload = viewModel::initializeUpload
+    )
 }
 
 @Composable
@@ -140,36 +147,50 @@ private fun MainContent(
     uiState: MainUiState,
     onShowSnackbar: (String) -> Unit,
     onUploadCanceled: () -> Unit,
-    onFileRemoved: (File) -> Unit
+    onFileRemoved: (File) -> Unit,
+    onInitializeUpload: (Uri, String) -> Unit
 ) {
 
-    Column(modifier = modifier) {
-        if (uiState.files.isEmpty() && uiState.uploadStatus.state != UploadState.RUNNING) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Card {
-                    Text(
-                        modifier = Modifier.padding(12.dp),
-                        text = stringResource(R.string.main_text_empty_history),
-                        textAlign = TextAlign.Center
-                    )
+    Scaffold(
+        modifier = modifier, floatingActionButton = {
+            if (uiState.uploadStatus.state != UploadState.RUNNING) {
+                UploadFab(onInitializeUpload)
+            }
+        }) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            if (uiState.files.isEmpty() && uiState.uploadStatus.state != UploadState.RUNNING) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Card {
+                        Text(
+                            modifier = Modifier.padding(12.dp),
+                            text = stringResource(R.string.main_text_empty_history),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
+            FilesList(
+                files = uiState.files,
+                isUploadingFile = uiState.uploadStatus.state == UploadState.RUNNING,
+                uploadingFileName = uiState.uploadingFileName,
+                uploadingFileProgress = uiState.uploadStatus.progress,
+                onCancelUpload = onUploadCanceled,
+                onRemoveFile = { file ->
+                    onFileRemoved(file)
+                },
+                onShowSnackbar = { onShowSnackbar(it) })
         }
-        FilesList(
-            files = uiState.files,
-            isUploadingFile = uiState.uploadStatus.state == UploadState.RUNNING,
-            uploadingFileName = uiState.uploadingFileName,
-            uploadingFileProgress = uiState.uploadStatus.progress,
-            onCancelUpload = onUploadCanceled,
-            onRemoveFile = { file ->
-                onFileRemoved(file)
-            },
-            onShowSnackbar = { onShowSnackbar(it) })
     }
+
+
 }
 
 @Composable
@@ -293,6 +314,29 @@ private fun FileItem(
     onRemove: () -> Unit,
 ) {
     val context = LocalContext.current
+    val formattedSize = remember { Formatter.formatFileSize(context, size) }
+    val now by produceState(initialValue = System.currentTimeMillis()) {
+        while (true) {
+            delay(1.minutes)
+            value = System.currentTimeMillis()
+        }
+    }
+    val remainingHours = remember(expiresAt, now) {
+        if (expiresAt <= 0L) null
+        else {
+            val remainingMs = expiresAt - now
+            if (remainingMs <= 0) -1 else TimeUnit.MILLISECONDS.toHours(remainingMs).toInt()
+        }
+    }
+    val expiresText = when (remainingHours) {
+        null -> null
+        -1 -> stringResource(R.string.main_text_expired)
+        0 -> stringResource(R.string.main_text_expires_soon)
+        else -> pluralStringResource(
+            R.plurals.main_text_expires_hours, remainingHours, remainingHours
+        )
+    }
+
     val cardColor = when (isExpanded) {
         true -> MaterialTheme.colorScheme.surfaceVariant
         false -> Color.Transparent
@@ -317,25 +361,6 @@ private fun FileItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    val formattedSize = Formatter.formatFileSize(context, size)
-                    val expiresText = if (expiresAt > 0L) {
-                        val remainingMs = expiresAt - System.currentTimeMillis()
-                        if (remainingMs <= 0) {
-                            stringResource(R.string.main_text_expired)
-                        } else {
-                            val hours =
-                                java.util.concurrent.TimeUnit.MILLISECONDS.toHours(remainingMs)
-                            if (hours < 1) {
-                                stringResource(R.string.main_text_expires_soon)
-                            } else {
-                                pluralStringResource(
-                                    R.plurals.main_text_expires_hours, hours.toInt(), hours.toInt()
-                                )
-                            }
-                        }
-                    } else {
-                        null
-                    }
                     val infoText = if (expiresText != null) {
                         "$formattedSize • $expiresText"
                     } else {
@@ -472,6 +497,36 @@ private fun FileRemoverDialog(
     })
 }
 
+/**
+ * Displays a Floating Action Button (FAB) for uploading files.
+ *
+ * When clicked, it launches a file picker allowing the user to select a file.
+ * Upon selection, it extracts the file's URI and name and invokes the provided `onUpload` callback.
+ *
+ * @param onUpload A lambda function that is invoked when a file is selected.
+ */
+@Composable
+private fun UploadFab(onUpload: (uri: Uri, name: String) -> Unit) {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                cursor.moveToFirst()
+                val name = cursor.getString(nameIndex)
+                onUpload(uri, name)
+            }
+        }
+    }
+    FloatingActionButton(
+        onClick = {
+            launcher.launch("*/*")
+        },
+    ) {
+        Icon(Icons.Filled.Add, contentDescription = "Upload File")
+    }
+}
+
 @Preview
 @Composable
 private fun MainContentPreview() {
@@ -482,7 +537,8 @@ private fun MainContentPreview() {
                 uiState = MainUiState(),
                 onShowSnackbar = {},
                 onUploadCanceled = {},
-                onFileRemoved = {})
+                onFileRemoved = {},
+                onInitializeUpload = { _, _ -> })
         }
     }
 }
@@ -510,11 +566,16 @@ private fun MainContentPreview2() {
     FilesterAppTheme {
         Surface {
             MainContent(
-                modifier = Modifier.fillMaxSize(), uiState = MainUiState(
-                files = previewFiles,
-                uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
-                uploadingFileName = "filester.apk"
-            ), onShowSnackbar = {}, onUploadCanceled = {}, onFileRemoved = {})
+                modifier = Modifier.fillMaxSize(),
+                uiState = MainUiState(
+                    files = previewFiles,
+                    uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
+                    uploadingFileName = "filester.apk"
+                ),
+                onShowSnackbar = {},
+                onUploadCanceled = {},
+                onFileRemoved = {},
+                onInitializeUpload = { _, _ -> })
         }
     }
 }

@@ -2,24 +2,18 @@ package com.roozbehzarei.filester.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
-import android.provider.OpenableColumns
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.NetworkCheck
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -32,7 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -42,10 +35,6 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.presentation.navigation.FilesterNavHost
 import com.roozbehzarei.filester.presentation.navigation.SettingsRoute
 import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
-import com.roozbehzarei.filester.presentation.screens.main.MainViewModel
-import com.roozbehzarei.filester.presentation.state.UploadFabStateHolder
-import org.koin.compose.koinInject
-import org.koin.compose.viewmodel.koinViewModel
 
 private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
 
@@ -55,15 +44,12 @@ private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
  *
  * @see Scaffold
  * @see TopBar
- * @see UploadFab
  * @see FilesterNavHost
  */
 @SuppressLint("RestrictedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilesterApp(context: Context) {
-    val viewModel: MainViewModel = koinViewModel()
-    val uploadFabStateHolder: UploadFabStateHolder = koinInject()
     val snackbarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -101,12 +87,6 @@ fun FilesterApp(context: Context) {
                 onNavigateToSettings = { navController.navigate(SettingsRoute) },
                 onNavigateToAbout = { navController.navigate(TopLevelDestination.ABOUT.route) },
             )
-        },
-        floatingActionButton = {
-            // Show FAB only on main screen
-            if (isMainRoute && uploadFabStateHolder.isVisible) {
-                UploadFab(viewModel::initializeUpload)
-            }
         }) { innerPadding ->
         FilesterNavHost(
             modifier = Modifier.padding(innerPadding),
@@ -185,35 +165,5 @@ private fun OverflowMenu(menuItems: @Composable () -> Unit) {
     DropdownMenu(
         expanded = showMenu, onDismissRequest = { showMenu = false }) {
         menuItems()
-    }
-}
-
-/**
- * Displays a Floating Action Button (FAB) for uploading files.
- *
- * When clicked, it launches a file picker allowing the user to select a file.
- * Upon selection, it extracts the file's URI and name and invokes the provided `onUpload` callback.
- *
- * @param onUpload A lambda function that is invoked when a file is selected.
- */
-@Composable
-private fun UploadFab(onUpload: (uri: Uri, name: String) -> Unit) {
-    val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.moveToFirst()
-                val name = cursor.getString(nameIndex)
-                onUpload(uri, name)
-            }
-        }
-    }
-    FloatingActionButton(
-        onClick = {
-            launcher.launch("*/*")
-        },
-    ) {
-        Icon(Icons.Filled.Add, contentDescription = "Upload File")
     }
 }

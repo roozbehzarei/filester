@@ -6,9 +6,9 @@ import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import org.koin.plugin.module.dsl.factory
+import org.koin.plugin.module.dsl.single
 
 val repositoryModule = module {
-    factory<FileRepositoryImpl>() bind FileRepository::class
-    factory<UserPreferencesRepositoryImpl>() bind UserPreferencesRepository::class
+    single<FileRepositoryImpl>() bind FileRepository::class
+    single<UserPreferencesRepositoryImpl>() bind UserPreferencesRepository::class
 }

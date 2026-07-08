@@ -16,6 +16,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.io.buffered
 import java.io.File
 
@@ -53,6 +54,6 @@ class CatboxApi(private val client: HttpClient) {
         } finally {
             close()
         }
-    }
+    }.distinctUntilChanged()
 
 }

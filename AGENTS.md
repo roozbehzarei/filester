@@ -37,6 +37,6 @@ files to third-party cloud storage services for temporary hosting.
 Gradle build scripts are written in Kotlin DSL. Also, the project divides flavor-specific
 dependencies and source implementations:
 
-- **`proprietary` Flavor**: Depends on Firebase (Analytics) and Kotzilla monitoring.
-- **`foss` Flavor**: Exclusive to F-Droid/IzzyOnDroid distribution. Built with `-PisProprietaryDistribution=false` argument.
+- **`proprietary` Flavor**: Depends on Firebase (Analytics) and Kotzilla monitoring. Built with `-PisProprietaryDistribution=true` argument.
+- **`foss` Flavor**: Exclusive to F-Droid/IzzyOnDroid distribution.
   Uses a stubbed/no-op implementation of AnalyticsServiceImpl.kt. Does not instantiate Kotzilla monitoring via `KoinApplication.setupMonitoring() {}` extension function in Extensions.kt. 
