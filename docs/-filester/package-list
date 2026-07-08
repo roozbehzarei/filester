@@ -116,7 +116,7 @@ $dokka.location:com.roozbehzarei.filester.presentation.screens.about/AboutViewMo
 $dokka.location:com.roozbehzarei.filester.presentation.screens.about/AboutViewModel/AboutViewModel/#com.roozbehzarei.filester.domain.repository.UserPreferencesRepository/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.about/-about-view-model/-about-view-model.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.about/AboutViewModel/uiState/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.about/-about-view-model/ui-state.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.main////PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.main/index.html
-$dokka.location:com.roozbehzarei.filester.presentation.screens.main//MainScreen/#androidx.compose.ui.Modifier#com.roozbehzarei.filester.presentation.screens.main.MainViewModel#com.roozbehzarei.filester.presentation.state.UploadFabStateHolder#androidx.compose.material3.SnackbarHostState/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.main/-main-screen.html
+$dokka.location:com.roozbehzarei.filester.presentation.screens.main//MainScreen/#androidx.compose.ui.Modifier#com.roozbehzarei.filester.presentation.screens.main.MainViewModel#androidx.compose.material3.SnackbarHostState/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.main/-main-screen.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.main/MainUiState///PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.main/-main-ui-state/index.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.main/MainUiState/MainUiState/#com.roozbehzarei.filester.presentation.UiText?#kotlin.collections.List[com.roozbehzarei.filester.domain.model.File]#com.roozbehzarei.filester.upload.UploadStatus#kotlin.String?/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.main/-main-ui-state/-main-ui-state.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.main/MainUiState/files/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.main/-main-ui-state/files.html
@@ -144,12 +144,6 @@ $dokka.location:com.roozbehzarei.filester.presentation.screens.settings/Settings
 $dokka.location:com.roozbehzarei.filester.presentation.screens.settings/SettingsViewModel/saveTelemetryPref/#kotlin.Boolean/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.settings/-settings-view-model/save-telemetry-pref.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.settings/SettingsViewModel/saveThemeModePref/#com.roozbehzarei.filester.domain.model.Theme/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.settings/-settings-view-model/save-theme-mode-pref.html
 $dokka.location:com.roozbehzarei.filester.presentation.screens.settings/SettingsViewModel/uiState/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.screens.settings/-settings-view-model/ui-state.html
-$dokka.location:com.roozbehzarei.filester.presentation.state////PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.state/index.html
-$dokka.location:com.roozbehzarei.filester.presentation.state/UploadFabStateHolder///PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.state/-upload-fab-state-holder/index.html
-$dokka.location:com.roozbehzarei.filester.presentation.state/UploadFabStateHolder/UploadFabStateHolder/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.state/-upload-fab-state-holder/-upload-fab-state-holder.html
-$dokka.location:com.roozbehzarei.filester.presentation.state/UploadFabStateHolder/hide/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.state/-upload-fab-state-holder/hide.html
-$dokka.location:com.roozbehzarei.filester.presentation.state/UploadFabStateHolder/isVisible/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.state/-upload-fab-state-holder/is-visible.html
-$dokka.location:com.roozbehzarei.filester.presentation.state/UploadFabStateHolder/show/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.state/-upload-fab-state-holder/show.html
 $dokka.location:com.roozbehzarei.filester.presentation.theme////PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.theme/index.html
 $dokka.location:com.roozbehzarei.filester.presentation.theme//AppTypography/#/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.theme/-app-typography.html
 $dokka.location:com.roozbehzarei.filester.presentation.theme//FilesterAppTheme/#kotlin.Boolean#kotlin.Boolean#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/-filester/com.roozbehzarei.filester.presentation.theme/-filester-app-theme.html
@@ -454,7 +448,6 @@ com.roozbehzarei.filester.presentation.navigation
 com.roozbehzarei.filester.presentation.screens.about
 com.roozbehzarei.filester.presentation.screens.main
 com.roozbehzarei.filester.presentation.screens.settings
-com.roozbehzarei.filester.presentation.state
 com.roozbehzarei.filester.presentation.theme
 com.roozbehzarei.filester.service
 com.roozbehzarei.filester.upload

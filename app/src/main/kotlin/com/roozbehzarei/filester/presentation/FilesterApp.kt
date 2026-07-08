@@ -44,7 +44,6 @@ private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
  *
  * @see Scaffold
  * @see TopBar
- * @see UploadFab
  * @see FilesterNavHost
  */
 @SuppressLint("RestrictedApi")
