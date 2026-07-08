@@ -1,4 +1,4 @@
-val appVersionName = "3.0.2"
+val appVersionName = "3.0.3"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
@@ -28,7 +28,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 37
-        versionCode = 18
+        versionCode = 19
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
