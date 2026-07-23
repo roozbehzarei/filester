@@ -36,3 +36,8 @@ kotzilla.json
 
 # Android Profiling
 *.hprof
+
+# AI related files and folders
+.agent
+.gemini
+/openspec/
