@@ -58,6 +58,8 @@ import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 
+import com.roozbehzarei.filester.domain.model.HostProvider
+
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier, viewModel: SettingsViewModel = koinViewModel()
@@ -74,7 +76,9 @@ fun SettingsScreen(
         currentAppLocale = currentLocale,
         onThemeChanged = { viewModel.saveThemeModePref(it) },
         onDynamicColorChanged = { viewModel.saveDynamicColorPref(it) },
-        onTelemetryChanged = { viewModel.saveTelemetryPref(it) })
+        onTelemetryChanged = { viewModel.saveTelemetryPref(it) },
+        onHostProviderChanged = { viewModel.saveHostProviderPref(it) }
+    )
 }
 
 @Composable
@@ -85,7 +89,8 @@ private fun SettingsContent(
     currentAppLocale: Locale,
     onThemeChanged: (Theme) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
-    onTelemetryChanged: (Boolean) -> Unit
+    onTelemetryChanged: (Boolean) -> Unit,
+    onHostProviderChanged: (HostProvider) -> Unit
 ) {
 
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
@@ -105,19 +110,33 @@ private fun SettingsContent(
     }
 
     if (shouldShowHostingDialog) {
-        val catboxLabel = stringResource(R.string.settings_hosting_service_catbox_litterbox)
+        val catboxLabel = stringResource(R.string.settings_hosting_service_litterbox)
         val catboxDesc =
-            stringResource(R.string.settings_hosting_service_catbox_litterbox_description)
+            stringResource(R.string.settings_hosting_service_litterbox_description)
+        val uguuLabel = stringResource(R.string.settings_hosting_service_uguu)
+        val uguuDesc = stringResource(R.string.settings_hosting_service_uguu_description)
+        val providers = listOf(HostProvider.CATBOX, HostProvider.UGUU)
+
         SingleChoiceDialog(
             title = stringResource(R.string.settings_label_hosting_service),
-            options = listOf(catboxLabel),
-            initialSelection = catboxLabel,
-            optionLabel = { it },
-            optionDescription = { option ->
-                if (option == catboxLabel) catboxDesc else null
+            options = providers,
+            initialSelection = uiState.hostProvider,
+            optionLabel = { provider ->
+                when (provider) {
+                    HostProvider.CATBOX -> catboxLabel
+                    HostProvider.UGUU -> uguuLabel
+                }
+            },
+            optionDescription = { provider ->
+                when (provider) {
+                    HostProvider.CATBOX -> catboxDesc
+                    HostProvider.UGUU -> uguuDesc
+                }
             },
             onDismissRequest = { shouldShowHostingDialog = false },
-            onConfirm = {})
+            onConfirm = { selectedProvider ->
+                onHostProviderChanged(selectedProvider)
+            })
     }
     Column(modifier = modifier) {
         SettingsItem(
@@ -126,7 +145,10 @@ private fun SettingsContent(
                 .padding(bottom = 8.dp)
                 .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_hosting_service),
-            description = stringResource(R.string.settings_hosting_service_catbox_litterbox),
+            description = when (uiState.hostProvider) {
+                HostProvider.CATBOX -> stringResource(R.string.settings_hosting_service_litterbox)
+                HostProvider.UGUU -> stringResource(R.string.settings_hosting_service_uguu)
+            },
             icon = Icons.Outlined.Cloud,
             options = null,
             onClick = { shouldShowHostingDialog = true },
@@ -298,13 +320,17 @@ private fun SettingsContentPreview() {
             SettingsContent(
                 modifier = Modifier.fillMaxSize(),
                 uiState = (SettingsUiState(
-                    themeMode = Theme.Default, isDynamicColor = false, isTelemetryEnabled = false
+                    themeMode = Theme.Default,
+                    isDynamicColor = false,
+                    isTelemetryEnabled = false,
+                    hostProvider = HostProvider.CATBOX
                 )),
                 appLocales = emptyList(),
                 currentAppLocale = LocalConfiguration.current.locales.get(0),
                 onThemeChanged = {},
                 onDynamicColorChanged = {},
-                onTelemetryChanged = {})
+                onTelemetryChanged = {},
+                onHostProviderChanged = {})
         }
     }
 }

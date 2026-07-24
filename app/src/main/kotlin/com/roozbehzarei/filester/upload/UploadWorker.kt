@@ -12,8 +12,8 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
-import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.domain.model.RemoteResource
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.domain.service.AnalyticsService
 import kotlinx.coroutines.CancellationException
@@ -74,7 +74,7 @@ class UploadWorker(
                 }
             }
             val result = fileRepository.uploadFile(fileToUpload).onEach { result ->
-                if (result is CatboxResult.Loading) {
+                if (result is RemoteResource.Loading) {
                     setForeground(
                         createForegroundInfo(
                             title = applicationContext.getString(R.string.notif_title_in_progress),
@@ -84,12 +84,12 @@ class UploadWorker(
                     )
                     setProgress(workDataOf(KEY_WORK_PROGRESS to result.progress))
                 }
-            }.first { it !is CatboxResult.Loading }
+            }.first { it !is RemoteResource.Loading }
 
             fileToUpload.delete()
 
             return when (result) {
-                is CatboxResult.Error -> {
+                is RemoteResource.Error -> {
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
                         title = applicationContext.getString(R.string.notif_title_upload_failed),
@@ -99,12 +99,12 @@ class UploadWorker(
                     Result.failure()
                 }
 
-                is CatboxResult.Success -> {
+                is RemoteResource.Success -> {
                     val uploadedTime = System.currentTimeMillis()
                     val expirationTime = uploadedTime + TimeUnit.HOURS.toMillis(72)
                     val uploadedFile = File(
                         name = fileName,
-                        downloadUrl = result.url,
+                        downloadUrl = result.data,
                         size = fileSize,
                         mimeType = fileType,
                         uploadedAt = uploadedTime,

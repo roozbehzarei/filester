@@ -38,7 +38,9 @@
 
     <!-- Settings Screen -->
     <string name="settings_label_hosting_service">سرویس میزبانی فایل</string>
-    <string name="settings_hosting_service_catbox_litterbox_description">• فایل تا حجم ۱ گیگابایت مجاز است\n• فایل‌های بارگذاری‌شده پس از ۷۲ ساعت منقضی می‌شوند\n✗ پسوندهای .exe، .scr، .cpl، .doc* و .jar مجاز نیستند</string>
+    <string name="settings_hosting_service_litterbox_description">• فایل تا حجم ۱ گیگابایت مجاز است\n• فایل‌های بارگذاری‌شده پس از ۷۲ ساعت منقضی می‌شوند\n✗ پسوندهای .exe، .scr، .cpl، .doc* و .jar مجاز نیستند</string>
+    <string name="settings_hosting_service_uguu" translatable="false">Uguu</string>
+    <string name="settings_hosting_service_uguu_description">• حداکثر حجم مجاز فایل ۱۲۸ مگابایت است\n• انقضای فایل‌ها پس از ۳ ساعت\n✗ پسوندهای zip، 7z، rar، pdf، exe، msi، html، svg و jar مجاز نیستند</string>
     <string name="settings_label_language">زبان</string>
     <string name="settings_label_theme">پوسته</string>
     <string name="settings_label_dark">تاریک</string>

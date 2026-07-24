@@ -2,6 +2,7 @@ package com.roozbehzarei.filester.presentation.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,12 +19,14 @@ class SettingsViewModel(
         combine(
             getDynamicColorsPreference(),
             getThemePreference(),
-            getTelemetryPreference()
-        ) { isDynamicColor, themeMode, isTelemetryEnabled ->
+            getTelemetryPreference(),
+            getHostProviderPreference()
+        ) { isDynamicColor, themeMode, isTelemetryEnabled, hostProvider ->
             SettingsUiState(
                 themeMode = themeMode,
                 isDynamicColor = isDynamicColor,
-                isTelemetryEnabled = isTelemetryEnabled
+                isTelemetryEnabled = isTelemetryEnabled,
+                hostProvider = hostProvider
             )
         }.stateIn(
             scope = viewModelScope,
@@ -31,7 +34,8 @@ class SettingsViewModel(
             initialValue = SettingsUiState(
                 themeMode = Theme.Default,
                 isDynamicColor = false,
-                isTelemetryEnabled = false
+                isTelemetryEnabled = false,
+                hostProvider = HostProvider.CATBOX
             )
         )
     }
@@ -51,6 +55,12 @@ class SettingsViewModel(
     fun saveTelemetryPref(enabled: Boolean) {
         viewModelScope.launch {
             userPreferencesRepository.saveTelemetryPreference(enabled)
+        }
+    }
+
+    fun saveHostProviderPref(hostProvider: HostProvider) {
+        viewModelScope.launch {
+            userPreferencesRepository.saveHostProviderPreference(hostProvider)
         }
     }
 }

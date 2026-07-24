@@ -40,8 +40,10 @@
 
     <!-- Settings Screen -->
     <string name="settings_label_hosting_service">File hosting service</string>
-    <string name="settings_hosting_service_catbox_litterbox" translatable="false">Catbox Litterbox</string>
-    <string name="settings_hosting_service_catbox_litterbox_description">• File size up to 1 GB is allowed\n• Uploads expire after 72 hours\n✗ .exe, .scr, .cpl, .doc*, and .jar extensions are not allowed</string>
+    <string name="settings_hosting_service_litterbox" translatable="false">Litterbox</string>
+    <string name="settings_hosting_service_litterbox_description">• File size up to 1 GB is allowed\n• Uploads expire after 72 hours\n✗ exe, scr, cpl, doc*, and jar extensions are not allowed</string>
+    <string name="settings_hosting_service_uguu" translatable="false">Uguu</string>
+    <string name="settings_hosting_service_uguu_description">• File size up to 128 MiB is allowed\n• Files expire after 3 hours\n✗ zip, 7z, rar, pdf, exe, msi, html, svg and jar extensions are not allowed</string>
     <string name="settings_label_language">Language</string>
     <string name="settings_label_theme">Theme</string>
     <string name="settings_label_dark">Dark</string>

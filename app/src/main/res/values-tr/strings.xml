@@ -37,7 +37,9 @@
 
     <!-- Settings Screen -->
     <string name="settings_label_hosting_service">Dosya barındırma hizmeti</string>
-    <string name="settings_hosting_service_catbox_litterbox_description">• 1 GB\'a kadar dosya boyutuna izin verilir\n• Yüklemelerin süresi 72 saat sonra dolar\n✗ .exe, .scr, .cpl, .doc* ve .jar uzantılarına izin verilmez</string>
+    <string name="settings_hosting_service_litterbox_description">• 1 GB\'a kadar dosya boyutuna izin verilir\n• Yüklemelerin süresi 72 saat sonra dolar\n✗ exe, scr, cpl, doc* ve jar uzantılarına izin verilmez</string>
+    <string name="settings_hosting_service_uguu" translatable="false">Uguu</string>
+    <string name="settings_hosting_service_uguu_description">• 128 MiB\'a kadar dosya boyutuna izin verilir\n• Dosyaların süresi 3 saat sonra dolar\n✗ zip, 7z, rar, pdf, exe, msi, html, svg ve jar uzantılarına izin verilmez</string>
     <string name="settings_label_language">Dil</string>
     <string name="settings_label_theme">Tema</string>
     <string name="settings_label_dark">Koyu</string>

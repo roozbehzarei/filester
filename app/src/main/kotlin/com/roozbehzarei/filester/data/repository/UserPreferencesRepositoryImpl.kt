@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +23,7 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey("is_dynamic_colors")
         val THEME_KEY = intPreferencesKey("theme_mode")
         val TELEMETRY_KEY = booleanPreferencesKey("telemetry")
+        val HOST_PROVIDER_KEY = stringPreferencesKey("host_provider")
     }
 
     override fun getDynamicColorsPreference(): Flow<Boolean> =
@@ -35,6 +38,12 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
     override fun getTelemetryPreference(): Flow<Boolean> =
         context.dataStore.data.map { preferences ->
             preferences[TELEMETRY_KEY] == true
+        }
+
+    override fun getHostProviderPreference(): Flow<HostProvider> =
+        context.dataStore.data.map { preferences ->
+            val name = preferences[HOST_PROVIDER_KEY]
+            runCatching { HostProvider.valueOf(name.orEmpty()) }.getOrDefault(HostProvider.CATBOX)
         }
 
     override suspend fun saveDynamicColorsPreference(isDynamic: Boolean) {
@@ -52,6 +61,12 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
     override suspend fun saveTelemetryPreference(isEnabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[TELEMETRY_KEY] = isEnabled
+        }
+    }
+
+    override suspend fun saveHostProviderPreference(hostProvider: HostProvider) {
+        context.dataStore.edit { preferences ->
+            preferences[HOST_PROVIDER_KEY] = hostProvider.name
         }
     }
 
