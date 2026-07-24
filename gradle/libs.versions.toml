@@ -4,21 +4,20 @@ activity = "1.13.0"
 agp = "9.2.1"
 browser = "1.10.0"
 dokka = "2.2.0"
-compose-bom = "2026.06.00"
+compose-bom = "2026.06.01"
 core = "1.19.0"
 dataStore = "1.2.1"
 documentfile = "1.1.0"
-firebaseBom = "34.12.0"
-firebaseCrashlytics = "3.0.7"
-googleFonts = "1.10.6"
+firebaseBom = "34.16.0"
+googleFonts = "1.12.0-beta02"
 koin = "4.2.2"
-koin-plugin = "1.0.0-RC1"
+koin-plugin = "1.0.2"
 kotlin = "2.3.10"
 kotlinx-serialization = "1.11.0"
-kotzilla = "2.2.4"
+kotzilla = "2.3.1"
 ksp = "2.3.6"
-ktor = "3.4.2"
-lifecycle = "2.10.0"
+ktor = "3.5.1"
+lifecycle = "2.11.0"
 media3 = "1.10.1"
 navigation = "2.9.8"
 room = "2.8.4"
@@ -67,7 +66,6 @@ slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plugin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
