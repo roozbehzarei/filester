@@ -1,7 +1,7 @@
 package com.roozbehzarei.filester.di
 
 import com.roozbehzarei.filester.BuildConfig
-import com.roozbehzarei.filester.data.network.catbox.CatboxApi
+import com.roozbehzarei.filester.data.network.litterbox.LitterboxApi
 import com.roozbehzarei.filester.data.network.uguu.UguuApi
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -44,6 +44,6 @@ private fun createHttpClient(): HttpClient =
 
 val networkModule = module {
     single { create(::createHttpClient) }
-    single<CatboxApi>()
+    single<LitterboxApi>()
     single<UguuApi>()
 }

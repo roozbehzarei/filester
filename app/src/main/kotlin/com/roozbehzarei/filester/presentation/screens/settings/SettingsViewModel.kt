@@ -35,7 +35,7 @@ class SettingsViewModel(
                 themeMode = Theme.Default,
                 isDynamicColor = false,
                 isTelemetryEnabled = false,
-                hostProvider = HostProvider.CATBOX
+                hostProvider = HostProvider.LITTERBOX
             )
         )
     }

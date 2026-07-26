@@ -71,7 +71,9 @@ class MainViewModel(
     }
 
     fun initializeUpload(uri: Uri, fileName: String) {
-        uploadManager.start(uri)
+        viewModelScope.launch {
+            uploadManager.start(uri)
+        }
         _mainUiState.update {
             it.copy(uploadingFileName = fileName)
         }

@@ -1,18 +1,24 @@
 package com.roozbehzarei.filester.upload
 
 import android.net.Uri
-import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_FILE_URI
+import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_HOST_PROVIDER
 import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_WORK_NAME
 import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_WORK_PROGRESS
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class UploadManagerImpl(private val workManager: WorkManager) : UploadManager {
+class UploadManagerImpl(
+    private val workManager: WorkManager,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : UploadManager {
 
     override val status: Flow<UploadStatus> =
         workManager.getWorkInfosForUniqueWorkFlow(KEY_WORK_NAME).map { workInfos ->
@@ -32,8 +38,12 @@ class UploadManagerImpl(private val workManager: WorkManager) : UploadManager {
             }
         }
 
-    override fun start(uri: Uri) {
-        val inputData = Data.Builder().putString(KEY_FILE_URI, uri.toString()).build()
+    override suspend fun start(uri: Uri) {
+        val hostProvider = userPreferencesRepository.getHostProviderPreference().first()
+        val inputData = workDataOf(
+            KEY_FILE_URI to uri.toString(),
+            KEY_HOST_PROVIDER to hostProvider.id
+        )
         val workRequest = OneTimeWorkRequestBuilder<UploadWorker>().setInputData(inputData).build()
         workManager.enqueueUniqueWork(
             KEY_WORK_NAME, ExistingWorkPolicy.REPLACE, workRequest

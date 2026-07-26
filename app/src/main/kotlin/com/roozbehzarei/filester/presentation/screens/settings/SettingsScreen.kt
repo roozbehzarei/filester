@@ -110,12 +110,17 @@ private fun SettingsContent(
     }
 
     if (shouldShowHostingDialog) {
-        val catboxLabel = stringResource(R.string.settings_hosting_service_litterbox)
-        val catboxDesc =
-            stringResource(R.string.settings_hosting_service_litterbox_description)
+        val litterboxLabel = stringResource(R.string.settings_hosting_service_litterbox)
+        val litterboxDesc = stringResource(
+            R.string.settings_hosting_service_litterbox_description,
+            HostProvider.LITTERBOX.expirationHours
+        )
         val uguuLabel = stringResource(R.string.settings_hosting_service_uguu)
-        val uguuDesc = stringResource(R.string.settings_hosting_service_uguu_description)
-        val providers = listOf(HostProvider.CATBOX, HostProvider.UGUU)
+        val uguuDesc = stringResource(
+            R.string.settings_hosting_service_uguu_description,
+            HostProvider.UGUU.expirationHours
+        )
+        val providers = HostProvider.entries
 
         SingleChoiceDialog(
             title = stringResource(R.string.settings_label_hosting_service),
@@ -123,13 +128,13 @@ private fun SettingsContent(
             initialSelection = uiState.hostProvider,
             optionLabel = { provider ->
                 when (provider) {
-                    HostProvider.CATBOX -> catboxLabel
+                    HostProvider.LITTERBOX -> litterboxLabel
                     HostProvider.UGUU -> uguuLabel
                 }
             },
             optionDescription = { provider ->
                 when (provider) {
-                    HostProvider.CATBOX -> catboxDesc
+                    HostProvider.LITTERBOX -> litterboxDesc
                     HostProvider.UGUU -> uguuDesc
                 }
             },
@@ -146,7 +151,7 @@ private fun SettingsContent(
                 .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_hosting_service),
             description = when (uiState.hostProvider) {
-                HostProvider.CATBOX -> stringResource(R.string.settings_hosting_service_litterbox)
+                HostProvider.LITTERBOX -> stringResource(R.string.settings_hosting_service_litterbox)
                 HostProvider.UGUU -> stringResource(R.string.settings_hosting_service_uguu)
             },
             icon = Icons.Outlined.Cloud,
@@ -323,7 +328,7 @@ private fun SettingsContentPreview() {
                     themeMode = Theme.Default,
                     isDynamicColor = false,
                     isTelemetryEnabled = false,
-                    hostProvider = HostProvider.CATBOX
+                    hostProvider = HostProvider.LITTERBOX
                 )),
                 appLocales = emptyList(),
                 currentAppLocale = LocalConfiguration.current.locales.get(0),

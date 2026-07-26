@@ -2,6 +2,7 @@ package com.roozbehzarei.filester.data.network.uguu
 
 import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
+import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.RemoteResource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -53,7 +54,9 @@ class UguuApi(
             val uploadedUrl = responseBody.files?.firstOrNull()?.url
 
             if (responseBody.success && !uploadedUrl.isNullOrBlank()) {
-                trySend(RemoteResource.Success(uploadedUrl))
+                trySend(
+                    RemoteResource.Success(uploadedUrl, HostProvider.UGUU.expirationHours)
+                )
             } else {
                 trySend(RemoteResource.Error())
             }

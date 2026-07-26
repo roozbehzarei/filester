@@ -1,7 +1,8 @@
-package com.roozbehzarei.filester.data.network.catbox
+package com.roozbehzarei.filester.data.network.litterbox
 
 import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
+import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.RemoteResource
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.onUpload
@@ -21,20 +22,20 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.io.buffered
 import java.io.File
 
-private const val CATBOX_URL = "https://litterbox.catbox.moe"
+private const val LITTERBOX_URL = "https://litterbox.catbox.moe"
 
-class CatboxApi(private val client: HttpClient) {
+class LitterboxApi(private val client: HttpClient) {
 
     fun uploadFile(file: File): Flow<RemoteResource<String>> = channelFlow {
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension).orEmpty()
         val fileSize = file.length()
         try {
-            val response: HttpResponse = client.post("${CATBOX_URL}/resources/internals/api.php") {
+            val response: HttpResponse = client.post("${LITTERBOX_URL}/resources/internals/api.php") {
                 setBody(
                     MultiPartFormDataContent(
                         formData {
                             append("reqtype", "fileupload")
-                            append("time", "72h")
+                            append("time", "${HostProvider.LITTERBOX.expirationHours}h")
                             append("fileToUpload", InputProvider(fileSize) {
                                 file.inputStream().asInput().buffered()
                             }, Headers.build {
@@ -48,7 +49,9 @@ class CatboxApi(private val client: HttpClient) {
                     trySend(RemoteResource.Loading(percentage))
                 }
             }
-            trySend(RemoteResource.Success(response.bodyAsText()))
+            trySend(
+                RemoteResource.Success(response.bodyAsText(), HostProvider.LITTERBOX.expirationHours)
+            )
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) e.printStackTrace()
             trySend(RemoteResource.Error(e.message.toString()))

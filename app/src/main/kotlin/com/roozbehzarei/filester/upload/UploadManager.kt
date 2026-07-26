@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface UploadManager {
 
     val status : Flow<UploadStatus>
-    fun start(uri: Uri)
+    suspend fun start(uri: Uri)
     fun cancel()
     fun prune()
 }

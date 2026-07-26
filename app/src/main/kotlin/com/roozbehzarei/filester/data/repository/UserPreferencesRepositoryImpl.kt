@@ -42,8 +42,7 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
 
     override fun getHostProviderPreference(): Flow<HostProvider> =
         context.dataStore.data.map { preferences ->
-            val name = preferences[HOST_PROVIDER_KEY]
-            runCatching { HostProvider.valueOf(name.orEmpty()) }.getOrDefault(HostProvider.CATBOX)
+            HostProvider.fromId(preferences[HOST_PROVIDER_KEY]) ?: HostProvider.LITTERBOX
         }
 
     override suspend fun saveDynamicColorsPreference(isDynamic: Boolean) {
@@ -66,7 +65,7 @@ class UserPreferencesRepositoryImpl(private val context: Context) : UserPreferen
 
     override suspend fun saveHostProviderPreference(hostProvider: HostProvider) {
         context.dataStore.edit { preferences ->
-            preferences[HOST_PROVIDER_KEY] = hostProvider.name
+            preferences[HOST_PROVIDER_KEY] = hostProvider.id
         }
     }
 
