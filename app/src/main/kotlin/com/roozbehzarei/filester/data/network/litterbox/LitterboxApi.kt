@@ -30,27 +30,34 @@ class LitterboxApi(private val client: HttpClient) {
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension).orEmpty()
         val fileSize = file.length()
         try {
-            val response: HttpResponse = client.post("${LITTERBOX_URL}/resources/internals/api.php") {
-                setBody(
-                    MultiPartFormDataContent(
-                        formData {
-                            append("reqtype", "fileupload")
-                            append("time", "${HostProvider.LITTERBOX.expirationHours}h")
-                            append("fileToUpload", InputProvider(fileSize) {
-                                file.inputStream().asInput().buffered()
-                            }, Headers.build {
-                                append(HttpHeaders.ContentType, mimeType)
-                                append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
+            val response: HttpResponse =
+                client.post("${LITTERBOX_URL}/resources/internals/api.php") {
+                    setBody(
+                        MultiPartFormDataContent(
+                            formData {
+                                append("reqtype", "fileupload")
+                                append("time", "${HostProvider.LITTERBOX.expirationHours}h")
+                                append("fileToUpload", InputProvider(fileSize) {
+                                    file.inputStream().asInput().buffered()
+                                }, Headers.build {
+                                    append(HttpHeaders.ContentType, mimeType)
+                                    append(
+                                        HttpHeaders.ContentDisposition, "filename=\"${file.name}\""
+                                    )
+                                })
                             })
-                        })
-                )
-                onUpload { bytesSentTotal, contentLength ->
-                    val percentage = (bytesSentTotal * 100 / fileSize).toInt()
-                    trySend(RemoteResource.Loading(percentage))
+                    )
+                    onUpload { bytesSentTotal, contentLength ->
+                        if (contentLength != null && contentLength > 0) {
+                            val percentage = (bytesSentTotal * 100 / contentLength).toInt()
+                            trySend(RemoteResource.Loading(percentage))
+                        }
+                    }
                 }
-            }
             trySend(
-                RemoteResource.Success(response.bodyAsText(), HostProvider.LITTERBOX.expirationHours)
+                RemoteResource.Success(
+                    response.bodyAsText(), HostProvider.LITTERBOX.expirationHours
+                )
             )
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) e.printStackTrace()

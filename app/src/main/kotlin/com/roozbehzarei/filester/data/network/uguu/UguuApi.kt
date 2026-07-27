@@ -35,17 +35,18 @@ class UguuApi(
             val response: HttpResponse = client.post(UGUU_URL) {
                 setBody(
                     MultiPartFormDataContent(
-                    formData {
-                        append("files[]", InputProvider(fileSize) {
-                            file.inputStream().asInput().buffered()
-                        }, Headers.build {
-                            append(HttpHeaders.ContentType, mimeType)
-                            append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
+                        formData {
+                            append("files[]", InputProvider(fileSize) {
+                                file.inputStream().asInput().buffered()
+                            }, Headers.build {
+                                append(HttpHeaders.ContentType, mimeType)
+                                append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
+                            })
                         })
-                    }))
+                )
                 onUpload { bytesSentTotal, contentLength ->
-                    if (fileSize > 0) {
-                        val percentage = (bytesSentTotal * 100 / fileSize).toInt()
+                    if (contentLength != null && contentLength > 0) {
+                        val percentage = (bytesSentTotal * 100 / contentLength).toInt()
                         trySend(RemoteResource.Loading(percentage))
                     }
                 }
