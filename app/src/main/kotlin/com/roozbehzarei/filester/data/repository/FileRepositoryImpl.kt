@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.map
 
 class FileRepositoryImpl(
     private val fileDao: FileDao,
-    private val litterboxApi: LitterboxApi,
-    private val uguuApi: UguuApi
+    private val litterboxApi: Lazy<LitterboxApi>,
+    private val uguuApi: Lazy<UguuApi>
 ) : FileRepository {
 
     override fun getFiles(): Flow<List<File>> =
@@ -26,8 +26,8 @@ class FileRepositoryImpl(
         hostProvider: HostProvider
     ): Flow<RemoteResource<String>> =
         when (hostProvider) {
-            HostProvider.LITTERBOX -> litterboxApi.uploadFile(file)
-            HostProvider.UGUU -> uguuApi.uploadFile(file)
+            HostProvider.LITTERBOX -> litterboxApi.value.uploadFile(file)
+            HostProvider.UGUU -> uguuApi.value.uploadFile(file)
         }
 
     override suspend fun saveFile(file: File) {

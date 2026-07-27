@@ -1,6 +1,7 @@
 package com.roozbehzarei.filester
 
 import android.app.Application
+import com.roozbehzarei.filester.di.dataStoreModule
 import com.roozbehzarei.filester.di.databaseModule
 import com.roozbehzarei.filester.di.networkModule
 import com.roozbehzarei.filester.di.presentationModule
@@ -39,6 +40,7 @@ class BaseApplication : Application(), KoinComponent {
             workManagerFactory()
             modules(
                 databaseModule,
+                dataStoreModule,
                 networkModule,
                 repositoryModule,
                 serviceModule,
