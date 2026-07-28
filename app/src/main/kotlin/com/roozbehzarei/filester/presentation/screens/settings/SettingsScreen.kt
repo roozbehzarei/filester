@@ -307,7 +307,7 @@ private fun getApplicationLocales(context: Context): List<Locale> {
         LocaleConfig(context).supportedLocales ?: LocaleList.getEmptyLocaleList()
     } else {
         val englishLocale = Locale.Builder().setLocale(Locale.ENGLISH).build()
-        val persianLocale = Locale.Builder().setLanguageTag("fa-rIR").build()
+        val persianLocale = Locale.Builder().setLanguageTag("fa-IR").build()
         val turkishLocale = Locale.Builder().setLanguageTag("tr").build()
         LocaleList(englishLocale, persianLocale, turkishLocale)
     }
