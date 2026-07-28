@@ -174,8 +174,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     // Apache Log4j
     implementation(libs.slf4j.android)
-    // Accompanist
-    implementation(libs.accompanist.permissions)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
     // Firebase
