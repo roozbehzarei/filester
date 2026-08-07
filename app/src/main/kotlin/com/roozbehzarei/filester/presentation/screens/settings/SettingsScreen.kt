@@ -77,6 +77,7 @@ fun SettingsScreen(
         onThemeChanged = { viewModel.saveThemeModePref(it) },
         onDynamicColorChanged = { viewModel.saveDynamicColorPref(it) },
         onTelemetryChanged = { viewModel.saveTelemetryPref(it) },
+        onMonitoringChanged = { viewModel.saveMonitoringPref(it) },
         onHostProviderChanged = { viewModel.saveHostProviderPref(it) }
     )
 }
@@ -90,6 +91,7 @@ private fun SettingsContent(
     onThemeChanged: (Theme) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
     onTelemetryChanged: (Boolean) -> Unit,
+    onMonitoringChanged: (Boolean) -> Unit,
     onHostProviderChanged: (HostProvider) -> Unit
 ) {
 
@@ -229,7 +231,9 @@ private fun SettingsContent(
                 icon = Icons.Outlined.BugReport,
                 options = { modifier ->
                     Switch(
-                        modifier = modifier, checked = true, enabled = false, onCheckedChange = {})
+                        modifier = modifier,
+                        checked = uiState.isMonitoringEnabled,
+                        onCheckedChange = { onMonitoringChanged(it) })
                 },
                 onClick = null
             )
@@ -328,6 +332,7 @@ private fun SettingsContentPreview() {
                     themeMode = Theme.Default,
                     isDynamicColor = false,
                     isTelemetryEnabled = false,
+                    isMonitoringEnabled = true,
                     hostProvider = HostProvider.LITTERBOX
                 )),
                 appLocales = emptyList(),
@@ -335,6 +340,7 @@ private fun SettingsContentPreview() {
                 onThemeChanged = {},
                 onDynamicColorChanged = {},
                 onTelemetryChanged = {},
+                onMonitoringChanged = {},
                 onHostProviderChanged = {})
         }
     }

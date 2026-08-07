@@ -50,6 +50,9 @@ class BaseApplication : Application(), KoinComponent {
             setupMonitoring()
         }
 
+        // Off the main thread: recording consent flushes to storage synchronously.
+        applicationScope.launch { seedMonitoringConsent() }
+
         if (BuildConfig.DEBUG.not()) {
             applicationScope.launch {
                 userPreferencesRepository.getTelemetryPreference().collect { isEnabled ->
