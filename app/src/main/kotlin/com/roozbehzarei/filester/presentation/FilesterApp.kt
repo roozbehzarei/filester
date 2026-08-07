@@ -3,7 +3,6 @@ package com.roozbehzarei.filester.presentation
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -32,11 +31,12 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.roozbehzarei.filester.R
+import com.roozbehzarei.filester.presentation.components.rememberCustomTabsIntent
 import com.roozbehzarei.filester.presentation.navigation.FilesterNavHost
 import com.roozbehzarei.filester.presentation.navigation.SettingsRoute
 import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
 
-private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
+private const val STATUS_URL = "https://filester.roozbehzarei.com/status"
 
 /**
  * Main composable function that serves as the entry point for the Filester application.
@@ -51,6 +51,7 @@ private const val STATUS_URL = "https://roozbehzarei.github.io/filester-status"
 @Composable
 fun FilesterApp(context: Context) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val customTabsIntent = rememberCustomTabsIntent()
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Check if current route is the main screen
@@ -72,9 +73,10 @@ fun FilesterApp(context: Context) {
                 onNavigateUp = { navController.navigateUp() },
                 onNetworkStatusClicked = {
                     try {
-                        val intent = CustomTabsIntent.Builder().build()
-                        intent.launchUrl(
-                            context, STATUS_URL.toUri()
+                        customTabsIntent.launchUrl(
+                            context,
+                            STATUS_URL.toUri().buildUpon()
+                                .appendQueryParameter("app", "true").build()
                         )
                     } catch (_: Exception) {
                         Toast.makeText(

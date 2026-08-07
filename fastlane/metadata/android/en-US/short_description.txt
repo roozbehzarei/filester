@@ -1,1 +1,1 @@
-A secure, accessible cloud storage app for android
+Temporary cloud storage for fast, private file sharing

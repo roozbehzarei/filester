@@ -8,7 +8,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
@@ -252,6 +254,14 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+/**
+ * The resolved dark/light state of [FilesterAppTheme], accounting for the user's theme preference.
+ *
+ * Prefer this over [isSystemInDarkTheme] for anything that must match the app rather than
+ * the system, e.g. the color scheme of a Custom Tab.
+ */
+val LocalIsDarkTheme = staticCompositionLocalOf { false }
+
 @Composable
 fun FilesterAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -269,10 +279,12 @@ fun FilesterAppTheme(
         else -> lightScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = AppTypography,
-        content = content
-    )
+    CompositionLocalProvider(LocalIsDarkTheme provides darkTheme) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = AppTypography,
+            content = content
+        )
+    }
 }
 

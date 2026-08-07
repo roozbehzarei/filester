@@ -12,8 +12,9 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
-import com.roozbehzarei.filester.data.network.catbox.CatboxResult
 import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.domain.model.HostProvider
+import com.roozbehzarei.filester.domain.model.RemoteResource
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.domain.service.AnalyticsService
 import kotlinx.coroutines.CancellationException
@@ -51,6 +52,8 @@ class UploadWorker(
         )
 
         val inputFileUri = inputData.getString(KEY_FILE_URI)?.toUri() ?: return Result.failure()
+        val hostProvider = HostProvider.fromId(inputData.getString(KEY_HOST_PROVIDER))
+            ?: return Result.failure()
         val inputFile = DocumentFile.fromSingleUri(context, inputFileUri) ?: return Result.failure()
         val fileName =
             inputFile.name?.takeIf { it.isNotBlank() } ?: "file_${System.currentTimeMillis()}"
@@ -73,8 +76,8 @@ class UploadWorker(
                     }
                 }
             }
-            val result = fileRepository.uploadFile(fileToUpload).onEach { result ->
-                if (result is CatboxResult.Loading) {
+            val result = fileRepository.uploadFile(fileToUpload, hostProvider).onEach { result ->
+                if (result is RemoteResource.Loading) {
                     setForeground(
                         createForegroundInfo(
                             title = applicationContext.getString(R.string.notif_title_in_progress),
@@ -84,12 +87,12 @@ class UploadWorker(
                     )
                     setProgress(workDataOf(KEY_WORK_PROGRESS to result.progress))
                 }
-            }.first { it !is CatboxResult.Loading }
+            }.first { it !is RemoteResource.Loading }
 
             fileToUpload.delete()
 
             return when (result) {
-                is CatboxResult.Error -> {
+                is RemoteResource.Error -> {
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
                         title = applicationContext.getString(R.string.notif_title_upload_failed),
@@ -99,12 +102,13 @@ class UploadWorker(
                     Result.failure()
                 }
 
-                is CatboxResult.Success -> {
+                is RemoteResource.Success -> {
                     val uploadedTime = System.currentTimeMillis()
-                    val expirationTime = uploadedTime + TimeUnit.HOURS.toMillis(72)
+                    val expirationTime =
+                        uploadedTime + TimeUnit.HOURS.toMillis(result.expiresInHours)
                     val uploadedFile = File(
                         name = fileName,
-                        downloadUrl = result.url,
+                        downloadUrl = result.data,
                         size = fileSize,
                         mimeType = fileType,
                         uploadedAt = uploadedTime,
@@ -170,6 +174,7 @@ class UploadWorker(
 
     companion object {
         const val KEY_FILE_URI = "file_uri"
+        const val KEY_HOST_PROVIDER = "host_provider"
         const val KEY_WORK_NAME = "upload_work_name"
         const val KEY_WORK_PROGRESS = "upload_work_progress"
 

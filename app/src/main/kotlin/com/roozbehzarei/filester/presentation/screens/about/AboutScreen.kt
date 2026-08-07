@@ -1,8 +1,6 @@
 package com.roozbehzarei.filester.presentation.screens.about
 
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,8 +20,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -38,12 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
-import com.roozbehzarei.filester.domain.model.Theme
+import com.roozbehzarei.filester.presentation.components.rememberCustomTabsIntent
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
-import org.koin.compose.viewmodel.koinViewModel
 
 private enum class AboutUrls(val link: String) {
     DONATE("https://filester.roozbehzarei.com/donate.html"), PRIVACY_POLICY(
@@ -52,26 +46,10 @@ private enum class AboutUrls(val link: String) {
 }
 
 @Composable
-fun AboutScreen(
-    modifier: Modifier = Modifier, viewModel: AboutViewModel = koinViewModel()
-) {
+fun AboutScreen(modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isSystemInDarkTheme = isSystemInDarkTheme()
-    val isAppInDarkTheme = remember(uiState.themeMode, isSystemInDarkTheme) {
-        when (uiState.themeMode) {
-            Theme.Default -> isSystemInDarkTheme
-            Theme.Light -> false
-            Theme.Dark -> true
-        }
-    }
-    val intent = remember(isAppInDarkTheme) {
-        CustomTabsIntent.Builder().setColorScheme(
-            if (isAppInDarkTheme) CustomTabsIntent.COLOR_SCHEME_DARK
-            else CustomTabsIntent.COLOR_SCHEME_LIGHT
-        ).build()
-    }
+    val intent = rememberCustomTabsIntent()
 
     AboutContent(modifier = modifier, onDonateClick = {
         val uri = AboutUrls.DONATE.link.toUri()

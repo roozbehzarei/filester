@@ -1,6 +1,7 @@
 package com.roozbehzarei.filester
 
 import android.app.Application
+import com.roozbehzarei.filester.di.dataStoreModule
 import com.roozbehzarei.filester.di.databaseModule
 import com.roozbehzarei.filester.di.networkModule
 import com.roozbehzarei.filester.di.presentationModule
@@ -39,6 +40,7 @@ class BaseApplication : Application(), KoinComponent {
             workManagerFactory()
             modules(
                 databaseModule,
+                dataStoreModule,
                 networkModule,
                 repositoryModule,
                 serviceModule,
@@ -47,6 +49,9 @@ class BaseApplication : Application(), KoinComponent {
             )
             setupMonitoring()
         }
+
+        // Off the main thread: recording consent flushes to storage synchronously.
+        applicationScope.launch { seedMonitoringConsent() }
 
         if (BuildConfig.DEBUG.not()) {
             applicationScope.launch {

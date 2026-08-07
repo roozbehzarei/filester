@@ -1,0 +1,4 @@
+* NEW: Uguu storage provider
+* IMPROVEMENT: Revamped service status page — more accurate, more detailed, and now follows your preferred theme
+* FIX: Minor upload progress miscalculation
+* FIX: Not being able to switch to Persian language on devices running Android 12 or older

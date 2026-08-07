@@ -1,4 +1,4 @@
-val appVersionName = "3.0.3"
+val appVersionName = "3.1.0"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
@@ -18,6 +18,9 @@ plugins {
 
 if (isProprietaryDistribution) {
     apply(plugin = libs.plugins.kotzilla.get().pluginId)
+    configure<io.kotzilla.gradle.ext.KotzillaExtension> {
+        consentRequired.set(true)
+    }
 }
 
 android {
@@ -28,7 +31,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 37
-        versionCode = 19
+        versionCode = 20
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -170,10 +173,10 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
     // Apache Log4j
     implementation(libs.slf4j.android)
-    // Accompanist
-    implementation(libs.accompanist.permissions)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
     // Firebase
