@@ -21,8 +21,8 @@ fun KoinApplication.setupMonitoring() {
 }
 
 /**
- * Monitoring is opt-out, so a pending decision counts as enabled. [KotzillaSDK.getConsent]
- * returns `null` while no decision has been recorded yet.
+ * Monitoring is opt-out, so a pending decision counts as enabled.
+ * `KotzillaSDK.getConsent()` returns `null` while no decision has been recorded yet.
  */
 fun getMonitoringConsent(): Boolean = KotzillaSDK.getConsent() != KotzillaConsent.NOT_GRANTED
 
