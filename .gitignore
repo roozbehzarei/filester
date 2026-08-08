@@ -40,4 +40,5 @@ kotzilla.json
 # AI related files and folders
 .agent
 .gemini
+.codegraph
 /openspec/
