@@ -1,4 +1,4 @@
-val appVersionName = "3.1.0"
+val appVersionName = "3.1.1"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
@@ -18,9 +18,7 @@ plugins {
 
 if (isProprietaryDistribution) {
     apply(plugin = libs.plugins.kotzilla.get().pluginId)
-    configure<io.kotzilla.gradle.ext.KotzillaExtension> {
-        consentRequired.set(true)
-    }
+    configure<io.kotzilla.gradle.ext.KotzillaExtension> { consentRequired.set(true) }
 }
 
 android {
@@ -31,7 +29,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 24
         targetSdk = 37
-        versionCode = 20
+        versionCode = 21
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

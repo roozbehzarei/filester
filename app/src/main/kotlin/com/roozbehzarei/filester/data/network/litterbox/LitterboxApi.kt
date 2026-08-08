@@ -15,6 +15,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.isSuccess
 import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -27,7 +28,7 @@ private const val LITTERBOX_URL = "https://litterbox.catbox.moe"
 class LitterboxApi(private val client: HttpClient) {
 
     fun uploadFile(file: File): Flow<RemoteResource<String>> = channelFlow {
-        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension).orEmpty()
+        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
         val fileSize = file.length()
         try {
             val response: HttpResponse =
@@ -54,14 +55,19 @@ class LitterboxApi(private val client: HttpClient) {
                         }
                     }
                 }
-            trySend(
-                RemoteResource.Success(
-                    response.bodyAsText(), HostProvider.LITTERBOX.expirationHours
+            val body = response.bodyAsText().trim()
+            if (response.status.isSuccess() && body.startsWith("https://")) {
+                send(
+                    RemoteResource.Success(
+                        body, HostProvider.LITTERBOX.expirationHours
+                    )
                 )
-            )
+            } else {
+                send(RemoteResource.Error())
+            }
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) e.printStackTrace()
-            trySend(RemoteResource.Error(e.message.toString()))
+            send(RemoteResource.Error(e.message.toString()))
         } finally {
             close()
         }

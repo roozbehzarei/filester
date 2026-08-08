@@ -1,0 +1,3 @@
+* FIX: Successful uploads sometimes being reported as failed
+* FIX: Not being able to upload files with no extension
+* FIX: Litterbox error messages being saved to history as files
