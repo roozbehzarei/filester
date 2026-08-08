@@ -29,7 +29,7 @@ class UguuApi(
 ) {
 
     fun uploadFile(file: File): Flow<RemoteResource<String>> = channelFlow {
-        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension).orEmpty()
+        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
         val fileSize = file.length()
         try {
             val response: HttpResponse = client.post(UGUU_URL) {
@@ -55,15 +55,15 @@ class UguuApi(
             val uploadedUrl = responseBody.files?.firstOrNull()?.url
 
             if (responseBody.success && !uploadedUrl.isNullOrBlank()) {
-                trySend(
+                send(
                     RemoteResource.Success(uploadedUrl, HostProvider.UGUU.expirationHours)
                 )
             } else {
-                trySend(RemoteResource.Error())
+                send(RemoteResource.Error())
             }
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) e.printStackTrace()
-            trySend(RemoteResource.Error())
+            send(RemoteResource.Error())
         } finally {
             close()
         }
