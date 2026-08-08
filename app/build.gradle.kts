@@ -18,9 +18,7 @@ plugins {
 
 if (isProprietaryDistribution) {
     apply(plugin = libs.plugins.kotzilla.get().pluginId)
-    configure<io.kotzilla.gradle.ext.KotzillaExtension> {
-        consentRequired.set(true)
-    }
+    configure<io.kotzilla.gradle.ext.KotzillaExtension> { consentRequired.set(true) }
 }
 
 android {
