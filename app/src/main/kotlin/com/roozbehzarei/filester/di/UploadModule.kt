@@ -14,9 +14,10 @@ import org.koin.plugin.module.dsl.worker
 
 private fun provideWorkManager(context: Context) = WorkManager.getInstance(context)
 
-val workerModule = module {
-    single<UploadNotificationFactory>()
-    single<UploadManagerImpl>() bind UploadManager::class
-    single { create(::provideWorkManager) }
-    worker<UploadWorker>()
-}
+val workerModule =
+    module {
+        single<UploadNotificationFactory>()
+        single<UploadManagerImpl>() bind UploadManager::class
+        single { create(::provideWorkManager) }
+        worker<UploadWorker>()
+    }

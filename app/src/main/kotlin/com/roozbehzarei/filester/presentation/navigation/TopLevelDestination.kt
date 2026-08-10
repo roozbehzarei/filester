@@ -42,18 +42,18 @@ data object AboutRoute
  */
 enum class TopLevelDestination(
     val labelResource: Int,
-    val route: Any
+    val route: Any,
 ) {
     MAIN(
         labelResource = R.string.app_name,
-        route = MainRoute
+        route = MainRoute,
     ),
     SETTINGS(
         labelResource = R.string.settings,
-        route = SettingsRoute
+        route = SettingsRoute,
     ),
     ABOUT(
         labelResource = R.string.empty,
-        route = AboutRoute
-    )
+        route = AboutRoute,
+    ),
 }

@@ -5,7 +5,6 @@ import com.roozbehzarei.filester.domain.model.Theme
 import kotlinx.coroutines.flow.Flow
 
 interface UserPreferencesRepository {
-
     fun getDynamicColorsPreference(): Flow<Boolean>
 
     fun getThemePreference(): Flow<Theme>
@@ -21,5 +20,4 @@ interface UserPreferencesRepository {
     suspend fun saveTelemetryPreference(isEnabled: Boolean)
 
     suspend fun saveHostProviderPreference(hostProvider: HostProvider)
-
 }

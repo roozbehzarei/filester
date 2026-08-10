@@ -16,40 +16,41 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
-
     // The monitoring SDK persists consent itself, so it is the source of truth rather than a
     // preference of our own; this only mirrors it so the switch can recompose.
     private val monitoringConsent = MutableStateFlow(getMonitoringConsent())
 
-    val uiState: StateFlow<SettingsUiState> = with(userPreferencesRepository) {
-        combine(
-            getDynamicColorsPreference(),
-            getThemePreference(),
-            getTelemetryPreference(),
-            monitoringConsent,
-            getHostProviderPreference()
-        ) { isDynamicColor, themeMode, isTelemetryEnabled, isMonitoringEnabled, hostProvider ->
-            SettingsUiState(
-                themeMode = themeMode,
-                isDynamicColor = isDynamicColor,
-                isTelemetryEnabled = isTelemetryEnabled,
-                isMonitoringEnabled = isMonitoringEnabled,
-                hostProvider = hostProvider
+    val uiState: StateFlow<SettingsUiState> =
+        with(userPreferencesRepository) {
+            combine(
+                getDynamicColorsPreference(),
+                getThemePreference(),
+                getTelemetryPreference(),
+                monitoringConsent,
+                getHostProviderPreference(),
+            ) { isDynamicColor, themeMode, isTelemetryEnabled, isMonitoringEnabled, hostProvider ->
+                SettingsUiState(
+                    themeMode = themeMode,
+                    isDynamicColor = isDynamicColor,
+                    isTelemetryEnabled = isTelemetryEnabled,
+                    isMonitoringEnabled = isMonitoringEnabled,
+                    hostProvider = hostProvider,
+                )
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue =
+                    SettingsUiState(
+                        themeMode = Theme.Default,
+                        isDynamicColor = false,
+                        isTelemetryEnabled = false,
+                        isMonitoringEnabled = monitoringConsent.value,
+                        hostProvider = HostProvider.LITTERBOX,
+                    ),
             )
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = SettingsUiState(
-                themeMode = Theme.Default,
-                isDynamicColor = false,
-                isTelemetryEnabled = false,
-                isMonitoringEnabled = monitoringConsent.value,
-                hostProvider = HostProvider.LITTERBOX
-            )
-        )
-    }
+        }
 
     fun saveDynamicColorPref(enabled: Boolean) {
         viewModelScope.launch {
@@ -71,11 +72,12 @@ class SettingsViewModel(
 
     fun saveMonitoringPref(enabled: Boolean) {
         // Off the main thread: recording consent flushes to storage synchronously.
-        viewModelScope.launch(Dispatchers.IO) {
-            setMonitoringConsent(enabled)
-        }.invokeOnCompletion {
-            monitoringConsent.value = getMonitoringConsent()
-        }
+        viewModelScope
+            .launch(Dispatchers.IO) {
+                setMonitoringConsent(enabled)
+            }.invokeOnCompletion {
+                monitoringConsent.value = getMonitoringConsent()
+            }
     }
 
     fun saveHostProviderPref(hostProvider: HostProvider) {

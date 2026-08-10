@@ -7,12 +7,15 @@ import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create
 
 private fun createFileDatabase(context: Context) =
-    Room.databaseBuilder(context, FileDatabase::class.java, "FILE_DATABASE")
-        .addMigrations(FileDatabase.MIGRATION_2_3).build()
+    Room
+        .databaseBuilder(context, FileDatabase::class.java, "FILE_DATABASE")
+        .addMigrations(FileDatabase.MIGRATION_2_3)
+        .build()
 
 private fun createFileDao(database: FileDatabase) = database.fileDao()
 
-val databaseModule = module {
-    single { create(::createFileDatabase) }
-    single { create(::createFileDao) }
-}
+val databaseModule =
+    module {
+        single { create(::createFileDatabase) }
+        single { create(::createFileDao) }
+    }

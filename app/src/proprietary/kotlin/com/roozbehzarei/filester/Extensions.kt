@@ -7,7 +7,6 @@ import io.kotzilla.sdk.config.Environment
 import org.koin.core.KoinApplication
 
 fun KoinApplication.setupMonitoring() {
-
     monitoring {
         if (BuildConfig.DEBUG) {
             setEnvironment(Environment.Dev())
@@ -17,7 +16,6 @@ fun KoinApplication.setupMonitoring() {
             setDebugBuild(false)
         }
     }
-
 }
 
 /**
@@ -28,7 +26,7 @@ fun getMonitoringConsent(): Boolean = KotzillaSDK.getConsent() != KotzillaConsen
 
 fun setMonitoringConsent(isEnabled: Boolean) {
     KotzillaSDK.setConsent(
-        if (isEnabled) KotzillaConsent.GRANTED else KotzillaConsent.NOT_GRANTED
+        if (isEnabled) KotzillaConsent.GRANTED else KotzillaConsent.NOT_GRANTED,
     )
 }
 

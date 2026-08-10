@@ -7,7 +7,7 @@ import com.roozbehzarei.filester.data.network.litterbox.LitterboxApi
 import com.roozbehzarei.filester.data.network.uguu.UguuApi
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.model.HostProvider
-import com.roozbehzarei.filester.domain.model.RemoteResource
+import com.roozbehzarei.filester.domain.model.UploadResult
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,16 +15,14 @@ import kotlinx.coroutines.flow.map
 class FileRepositoryImpl(
     private val fileDao: FileDao,
     private val litterboxApi: Lazy<LitterboxApi>,
-    private val uguuApi: Lazy<UguuApi>
+    private val uguuApi: Lazy<UguuApi>,
 ) : FileRepository {
-
-    override fun getFiles(): Flow<List<File>> =
-        fileDao.getAll().map { entities -> entities.map { entity -> entity.toFile() } }
+    override fun getFiles(): Flow<List<File>> = fileDao.getAll().map { entities -> entities.map { entity -> entity.toFile() } }
 
     override fun uploadFile(
         file: java.io.File,
-        hostProvider: HostProvider
-    ): Flow<RemoteResource<String>> =
+        hostProvider: HostProvider,
+    ): Flow<UploadResult<String>> =
         when (hostProvider) {
             HostProvider.LITTERBOX -> litterboxApi.value.uploadFile(file)
             HostProvider.UGUU -> uguuApi.value.uploadFile(file)
@@ -37,5 +35,4 @@ class FileRepositoryImpl(
     override suspend fun deleteFile(file: File) {
         fileDao.delete(file.toFileEntity())
     }
-
 }

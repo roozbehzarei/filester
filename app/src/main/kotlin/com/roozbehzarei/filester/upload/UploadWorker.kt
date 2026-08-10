@@ -14,7 +14,7 @@ import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.model.HostProvider
-import com.roozbehzarei.filester.domain.model.RemoteResource
+import com.roozbehzarei.filester.domain.model.UploadResult
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.domain.service.AnalyticsService
 import kotlinx.coroutines.CancellationException
@@ -35,25 +35,24 @@ class UploadWorker(
     private val notificationFactory: UploadNotificationFactory,
     private val fileRepository: FileRepository,
     private val analyticsService: AnalyticsService,
-    params: WorkerParameters
+    params: WorkerParameters,
 ) : CoroutineWorker(context, params) {
-
     val ongoingNotificationId = id.hashCode()
     val resultNotificationId = ongoingNotificationId + 1
 
     override suspend fun doWork(): Result {
-
         setForeground(
             createForegroundInfo(
                 title = applicationContext.getString(R.string.notif_title_start),
                 text = "",
-                progress = 0
-            )
+                progress = 0,
+            ),
         )
 
         val inputFileUri = inputData.getString(KEY_FILE_URI)?.toUri() ?: return Result.failure()
-        val hostProvider = HostProvider.fromId(inputData.getString(KEY_HOST_PROVIDER))
-            ?: return Result.failure()
+        val hostProvider =
+            HostProvider.fromId(inputData.getString(KEY_HOST_PROVIDER))
+                ?: return Result.failure()
         val inputFile = DocumentFile.fromSingleUri(context, inputFileUri) ?: return Result.failure()
         val fileName =
             inputFile.name?.takeIf { it.isNotBlank() } ?: "file_${System.currentTimeMillis()}"
@@ -62,8 +61,9 @@ class UploadWorker(
         val fileToUpload = java.io.File(context.cacheDir, fileName)
         try {
             withContext(Dispatchers.IO) {
-                val inputStream = context.contentResolver.openInputStream(inputFileUri)
-                    ?: throw FileNotFoundException()
+                val inputStream =
+                    context.contentResolver.openInputStream(inputFileUri)
+                        ?: throw FileNotFoundException()
                 inputStream.use {
                     FileOutputStream(fileToUpload).use { outputStream ->
                         val buffer = ByteArray(8192)
@@ -76,49 +76,53 @@ class UploadWorker(
                     }
                 }
             }
-            val result = fileRepository.uploadFile(fileToUpload, hostProvider).onEach { result ->
-                if (result is RemoteResource.Loading) {
-                    setForeground(
-                        createForegroundInfo(
-                            title = applicationContext.getString(R.string.notif_title_in_progress),
-                            text = "",
-                            progress = result.progress
-                        )
-                    )
-                    setProgress(workDataOf(KEY_WORK_PROGRESS to result.progress))
-                }
-            }.first { it !is RemoteResource.Loading }
+            val result =
+                fileRepository
+                    .uploadFile(fileToUpload, hostProvider)
+                    .onEach { result ->
+                        if (result is UploadResult.Loading) {
+                            setForeground(
+                                createForegroundInfo(
+                                    title = applicationContext.getString(R.string.notif_title_in_progress),
+                                    text = "",
+                                    progress = result.progress,
+                                ),
+                            )
+                            setProgress(workDataOf(KEY_WORK_PROGRESS to result.progress))
+                        }
+                    }.first { it !is UploadResult.Loading }
 
             fileToUpload.delete()
 
             return when (result) {
-                is RemoteResource.Error -> {
+                is UploadResult.Error -> {
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
                         title = applicationContext.getString(R.string.notif_title_upload_failed),
-                        text = ""
+                        text = "",
                     )
                     analyticsService.logUploadFailure()
                     Result.failure()
                 }
 
-                is RemoteResource.Success -> {
+                is UploadResult.Success -> {
                     val uploadedTime = System.currentTimeMillis()
                     val expirationTime =
                         uploadedTime + TimeUnit.HOURS.toMillis(result.expiresInHours)
-                    val uploadedFile = File(
-                        name = fileName,
-                        downloadUrl = result.data,
-                        size = fileSize,
-                        mimeType = fileType,
-                        uploadedAt = uploadedTime,
-                        expiresAt = expirationTime
-                    )
+                    val uploadedFile =
+                        File(
+                            name = fileName,
+                            downloadUrl = result.data,
+                            size = fileSize,
+                            mimeType = fileType,
+                            uploadedAt = uploadedTime,
+                            expiresAt = expirationTime,
+                        )
                     fileRepository.saveFile(uploadedFile)
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
                         title = applicationContext.getString(R.string.notif_title_upload_success),
-                        text = ""
+                        text = "",
                     )
                     analyticsService.logUploadSuccess()
                     Result.success()
@@ -136,7 +140,7 @@ class UploadWorker(
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
                         title = applicationContext.getString(R.string.notif_title_upload_cancelled),
-                        text = ""
+                        text = "",
                     )
                     delay(200.milliseconds)
                     throw e
@@ -144,7 +148,7 @@ class UploadWorker(
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
                         title = applicationContext.getString(R.string.notif_title_upload_failed),
-                        text = ""
+                        text = "",
                     )
                     analyticsService.logUploadFailure()
                     delay(200.milliseconds)
@@ -155,19 +159,32 @@ class UploadWorker(
         }
     }
 
-    private fun createForegroundInfo(title: String, text: String, progress: Int): ForegroundInfo {
+    private fun createForegroundInfo(
+        title: String,
+        text: String,
+        progress: Int,
+    ): ForegroundInfo {
         val intent = WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ForegroundInfo(
-                ongoingNotificationId, notificationFactory.createOngoing(
-                    title = title, text = text, progress = progress, cancelIntent = intent
-                ), FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                ongoingNotificationId,
+                notificationFactory.createOngoing(
+                    title = title,
+                    text = text,
+                    progress = progress,
+                    cancelIntent = intent,
+                ),
+                FOREGROUND_SERVICE_TYPE_DATA_SYNC,
             )
         } else {
             ForegroundInfo(
-                ongoingNotificationId, notificationFactory.createOngoing(
-                    title = title, text = text, progress = progress, cancelIntent = intent
-                )
+                ongoingNotificationId,
+                notificationFactory.createOngoing(
+                    title = title,
+                    text = text,
+                    progress = progress,
+                    cancelIntent = intent,
+                ),
             )
         }
     }
@@ -177,7 +194,5 @@ class UploadWorker(
         const val KEY_HOST_PROVIDER = "host_provider"
         const val KEY_WORK_NAME = "upload_work_name"
         const val KEY_WORK_PROGRESS = "upload_work_progress"
-
     }
-
 }

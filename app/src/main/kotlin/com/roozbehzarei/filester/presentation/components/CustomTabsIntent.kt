@@ -13,9 +13,14 @@ import com.roozbehzarei.filester.presentation.theme.LocalIsDarkTheme
 fun rememberCustomTabsIntent(): CustomTabsIntent {
     val isDarkTheme = LocalIsDarkTheme.current
     return remember(isDarkTheme) {
-        CustomTabsIntent.Builder().setColorScheme(
-            if (isDarkTheme) CustomTabsIntent.COLOR_SCHEME_DARK
-            else CustomTabsIntent.COLOR_SCHEME_LIGHT
-        ).build()
+        CustomTabsIntent
+            .Builder()
+            .setColorScheme(
+                if (isDarkTheme) {
+                    CustomTabsIntent.COLOR_SCHEME_DARK
+                } else {
+                    CustomTabsIntent.COLOR_SCHEME_LIGHT
+                },
+            ).build()
     }
 }

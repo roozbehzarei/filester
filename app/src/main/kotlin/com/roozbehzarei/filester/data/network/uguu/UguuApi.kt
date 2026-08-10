@@ -3,7 +3,7 @@ package com.roozbehzarei.filester.data.network.uguu
 import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.domain.model.HostProvider
-import com.roozbehzarei.filester.domain.model.RemoteResource
+import com.roozbehzarei.filester.domain.model.UploadResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onUpload
@@ -25,48 +25,53 @@ import java.io.File
 private const val UGUU_URL = "https://uguu.se/upload"
 
 class UguuApi(
-    private val client: HttpClient
+    private val client: HttpClient,
 ) {
-
-    fun uploadFile(file: File): Flow<RemoteResource<String>> = channelFlow {
-        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
-        val fileSize = file.length()
-        try {
-            val response: HttpResponse = client.post(UGUU_URL) {
-                setBody(
-                    MultiPartFormDataContent(
-                        formData {
-                            append("files[]", InputProvider(fileSize) {
-                                file.inputStream().asInput().buffered()
-                            }, Headers.build {
-                                append(HttpHeaders.ContentType, mimeType)
-                                append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
-                            })
-                        })
-                )
-                onUpload { bytesSentTotal, contentLength ->
-                    if (contentLength != null && contentLength > 0) {
-                        val percentage = (bytesSentTotal * 100 / contentLength).toInt()
-                        trySend(RemoteResource.Loading(percentage))
+    fun uploadFile(file: File): Flow<UploadResult<String>> =
+        channelFlow {
+            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
+            val fileSize = file.length()
+            try {
+                val response: HttpResponse =
+                    client.post(UGUU_URL) {
+                        setBody(
+                            MultiPartFormDataContent(
+                                formData {
+                                    append(
+                                        "files[]",
+                                        InputProvider(fileSize) {
+                                            file.inputStream().asInput().buffered()
+                                        },
+                                        Headers.build {
+                                            append(HttpHeaders.ContentType, mimeType)
+                                            append(HttpHeaders.ContentDisposition, "filename=\"${file.name}\"")
+                                        },
+                                    )
+                                },
+                            ),
+                        )
+                        onUpload { bytesSentTotal, contentLength ->
+                            if (contentLength != null && contentLength > 0) {
+                                val percentage = (bytesSentTotal * 100 / contentLength).toInt()
+                                trySend(UploadResult.Loading(percentage))
+                            }
+                        }
                     }
+                val responseBody = response.body<UguuResponse>()
+                val uploadedUrl = responseBody.files?.firstOrNull()?.url
+
+                if (responseBody.success && !uploadedUrl.isNullOrBlank()) {
+                    send(
+                        UploadResult.Success(uploadedUrl, HostProvider.UGUU.expirationHours),
+                    )
+                } else {
+                    send(UploadResult.Error())
                 }
+            } catch (e: Exception) {
+                if (BuildConfig.DEBUG) e.printStackTrace()
+                send(UploadResult.Error())
+            } finally {
+                close()
             }
-            val responseBody = response.body<UguuResponse>()
-            val uploadedUrl = responseBody.files?.firstOrNull()?.url
-
-            if (responseBody.success && !uploadedUrl.isNullOrBlank()) {
-                send(
-                    RemoteResource.Success(uploadedUrl, HostProvider.UGUU.expirationHours)
-                )
-            } else {
-                send(RemoteResource.Error())
-            }
-        } catch (e: Exception) {
-            if (BuildConfig.DEBUG) e.printStackTrace()
-            send(RemoteResource.Error())
-        } finally {
-            close()
-        }
-    }.distinctUntilChanged()
-
+        }.distinctUntilChanged()
 }

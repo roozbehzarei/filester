@@ -89,9 +89,9 @@ import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun MainScreen(
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = koinViewModel(),
-    snackbarHostState: SnackbarHostState
 ) {
     val coroutineScope = rememberCoroutineScope()
     val uiState by viewModel.mainUiState.collectAsStateWithLifecycle()
@@ -106,19 +106,20 @@ fun MainScreen(
     }
 
     LaunchedEffect(uiState.uploadStatus) {
-        showUploadFailDialog = when (uiState.uploadStatus.state) {
-            UploadState.RUNNING -> {
-                false
-            }
+        showUploadFailDialog =
+            when (uiState.uploadStatus.state) {
+                UploadState.RUNNING -> {
+                    false
+                }
 
-            UploadState.FAILED -> {
-                true
-            }
+                UploadState.FAILED -> {
+                    true
+                }
 
-            else -> {
-                false
+                else -> {
+                    false
+                }
             }
-        }
     }
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -135,44 +136,43 @@ fun MainScreen(
         modifier = modifier.fillMaxSize(),
         uiState = uiState,
         onShowSnackbar = { message -> coroutineScope.launch { snackbarHostState.showSnackbar(message) } },
-        onUploadCanceled = viewModel::cancelUpload,
-        onFileRemoved = { viewModel.deleteFile(it) },
-        onInitializeUpload = viewModel::initializeUpload
+        onUploadCancel = viewModel::cancelUpload,
+        onFileRemove = { viewModel.deleteFile(it) },
+        onInitializeUpload = viewModel::initializeUpload,
     )
 }
 
 @Composable
 private fun MainContent(
-    modifier: Modifier = Modifier,
     uiState: MainUiState,
     onShowSnackbar: (String) -> Unit,
-    onUploadCanceled: () -> Unit,
-    onFileRemoved: (File) -> Unit,
-    onInitializeUpload: (Uri, String) -> Unit
+    onUploadCancel: () -> Unit,
+    onFileRemove: (File) -> Unit,
+    onInitializeUpload: (Uri, String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-
-    Scaffold(
-        modifier = modifier, floatingActionButton = {
-            if (uiState.uploadStatus.state != UploadState.RUNNING) {
-                UploadFab(onInitializeUpload)
-            }
-        }) { innerPadding ->
+    Scaffold(modifier = modifier, floatingActionButton = {
+        if (uiState.uploadStatus.state != UploadState.RUNNING) {
+            UploadFab(onInitializeUpload)
+        }
+    }) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
             if (uiState.files.isEmpty() && uiState.uploadStatus.state != UploadState.RUNNING) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Card {
                         Text(
                             modifier = Modifier.padding(12.dp),
                             text = stringResource(R.string.main_text_empty_history),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
@@ -182,20 +182,20 @@ private fun MainContent(
                 isUploadingFile = uiState.uploadStatus.state == UploadState.RUNNING,
                 uploadingFileName = uiState.uploadingFileName,
                 uploadingFileProgress = uiState.uploadStatus.progress,
-                onCancelUpload = onUploadCanceled,
+                onCancelUpload = onUploadCancel,
                 onRemoveFile = { file ->
-                    onFileRemoved(file)
+                    onFileRemove(file)
                 },
-                onShowSnackbar = { onShowSnackbar(it) })
+                onShowSnackbar = { onShowSnackbar(it) },
+            )
         }
     }
-
-
 }
 
 @Composable
 private fun UploadFailDialog(
-    modifier: Modifier = Modifier, onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AlertDialog(
         modifier = modifier,
@@ -209,22 +209,24 @@ private fun UploadFailDialog(
                 Text(text = stringResource(R.string.main_button_close))
             }
         },
-        onDismissRequest = { onDismissRequest() })
+        onDismissRequest = { onDismissRequest() },
+    )
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun RequestNotificationPermission() {
     val context = LocalContext.current
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = {}
-    )
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = {},
+        )
 
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(
                 context,
-                Manifest.permission.POST_NOTIFICATIONS
+                Manifest.permission.POST_NOTIFICATIONS,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -234,14 +236,14 @@ private fun RequestNotificationPermission() {
 
 @Composable
 private fun FilesList(
-    modifier: Modifier = Modifier,
     files: List<File>,
     isUploadingFile: Boolean,
     uploadingFileName: String?,
     uploadingFileProgress: Int?,
     onCancelUpload: () -> Unit,
     onRemoveFile: (file: File) -> Unit,
-    onShowSnackbar: (String) -> Unit
+    onShowSnackbar: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -261,9 +263,10 @@ private fun FilesList(
         if (isUploadingFile) {
             item {
                 FileUploadCard(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
                     fileName = uploadingFileName ?: "",
                     uploadProgress = uploadingFileProgress ?: 0,
                     onCancel = onCancelUpload,
@@ -274,9 +277,10 @@ private fun FilesList(
             file.id
         }) { file ->
             FileItem(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth(),
                 name = file.name,
                 size = file.size,
                 expiresAt = file.expiresAt,
@@ -294,7 +298,8 @@ private fun FilesList(
                 },
                 onRemove = {
                     fileToRemove = file
-                })
+                },
+            )
         }
     }
 
@@ -305,13 +310,13 @@ private fun FilesList(
             onConfirmation = {
                 onRemoveFile(file)
                 fileToRemove = null
-            })
+            },
+        )
     }
 }
 
 @Composable
 private fun FileItem(
-    modifier: Modifier = Modifier,
     name: String,
     size: Long,
     expiresAt: Long,
@@ -321,6 +326,7 @@ private fun FileItem(
     onShare: () -> Unit,
     onCopy: () -> Unit,
     onRemove: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val formattedSize = remember { Formatter.formatFileSize(context, size) }
@@ -330,80 +336,103 @@ private fun FileItem(
             value = System.currentTimeMillis()
         }
     }
-    val remainingHours = remember(expiresAt, now) {
-        if (expiresAt <= 0L) null
-        else {
-            val remainingMs = expiresAt - now
-            if (remainingMs <= 0) -1 else TimeUnit.MILLISECONDS.toHours(remainingMs).toInt()
+    val remainingHours =
+        remember(expiresAt, now) {
+            if (expiresAt <= 0L) {
+                null
+            } else {
+                val remainingMs = expiresAt - now
+                if (remainingMs <= 0) -1 else TimeUnit.MILLISECONDS.toHours(remainingMs).toInt()
+            }
         }
-    }
-    val expiresText = when (remainingHours) {
-        null -> null
-        -1 -> stringResource(R.string.main_text_expired)
-        0 -> stringResource(R.string.main_text_expires_soon)
-        else -> pluralStringResource(
-            R.plurals.main_text_expires_hours, remainingHours, remainingHours
-        )
-    }
+    val expiresText =
+        when (remainingHours) {
+            null -> {
+                null
+            }
 
-    val cardColor = when (isExpanded) {
-        true -> MaterialTheme.colorScheme.surfaceVariant
-        false -> Color.Transparent
-    }
+            -1 -> {
+                stringResource(R.string.main_text_expired)
+            }
+
+            0 -> {
+                stringResource(R.string.main_text_expires_soon)
+            }
+
+            else -> {
+                pluralStringResource(
+                    R.plurals.main_text_expires_hours,
+                    remainingHours,
+                    remainingHours,
+                )
+            }
+        }
+
+    val cardColor =
+        when (isExpanded) {
+            true -> MaterialTheme.colorScheme.surfaceVariant
+            false -> Color.Transparent
+        }
     Card(
-        modifier = modifier, onClick = {
+        modifier = modifier,
+        onClick = {
             onClick()
-        }, colors = CardDefaults.cardColors(containerColor = cardColor)
+        },
+        colors = CardDefaults.cardColors(containerColor = cardColor),
     ) {
         Column {
             Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    modifier = Modifier.size(36.dp), painter = icon, contentDescription = null
+                    modifier = Modifier.size(36.dp),
+                    painter = icon,
+                    contentDescription = null,
                 )
                 Column(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
                         name,
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
-                    val infoText = if (expiresText != null) {
-                        "$formattedSize • $expiresText"
-                    } else {
-                        formattedSize
-                    }
+                    val infoText =
+                        if (expiresText != null) {
+                            "$formattedSize • $expiresText"
+                        } else {
+                            formattedSize
+                        }
                     Text(
                         infoText,
                         style = MaterialTheme.typography.labelMedium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
             AnimatedVisibility(isExpanded) {
                 Row(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    modifier =
+                        Modifier
+                            .padding(4.dp)
+                            .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                     FileItemAction(
                         onClick = onShare,
                         icon = Icons.Outlined.Share,
-                        label = stringResource(R.string.main_button_share)
+                        label = stringResource(R.string.main_button_share),
                     )
                     FileItemAction(
                         onClick = onCopy,
                         icon = Icons.Outlined.ContentCopy,
-                        label = stringResource(R.string.main_button_copy)
+                        label = stringResource(R.string.main_button_copy),
                     )
                     FileItemAction(
                         onClick = onRemove,
                         icon = Icons.Outlined.Delete,
-                        label = stringResource(R.string.main_button_delete)
+                        label = stringResource(R.string.main_button_delete),
                     )
                 }
             }
@@ -416,20 +445,23 @@ private fun FileItemAction(
     onClick: () -> Unit,
     icon: ImageVector,
     label: String,
+    modifier: Modifier = Modifier,
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.filledTonalButtonColors().copy(containerColor = Color.Transparent)
+        colors = ButtonDefaults.filledTonalButtonColors().copy(containerColor = Color.Transparent),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
-                icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant
+                icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(Modifier.height(4.dp))
             Text(
                 label,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -437,41 +469,47 @@ private fun FileItemAction(
 
 @Composable
 private fun FileUploadCard(
-    modifier: Modifier = Modifier, fileName: String, uploadProgress: Int, onCancel: () -> Unit
+    fileName: String,
+    uploadProgress: Int,
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 modifier = Modifier.size(36.dp),
                 painter = painterResource(R.drawable.ic_filled_file_arrow_up),
-                contentDescription = null
+                contentDescription = null,
             )
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier =
+                    Modifier
+                        .padding(horizontal = 8.dp)
+                        .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     "Uploading $fileName",
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth(), progress = {
+                    modifier = Modifier.fillMaxWidth(),
+                    progress = {
                         (uploadProgress.toFloat() / 100)
-                    }, trackColor = Color.Transparent
+                    },
+                    trackColor = Color.Transparent,
                 )
             }
-            TextButton(
-                onClick = {
-                    onCancel()
-                }) {
+            TextButton(onClick = {
+                onCancel()
+            }) {
                 Text(
-                    stringResource(R.string.cancel), style = MaterialTheme.typography.labelLarge
+                    stringResource(R.string.cancel),
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
         }
@@ -480,7 +518,9 @@ private fun FileUploadCard(
 
 @Composable
 private fun FileRemoverDialog(
-    fileName: String, onDismissRequest: () -> Unit, onConfirmation: () -> Unit
+    onConfirmation: () -> Unit,
+    onDismissRequest: () -> Unit,
+    fileName: String,
 ) {
     AlertDialog(onDismissRequest = onDismissRequest, icon = {
         Icon(Icons.Outlined.DeleteForever, null)
@@ -489,18 +529,16 @@ private fun FileRemoverDialog(
     }, text = {
         Text(stringResource(R.string.main_dialog_text_delete, fileName))
     }, confirmButton = {
-        TextButton(
-            onClick = {
-                onConfirmation()
-                onDismissRequest()
-            }) {
+        TextButton(onClick = {
+            onConfirmation()
+            onDismissRequest()
+        }) {
             Text(stringResource(R.string.main_button_delete))
         }
     }, dismissButton = {
-        TextButton(
-            onClick = {
-                onDismissRequest()
-            }) {
+        TextButton(onClick = {
+            onDismissRequest()
+        }) {
             Text(stringResource(R.string.main_button_close))
         }
     })
@@ -517,16 +555,17 @@ private fun FileRemoverDialog(
 @Composable
 private fun UploadFab(onUpload: (uri: Uri, name: String) -> Unit) {
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.moveToFirst()
-                val name = cursor.getString(nameIndex)
-                onUpload(uri, name)
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    cursor.moveToFirst()
+                    val name = cursor.getString(nameIndex)
+                    onUpload(uri, name)
+                }
             }
         }
-    }
     FloatingActionButton(
         onClick = {
             launcher.launch("*/*")
@@ -545,46 +584,50 @@ private fun MainContentPreview() {
                 modifier = Modifier.fillMaxSize(),
                 uiState = MainUiState(),
                 onShowSnackbar = {},
-                onUploadCanceled = {},
-                onFileRemoved = {},
-                onInitializeUpload = { _, _ -> })
+                onUploadCancel = {},
+                onFileRemove = {},
+                onInitializeUpload = { _, _ -> },
+            )
         }
     }
 }
 
 @Preview
 @Composable
-private fun MainContentPreview2() {
-
-    val videoFile = File(
-        id = 0,
-        name = "Assassin's Creed Black Flag Resynced Official Game Overview Trailer.mp4",
-        downloadUrl = "",
-        size = 1020000000,
-        mimeType = "video/mp4"
-    )
-    val audioFile = File(
-        id = 1,
-        name = "Self Conscious - Prodigy, Nas.flac",
-        downloadUrl = "",
-        size = 17400000,
-        mimeType = "audio/flac"
-    )
+private fun MainContentPreview2Preview() {
+    val videoFile =
+        File(
+            id = 0,
+            name = "Assassin's Creed Black Flag Resynced Official Game Overview Trailer.mp4",
+            downloadUrl = "",
+            size = 1020000000,
+            mimeType = "video/mp4",
+        )
+    val audioFile =
+        File(
+            id = 1,
+            name = "Self Conscious - Prodigy, Nas.flac",
+            downloadUrl = "",
+            size = 17400000,
+            mimeType = "audio/flac",
+        )
     val previewFiles = listOf(videoFile, audioFile)
 
     FilesterAppTheme {
         Surface {
             MainContent(
                 modifier = Modifier.fillMaxSize(),
-                uiState = MainUiState(
-                    files = previewFiles,
-                    uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
-                    uploadingFileName = "filester.apk"
-                ),
+                uiState =
+                    MainUiState(
+                        files = previewFiles,
+                        uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
+                        uploadingFileName = "filester.apk",
+                    ),
                 onShowSnackbar = {},
-                onUploadCanceled = {},
-                onFileRemoved = {},
-                onInitializeUpload = { _, _ -> })
+                onUploadCancel = {},
+                onFileRemove = {},
+                onInitializeUpload = { _, _ -> },
+            )
         }
     }
 }
@@ -610,7 +653,8 @@ private fun FileItemPreview() {
             onClick = {},
             onShare = {},
             onCopy = {},
-            onRemove = {})
+            onRemove = {},
+        )
     }
 }
 
@@ -618,7 +662,7 @@ private fun FileItemPreview() {
 @Composable
 private fun FileUploadCardPreview() {
     FilesterAppTheme {
-        FileUploadCard(fileName = "android.mp4", uploadProgress = 50) { }
+        FileUploadCard(fileName = "android.mp4", uploadProgress = 50, onCancel = {})
     }
 }
 
@@ -626,26 +670,32 @@ private fun FileUploadCardPreview() {
 @Composable
 private fun FileRemoverDialogPreview() {
     FilesterAppTheme {
-        FileRemoverDialog(
-            fileName = "android.mp4", onDismissRequest = {}) {}
+        FileRemoverDialog(fileName = "android.mp4", onConfirmation = {}, onDismissRequest = {})
     }
 }
 
-private fun shareFileLink(context: Context, downloadUrl: String) {
-    val sendIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(
-            Intent.EXTRA_TEXT,
-            "$downloadUrl\n\n${context.getString(R.string.main_text_shared_with_filester)}"
-        )
-        type = "text/plain"
-    }
+private fun shareFileLink(
+    context: Context,
+    downloadUrl: String,
+) {
+    val sendIntent: Intent =
+        Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "$downloadUrl\n\n${context.getString(R.string.main_text_shared_with_filester)}",
+            )
+            type = "text/plain"
+        }
     val shareIntent = Intent.createChooser(sendIntent, null)
     shareIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     context.startActivity(shareIntent)
 }
 
-private suspend fun copyFileLink(clipboard: Clipboard, downloadUrl: String) {
+private suspend fun copyFileLink(
+    clipboard: Clipboard,
+    downloadUrl: String,
+) {
     val clipData = ClipData.newPlainText("plain text", downloadUrl)
     val clipEntry = ClipEntry(clipData)
     clipboard.setClipEntry(clipEntry)
@@ -653,12 +703,11 @@ private suspend fun copyFileLink(clipboard: Clipboard, downloadUrl: String) {
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @Composable
-private fun fileIconByMimeType(mimeType: String?): Painter {
-    return when {
+private fun fileIconByMimeType(mimeType: String?): Painter =
+    when {
         MimeTypes.isText(mimeType) -> painterResource(R.drawable.ic_filled_file_lines)
         MimeTypes.isImage(mimeType) -> painterResource(R.drawable.ic_filled_file_image)
         MimeTypes.isAudio(mimeType) -> painterResource(R.drawable.ic_filled_file_audio)
         MimeTypes.isVideo(mimeType) -> painterResource(R.drawable.ic_filled_file_video)
         else -> painterResource(R.drawable.ic_filled_file)
     }
-}

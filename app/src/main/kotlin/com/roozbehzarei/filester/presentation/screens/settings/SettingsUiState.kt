@@ -8,5 +8,5 @@ data class SettingsUiState(
     val isDynamicColor: Boolean,
     val isTelemetryEnabled: Boolean,
     val isMonitoringEnabled: Boolean,
-    val hostProvider: HostProvider
+    val hostProvider: HostProvider,
 )

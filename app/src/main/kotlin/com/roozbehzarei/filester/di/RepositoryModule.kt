@@ -8,7 +8,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.single
 
-val repositoryModule = module {
-    single<FileRepositoryImpl>() bind FileRepository::class
-    single<UserPreferencesRepositoryImpl>() bind UserPreferencesRepository::class
-}
+val repositoryModule =
+    module {
+        single<FileRepositoryImpl>() bind FileRepository::class
+        single<UserPreferencesRepositoryImpl>() bind UserPreferencesRepository::class
+    }

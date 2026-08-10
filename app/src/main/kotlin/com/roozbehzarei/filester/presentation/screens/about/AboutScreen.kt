@@ -39,52 +39,59 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.presentation.components.rememberCustomTabsIntent
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 
-private enum class AboutUrls(val link: String) {
-    DONATE("https://filester.roozbehzarei.com/donate.html"), PRIVACY_POLICY(
-        "https://filester.roozbehzarei.com/privacy-policy.html"
-    )
+private enum class AboutUrls(
+    val link: String,
+) {
+    DONATE("https://filester.roozbehzarei.com/donate.html"),
+    PRIVACY_POLICY(
+        "https://filester.roozbehzarei.com/privacy-policy.html",
+    ),
 }
 
 @Composable
 fun AboutScreen(modifier: Modifier = Modifier) {
-
     val context = LocalContext.current
     val intent = rememberCustomTabsIntent()
 
     AboutContent(modifier = modifier, onDonateClick = {
         val uri = AboutUrls.DONATE.link.toUri()
         intent.launchUrl(
-            context, uri
+            context,
+            uri,
         )
     }, onPrivacyPolicyClick = {
-        val uri = AboutUrls.PRIVACY_POLICY.link.toUri().buildUpon()
-            .appendQueryParameter("standalone", "true").build()
+        val uri =
+            AboutUrls.PRIVACY_POLICY.link
+                .toUri()
+                .buildUpon()
+                .appendQueryParameter("standalone", "true")
+                .build()
         intent.launchUrl(context, uri)
     })
-
 }
 
 @Composable
 private fun AboutContent(
-    modifier: Modifier,
     onDonateClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-
     val screenWidth = LocalWindowInfo.current.containerSize.width.dp
 
     Column(
-        modifier = modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier.width(screenWidth * 0.2f),
             painter = painterResource(id = R.drawable.ic_filester),
-            contentDescription = null
+            contentDescription = null,
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall)
         Text(
-            text = BuildConfig.VERSION_NAME, style = MaterialTheme.typography.bodySmall
+            text = BuildConfig.VERSION_NAME,
+            style = MaterialTheme.typography.bodySmall,
         )
         Spacer(modifier = Modifier.weight(1f))
         Row {
@@ -92,20 +99,20 @@ private fun AboutContent(
                 modifier = Modifier.weight(1f),
                 icon = Icons.Outlined.FavoriteBorder,
                 label = stringResource(R.string.about_button_donate),
-                onClick = onDonateClick
+                onClick = onDonateClick,
             )
             AboutActionButton(
                 modifier = Modifier.weight(1f),
                 icon = Icons.Outlined.PrivacyTip,
                 label = stringResource(R.string.about_button_privacy_policy),
-                onClick = onPrivacyPolicyClick
+                onClick = onPrivacyPolicyClick,
             )
         }
         Card(modifier = Modifier.fillMaxWidth()) {
             Text(
                 modifier = Modifier.padding(12.dp),
                 text = stringResource(R.string.about_text_copyleft),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
@@ -113,7 +120,10 @@ private fun AboutContent(
 
 @Composable
 private fun AboutActionButton(
-    modifier: Modifier = Modifier, icon: ImageVector, label: String, onClick: () -> Unit
+    label: String,
+    onClick: () -> Unit,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
 ) {
     TextButton(
         modifier = modifier,
@@ -126,7 +136,7 @@ private fun AboutActionButton(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -141,7 +151,8 @@ private fun AboutContentPreview() {
             AboutContent(
                 modifier = Modifier.fillMaxSize(),
                 onDonateClick = {},
-                onPrivacyPolicyClick = {})
+                onPrivacyPolicyClick = {},
+            )
         }
     }
 }
@@ -155,7 +166,8 @@ private fun AboutActionButtonPreview() {
             AboutActionButton(
                 icon = Icons.Outlined.Code,
                 label = LoremIpsum(2).values.joinToString(),
-                onClick = {})
+                onClick = {},
+            )
         }
     }
 }

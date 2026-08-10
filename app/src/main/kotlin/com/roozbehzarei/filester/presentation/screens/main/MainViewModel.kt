@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val fileRepository: FileRepository, private val uploadManager: UploadManager
+    private val fileRepository: FileRepository,
+    private val uploadManager: UploadManager,
 ) : ViewModel() {
-
     private val _mainUiState = MutableStateFlow(MainUiState())
     val mainUiState: StateFlow<MainUiState> = _mainUiState.asStateFlow()
 
@@ -43,9 +43,11 @@ class MainViewModel(
         uploadManager.prune()
         _mainUiState.update {
             it.copy(
-                uploadStatus = UploadStatus(
-                    state = UploadState.INACTIVE, progress = 0
-                )
+                uploadStatus =
+                    UploadStatus(
+                        state = UploadState.INACTIVE,
+                        progress = 0,
+                    ),
             )
         }
     }
@@ -70,7 +72,10 @@ class MainViewModel(
         }
     }
 
-    fun initializeUpload(uri: Uri, fileName: String) {
+    fun initializeUpload(
+        uri: Uri,
+        fileName: String,
+    ) {
         viewModelScope.launch {
             uploadManager.start(uri)
         }
@@ -86,5 +91,4 @@ class MainViewModel(
     fun cancelUpload() {
         uploadManager.cancel()
     }
-
 }

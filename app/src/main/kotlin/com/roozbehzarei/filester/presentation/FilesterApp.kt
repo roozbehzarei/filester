@@ -49,7 +49,10 @@ private const val STATUS_URL = "https://filester.roozbehzarei.com/status"
 @SuppressLint("RestrictedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilesterApp(context: Context) {
+fun FilesterApp(
+    context: Context,
+    modifier: Modifier = Modifier,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     val customTabsIntent = rememberCustomTabsIntent()
     val navController = rememberNavController()
@@ -58,9 +61,10 @@ fun FilesterApp(context: Context) {
     val isMainRoute =
         backStackEntry?.destination?.hasRoute(TopLevelDestination.MAIN.route::class) == true
     // Find matching top-level destination for current route
-    val currentDestination = TopLevelDestination.entries.firstOrNull {
-        backStackEntry?.destination?.hasRoute(it.route::class) == true
-    }
+    val currentDestination =
+        TopLevelDestination.entries.firstOrNull {
+            backStackEntry?.destination?.hasRoute(it.route::class) == true
+        }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -71,32 +75,36 @@ fun FilesterApp(context: Context) {
                 shouldShowMenu = isMainRoute,
                 canNavigateUp = isMainRoute.not(),
                 onNavigateUp = { navController.navigateUp() },
-                onNetworkStatusClicked = {
+                onNetworkStatusClick = {
                     try {
                         customTabsIntent.launchUrl(
                             context,
-                            STATUS_URL.toUri().buildUpon()
-                                .appendQueryParameter("app", "true").build()
+                            STATUS_URL
+                                .toUri()
+                                .buildUpon()
+                                .appendQueryParameter("app", "true")
+                                .build(),
                         )
                     } catch (_: Exception) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.toast_app_not_found),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast
+                            .makeText(
+                                context,
+                                context.getString(R.string.toast_app_not_found),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                     }
                 },
                 onNavigateToSettings = { navController.navigate(SettingsRoute) },
                 onNavigateToAbout = { navController.navigate(TopLevelDestination.ABOUT.route) },
             )
-        }) { innerPadding ->
+        },
+    ) { innerPadding ->
         FilesterNavHost(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            snackbarHostState = snackbarHostState
+            snackbarHostState = snackbarHostState,
         )
     }
-
 }
 
 /**
@@ -116,25 +124,27 @@ private fun TopBar(
     shouldShowMenu: Boolean,
     canNavigateUp: Boolean,
     onNavigateUp: () -> Unit,
-    onNetworkStatusClicked: () -> Unit,
+    onNetworkStatusClick: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    onNavigateToAbout: () -> Unit
+    onNavigateToAbout: () -> Unit,
 ) {
     CenterAlignedTopAppBar(title = { Text(title) }, actions = {
         if (shouldShowMenu) {
             IconButton(
-                onClick = onNetworkStatusClicked
+                onClick = onNetworkStatusClick,
             ) {
                 Icon(Icons.Filled.NetworkCheck, null)
             }
-            OverflowMenu({
+            OverflowMenu {
                 DropdownMenuItem(
                     onClick = onNavigateToSettings,
-                    text = { Text(stringResource(R.string.settings)) })
+                    text = { Text(stringResource(R.string.settings)) },
+                )
                 DropdownMenuItem(
                     onClick = onNavigateToAbout,
-                    text = { Text(stringResource(R.string.main_menu_about)) })
-            })
+                    text = { Text(stringResource(R.string.main_menu_about)) },
+                )
+            }
         }
     }, navigationIcon = {
         if (canNavigateUp) {
@@ -153,7 +163,10 @@ private fun TopBar(
  *                  that will be displayed in the menu.
  */
 @Composable
-private fun OverflowMenu(menuItems: @Composable () -> Unit) {
+private fun OverflowMenu(
+    modifier: Modifier = Modifier,
+    menuItems: @Composable () -> Unit,
+) {
     var showMenu by remember { mutableStateOf(false) }
 
     IconButton(onClick = {
@@ -164,8 +177,7 @@ private fun OverflowMenu(menuItems: @Composable () -> Unit) {
             contentDescription = null,
         )
     }
-    DropdownMenu(
-        expanded = showMenu, onDismissRequest = { showMenu = false }) {
+    DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
         menuItems()
     }
 }

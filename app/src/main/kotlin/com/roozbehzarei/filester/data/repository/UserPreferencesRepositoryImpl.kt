@@ -12,9 +12,9 @@ import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences>) :
-    UserPreferencesRepository {
-
+class UserPreferencesRepositoryImpl(
+    private val dataStore: DataStore<Preferences>,
+) : UserPreferencesRepository {
     private companion object {
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey("is_dynamic_colors")
         val THEME_KEY = intPreferencesKey("theme_mode")
@@ -22,17 +22,20 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
         val HOST_PROVIDER_KEY = stringPreferencesKey("host_provider")
     }
 
-    override fun getDynamicColorsPreference(): Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[DYNAMIC_COLOR_KEY] == true
-    }
+    override fun getDynamicColorsPreference(): Flow<Boolean> =
+        dataStore.data.map { preferences ->
+            preferences[DYNAMIC_COLOR_KEY] == true
+        }
 
-    override fun getThemePreference(): Flow<Theme> = dataStore.data.map { preferences ->
-        Theme.fromIndexOrDefault(preferences[THEME_KEY])
-    }
+    override fun getThemePreference(): Flow<Theme> =
+        dataStore.data.map { preferences ->
+            Theme.fromIndexOrDefault(preferences[THEME_KEY])
+        }
 
-    override fun getTelemetryPreference(): Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[TELEMETRY_KEY] == true
-    }
+    override fun getTelemetryPreference(): Flow<Boolean> =
+        dataStore.data.map { preferences ->
+            preferences[TELEMETRY_KEY] == true
+        }
 
     override fun getHostProviderPreference(): Flow<HostProvider> =
         dataStore.data.map { preferences ->
@@ -62,5 +65,4 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
             preferences[HOST_PROVIDER_KEY] = hostProvider.id
         }
     }
-
 }

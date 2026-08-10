@@ -6,6 +6,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.single
 
-val serviceModule = module {
-    single<AnalyticsServiceImpl>() bind AnalyticsService::class
-}
+val serviceModule =
+    module {
+        single<AnalyticsServiceImpl>() bind AnalyticsService::class
+    }

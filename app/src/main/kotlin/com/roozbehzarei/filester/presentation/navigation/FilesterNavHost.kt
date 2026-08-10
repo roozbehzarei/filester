@@ -19,22 +19,21 @@ import com.roozbehzarei.filester.presentation.screens.settings.SettingsScreen
  */
 @Composable
 fun FilesterNavHost(
-    modifier: Modifier = Modifier,
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+) = NavHost(
+    modifier = modifier,
+    navController = navController,
+    startDestination = MainRoute,
 ) {
-
-    return NavHost(
-        modifier = modifier, navController = navController, startDestination = MainRoute
-    ) {
-        composable<MainRoute> {
-            MainScreen(modifier = Modifier.fillMaxSize(), snackbarHostState = snackbarHostState)
-        }
-        composable<SettingsRoute> {
-            SettingsScreen(Modifier.fillMaxSize())
-        }
-        composable<AboutRoute> {
-            AboutScreen(Modifier.fillMaxSize())
-        }
+    composable<MainRoute> {
+        MainScreen(modifier = Modifier.fillMaxSize(), snackbarHostState = snackbarHostState)
+    }
+    composable<SettingsRoute> {
+        SettingsScreen(Modifier.fillMaxSize())
+    }
+    composable<AboutRoute> {
+        AboutScreen(Modifier.fillMaxSize())
     }
 }

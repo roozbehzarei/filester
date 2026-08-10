@@ -37,13 +37,14 @@ private fun createHttpClient(): HttpClient =
                     isLenient = true
                     ignoreUnknownKeys = true
                     prettyPrint = true
-                }
+                },
             )
         }
     }
 
-val networkModule = module {
-    single { create(::createHttpClient) }
-    single<LitterboxApi>()
-    single<UguuApi>()
-}
+val networkModule =
+    module {
+        single { create(::createHttpClient) }
+        single<LitterboxApi>()
+        single<UguuApi>()
+    }

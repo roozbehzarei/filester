@@ -1,6 +1,5 @@
 package com.roozbehzarei.filester.presentation.components
 
-import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,52 +39,54 @@ fun <T> SingleChoiceDialog(
     onDismissRequest: () -> Unit,
     onConfirm: (T) -> Unit,
     modifier: Modifier = Modifier,
-    optionDescription: ((T) -> String?)? = null
+    optionDescription: ((T) -> String?)? = null,
 ) {
     var selectedOption by remember { mutableStateOf(initialSelection) }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             modifier = modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
         ) {
             Column {
                 Text(
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .padding(24.dp)
+                            .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     text = title,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 options.forEach { option ->
                     val isSelected = selectedOption == option
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = isSelected,
-                                onClick = { selectedOption = option },
-                                role = Role.RadioButton
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = if (optionDescription != null) Alignment.Top else CenterVertically
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = isSelected,
+                                    onClick = { selectedOption = option },
+                                    role = Role.RadioButton,
+                                ).padding(horizontal = 16.dp),
+                        verticalAlignment = if (optionDescription != null) Alignment.Top else CenterVertically,
                     ) {
                         RadioButton(
                             modifier = Modifier.padding(12.dp),
                             selected = isSelected,
-                            onClick = null
+                            onClick = null,
                         )
                         Column(
-                            modifier = Modifier
-                                .padding(vertical = 12.dp)
-                                .weight(1f)
+                            modifier =
+                                Modifier
+                                    .padding(vertical = 12.dp)
+                                    .weight(1f),
                         ) {
                             Text(
                                 text = optionLabel(option),
                                 maxLines = 1,
-                                style = MaterialTheme.typography.titleSmall
+                                style = MaterialTheme.typography.titleSmall,
                             )
                             if (optionDescription != null) {
                                 val description = optionDescription(option)
@@ -93,7 +95,7 @@ fun <T> SingleChoiceDialog(
                                     Text(
                                         text = description,
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                 }
                             }
@@ -129,7 +131,7 @@ private fun SingleChoiceDialogPreview() {
                 initialSelection = "English",
                 optionLabel = { it },
                 onDismissRequest = {},
-                onConfirm = {}
+                onConfirm = {},
             )
         }
     }

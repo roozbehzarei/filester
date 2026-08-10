@@ -24,8 +24,9 @@ import org.koin.core.context.startKoin
 /**
  * The main entry point for the application process.
  */
-class BaseApplication : Application(), KoinComponent {
-
+class BaseApplication :
+    Application(),
+    KoinComponent {
     val applicationScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     val userPreferencesRepository: UserPreferencesRepository by inject()
     val analyticsService: AnalyticsService by inject()
@@ -45,7 +46,7 @@ class BaseApplication : Application(), KoinComponent {
                 repositoryModule,
                 serviceModule,
                 presentationModule,
-                workerModule
+                workerModule,
             )
             setupMonitoring()
         }
@@ -61,5 +62,4 @@ class BaseApplication : Application(), KoinComponent {
             }
         }
     }
-
 }

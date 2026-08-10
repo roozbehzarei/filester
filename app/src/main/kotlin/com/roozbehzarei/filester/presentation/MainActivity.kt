@@ -16,12 +16,10 @@ import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import org.koin.android.ext.android.inject
 
-
 /**
  * Main Activity and entry point for the app.
  */
 class MainActivity : AppCompatActivity() {
-
     private val userPreferencesRepository: UserPreferencesRepositoryImpl by inject()
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -30,27 +28,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val isDynamicColor by userPreferencesRepository.getDynamicColorsPreference()
+            val isDynamicColor by userPreferencesRepository
+                .getDynamicColorsPreference()
                 .collectAsState(
-                    false
+                    false,
                 )
-            val userThemePreference by userPreferencesRepository.getThemePreference()
+            val userThemePreference by userPreferencesRepository
+                .getThemePreference()
                 .collectAsState(Theme.Default)
-            val isDarkTheme = when (userThemePreference) {
-                Theme.Light -> false
-                Theme.Dark -> true
-                Theme.Default -> isSystemInDarkTheme()
-            }
+            val isDarkTheme =
+                when (userThemePreference) {
+                    Theme.Light -> false
+                    Theme.Dark -> true
+                    Theme.Default -> isSystemInDarkTheme()
+                }
             val view = LocalView.current
             val insetsController = WindowCompat.getInsetsController(this@MainActivity.window, view)
             // Dynamically modify the foreground color of status bar to align with app theme
             insetsController.isAppearanceLightStatusBars = isDarkTheme.not()
             FilesterAppTheme(
-                dynamicColor = isDynamicColor, darkTheme = isDarkTheme
+                dynamicColor = isDynamicColor,
+                darkTheme = isDarkTheme,
             ) {
                 FilesterApp(context = this)
             }
         }
     }
-
 }

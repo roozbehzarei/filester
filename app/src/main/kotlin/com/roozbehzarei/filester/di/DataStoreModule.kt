@@ -9,9 +9,9 @@ import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create
 
 private fun createDataStore(context: Context): DataStore<Preferences> =
-    PreferenceDataStoreFactory.create(
-        produceFile = { context.preferencesDataStoreFile("settings") })
+    PreferenceDataStoreFactory.create(produceFile = { context.preferencesDataStoreFile("settings") })
 
-val dataStoreModule = module {
-    single<DataStore<Preferences>> { create(::createDataStore) }
-}
+val dataStoreModule =
+    module {
+        single<DataStore<Preferences>> { create(::createDataStore) }
+    }

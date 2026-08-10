@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FileDao {
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(file: FileEntity)
 
@@ -18,5 +17,4 @@ interface FileDao {
 
     @Delete
     suspend fun delete(file: FileEntity)
-
 }

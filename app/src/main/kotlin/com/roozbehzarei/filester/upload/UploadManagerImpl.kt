@@ -17,20 +17,20 @@ import kotlinx.coroutines.flow.map
 
 class UploadManagerImpl(
     private val workManager: WorkManager,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : UploadManager {
-
     override val status: Flow<UploadStatus> =
         workManager.getWorkInfosForUniqueWorkFlow(KEY_WORK_NAME).map { workInfos ->
             val workInfo = workInfos.firstOrNull()
             if (workInfo != null) {
-                val state = when (workInfo.state) {
-                    WorkInfo.State.SUCCEEDED -> UploadState.SUCCEEDED
-                    WorkInfo.State.FAILED -> UploadState.FAILED
-                    WorkInfo.State.CANCELLED -> UploadState.CANCELLED
-                    WorkInfo.State.RUNNING -> UploadState.RUNNING
-                    else -> UploadState.INACTIVE
-                }
+                val state =
+                    when (workInfo.state) {
+                        WorkInfo.State.SUCCEEDED -> UploadState.SUCCEEDED
+                        WorkInfo.State.FAILED -> UploadState.FAILED
+                        WorkInfo.State.CANCELLED -> UploadState.CANCELLED
+                        WorkInfo.State.RUNNING -> UploadState.RUNNING
+                        else -> UploadState.INACTIVE
+                    }
                 val progress = workInfo.progress.getInt(KEY_WORK_PROGRESS, 0)
                 UploadStatus(state, progress)
             } else {
@@ -40,13 +40,16 @@ class UploadManagerImpl(
 
     override suspend fun start(uri: Uri) {
         val hostProvider = userPreferencesRepository.getHostProviderPreference().first()
-        val inputData = workDataOf(
-            KEY_FILE_URI to uri.toString(),
-            KEY_HOST_PROVIDER to hostProvider.id
-        )
+        val inputData =
+            workDataOf(
+                KEY_FILE_URI to uri.toString(),
+                KEY_HOST_PROVIDER to hostProvider.id,
+            )
         val workRequest = OneTimeWorkRequestBuilder<UploadWorker>().setInputData(inputData).build()
         workManager.enqueueUniqueWork(
-            KEY_WORK_NAME, ExistingWorkPolicy.REPLACE, workRequest
+            KEY_WORK_NAME,
+            ExistingWorkPolicy.REPLACE,
+            workRequest,
         )
     }
 
@@ -57,5 +60,4 @@ class UploadManagerImpl(
     override fun prune() {
         workManager.pruneWork()
     }
-
 }

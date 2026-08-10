@@ -9,5 +9,5 @@ data class MainUiState(
     val message: UiText? = null,
     val files: List<File> = listOf(),
     val uploadStatus: UploadStatus = UploadStatus(UploadState.INACTIVE, 0),
-    val uploadingFileName: String? = null
+    val uploadingFileName: String? = null,
 )

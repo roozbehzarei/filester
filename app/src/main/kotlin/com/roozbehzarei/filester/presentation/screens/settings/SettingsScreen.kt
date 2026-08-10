@@ -52,17 +52,17 @@ import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.R
+import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.Theme
 import com.roozbehzarei.filester.presentation.components.SingleChoiceDialog
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 
-import com.roozbehzarei.filester.domain.model.HostProvider
-
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier, viewModel: SettingsViewModel = koinViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val appLocales = remember(context) { getApplicationLocales(context) }
@@ -74,27 +74,26 @@ fun SettingsScreen(
         uiState = uiState,
         appLocales = appLocales,
         currentAppLocale = currentLocale,
-        onThemeChanged = { viewModel.saveThemeModePref(it) },
-        onDynamicColorChanged = { viewModel.saveDynamicColorPref(it) },
-        onTelemetryChanged = { viewModel.saveTelemetryPref(it) },
-        onMonitoringChanged = { viewModel.saveMonitoringPref(it) },
-        onHostProviderChanged = { viewModel.saveHostProviderPref(it) }
+        onThemeChange = { viewModel.saveThemeModePref(it) },
+        onDynamicColorChange = { viewModel.saveDynamicColorPref(it) },
+        onTelemetryChange = { viewModel.saveTelemetryPref(it) },
+        onMonitoringChange = { viewModel.saveMonitoringPref(it) },
+        onHostProviderChange = { viewModel.saveHostProviderPref(it) },
     )
 }
 
 @Composable
 private fun SettingsContent(
-    modifier: Modifier = Modifier,
     uiState: SettingsUiState,
     appLocales: List<Locale>,
     currentAppLocale: Locale,
-    onThemeChanged: (Theme) -> Unit,
-    onDynamicColorChanged: (Boolean) -> Unit,
-    onTelemetryChanged: (Boolean) -> Unit,
-    onMonitoringChanged: (Boolean) -> Unit,
-    onHostProviderChanged: (HostProvider) -> Unit
+    onThemeChange: (Theme) -> Unit,
+    onDynamicColorChange: (Boolean) -> Unit,
+    onTelemetryChange: (Boolean) -> Unit,
+    onMonitoringChange: (Boolean) -> Unit,
+    onHostProviderChange: (HostProvider) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
     var shouldShowHostingDialog by remember { mutableStateOf(false) }
 
@@ -108,20 +107,23 @@ private fun SettingsContent(
             onConfirm = { selectedLocale ->
                 val locateListCompat = LocaleListCompat.create(selectedLocale)
                 AppCompatDelegate.setApplicationLocales(locateListCompat)
-            })
+            },
+        )
     }
 
     if (shouldShowHostingDialog) {
         val litterboxLabel = stringResource(R.string.settings_hosting_service_litterbox)
-        val litterboxDesc = stringResource(
-            R.string.settings_hosting_service_litterbox_description,
-            HostProvider.LITTERBOX.expirationHours
-        )
+        val litterboxDesc =
+            stringResource(
+                R.string.settings_hosting_service_litterbox_description,
+                HostProvider.LITTERBOX.expirationHours,
+            )
         val uguuLabel = stringResource(R.string.settings_hosting_service_uguu)
-        val uguuDesc = stringResource(
-            R.string.settings_hosting_service_uguu_description,
-            HostProvider.UGUU.expirationHours
-        )
+        val uguuDesc =
+            stringResource(
+                R.string.settings_hosting_service_uguu_description,
+                HostProvider.UGUU.expirationHours,
+            )
         val providers = HostProvider.entries
 
         SingleChoiceDialog(
@@ -142,29 +144,33 @@ private fun SettingsContent(
             },
             onDismissRequest = { shouldShowHostingDialog = false },
             onConfirm = { selectedProvider ->
-                onHostProviderChanged(selectedProvider)
-            })
+                onHostProviderChange(selectedProvider)
+            },
+        )
     }
     Column(modifier = modifier) {
         SettingsItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-                .defaultMinSize(minHeight = 64.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+                    .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_hosting_service),
-            description = when (uiState.hostProvider) {
-                HostProvider.LITTERBOX -> stringResource(R.string.settings_hosting_service_litterbox)
-                HostProvider.UGUU -> stringResource(R.string.settings_hosting_service_uguu)
-            },
+            description =
+                when (uiState.hostProvider) {
+                    HostProvider.LITTERBOX -> stringResource(R.string.settings_hosting_service_litterbox)
+                    HostProvider.UGUU -> stringResource(R.string.settings_hosting_service_uguu)
+                },
             icon = Icons.Outlined.Cloud,
             options = null,
             onClick = { shouldShowHostingDialog = true },
         )
         SettingsItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .defaultMinSize(minHeight = 64.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_language),
             description = currentAppLocale.displayLanguage,
             icon = Icons.Outlined.Language,
@@ -172,42 +178,51 @@ private fun SettingsContent(
             onClick = { shouldShowLanguageDialog = true },
         )
         SettingsItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .defaultMinSize(minHeight = 64.dp),
-            title = stringResource(R.string.settings_label_theme),
-            description = when (uiState.themeMode) {
-                Theme.Light -> stringResource(R.string.settings_label_light)
-                Theme.Dark -> stringResource(R.string.settings_label_dark)
-                Theme.Default -> stringResource(R.string.settings_label_system_default)
-            },
-            maxLines = 1,
-            icon = Icons.Outlined.BrightnessMedium,
-            options = { modifier ->
-                val options = listOf(
-                    Icons.Outlined.LightMode, Icons.Outlined.Contrast, Icons.Outlined.ModeNight
-                )
-                SingleChoiceSegmentedButtonRow(modifier = modifier) {
-                    options.forEachIndexed { index, icon ->
-                        SegmentedButton(
-                            shape = SegmentedButtonDefaults.itemShape(
-                                index = index, count = options.size
-                            ),
-                            onClick = { onThemeChanged(Theme.fromIndexOrDefault(index)) },
-                            selected = index == uiState.themeMode.index,
-                            label = { Icon(icon, null) })
-                    }
-                }
-            },
-            onClick = null
-        )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            SettingsItem(
-                modifier = Modifier
+            modifier =
+                Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
                     .defaultMinSize(minHeight = 64.dp),
+            title = stringResource(R.string.settings_label_theme),
+            description =
+                when (uiState.themeMode) {
+                    Theme.Light -> stringResource(R.string.settings_label_light)
+                    Theme.Dark -> stringResource(R.string.settings_label_dark)
+                    Theme.Default -> stringResource(R.string.settings_label_system_default)
+                },
+            maxLines = 1,
+            icon = Icons.Outlined.BrightnessMedium,
+            options = { modifier ->
+                val options =
+                    listOf(
+                        Icons.Outlined.LightMode,
+                        Icons.Outlined.Contrast,
+                        Icons.Outlined.ModeNight,
+                    )
+                SingleChoiceSegmentedButtonRow(modifier = modifier) {
+                    options.forEachIndexed { index, icon ->
+                        SegmentedButton(
+                            shape =
+                                SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size,
+                                ),
+                            onClick = { onThemeChange(Theme.fromIndexOrDefault(index)) },
+                            selected = index == uiState.themeMode.index,
+                            label = { Icon(icon, null) },
+                        )
+                    }
+                }
+            },
+            onClick = null,
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            SettingsItem(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                        .defaultMinSize(minHeight = 64.dp),
                 title = stringResource(R.string.settings_label_dynamic_colors),
                 description = stringResource(R.string.settings_description_dynamic_colors),
                 icon = Icons.Outlined.Palette,
@@ -215,17 +230,19 @@ private fun SettingsContent(
                     Switch(
                         modifier = modifier,
                         checked = uiState.isDynamicColor,
-                        onCheckedChange = { onDynamicColorChanged(it) })
+                        onCheckedChange = { onDynamicColorChange(it) },
+                    )
                 },
-                onClick = null
+                onClick = null,
             )
         }
         if (BuildConfig.FLAVOR == "proprietary") {
             SettingsItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .defaultMinSize(minHeight = 64.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                        .defaultMinSize(minHeight = 64.dp),
                 title = stringResource(R.string.settings_label_crash_report),
                 description = stringResource(R.string.settings_description_crash_report),
                 icon = Icons.Outlined.BugReport,
@@ -233,15 +250,17 @@ private fun SettingsContent(
                     Switch(
                         modifier = modifier,
                         checked = uiState.isMonitoringEnabled,
-                        onCheckedChange = { onMonitoringChanged(it) })
+                        onCheckedChange = { onMonitoringChange(it) },
+                    )
                 },
-                onClick = null
+                onClick = null,
             )
             SettingsItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .defaultMinSize(minHeight = 64.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                        .defaultMinSize(minHeight = 64.dp),
                 title = stringResource(R.string.settings_label_telemetry),
                 description = stringResource(R.string.settings_description_telemetry),
                 icon = Icons.Outlined.Analytics,
@@ -249,9 +268,10 @@ private fun SettingsContent(
                     Switch(
                         modifier = modifier,
                         checked = uiState.isTelemetryEnabled,
-                        onCheckedChange = { onTelemetryChanged(it) })
+                        onCheckedChange = { onTelemetryChange(it) },
+                    )
                 },
-                onClick = null
+                onClick = null,
             )
         }
     }
@@ -259,31 +279,33 @@ private fun SettingsContent(
 
 @Composable
 private fun SettingsItem(
-    modifier: Modifier = Modifier,
     title: String,
     description: String,
-    maxLines: Int = Int.MAX_VALUE,
     icon: ImageVector,
+    onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+    maxLines: Int = Int.MAX_VALUE,
     options: (@Composable (modifier: Modifier) -> Unit)?,
-    onClick: (() -> Unit)?
 ) {
-    val finalModifier = if (onClick != null) {
-        modifier.clickable {
-            onClick()
+    val finalModifier =
+        if (onClick != null) {
+            modifier.clickable {
+                onClick()
+            }
+        } else {
+            modifier
         }
-    } else {
-        modifier
-    }
     Row(
-        modifier = finalModifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            finalModifier
+                .fillMaxWidth()
+                .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.padding(horizontal = 18.dp),
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
         Column(Modifier.weight(1f)) {
             Text(
@@ -291,15 +313,16 @@ private fun SettingsItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleMedium,
-                autoSize = TextAutoSize.StepBased(
-                    maxFontSize = MaterialTheme.typography.titleMedium.fontSize
-                )
+                autoSize =
+                    TextAutoSize.StepBased(
+                        maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    ),
             )
             Text(
                 text = description,
                 maxLines = maxLines,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
         }
         if (options != null) options(Modifier.padding(horizontal = 18.dp))
@@ -307,15 +330,17 @@ private fun SettingsItem(
 }
 
 private fun getApplicationLocales(context: Context): List<Locale> {
-    val locales = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        LocaleConfig(context).supportedLocales ?: LocaleList.getEmptyLocaleList()
-    } else {
-        val englishLocale = Locale.Builder().setLocale(Locale.ENGLISH).build()
-        val persianLocale = Locale.Builder().setLanguageTag("fa-IR").build()
-        val turkishLocale = Locale.Builder().setLanguageTag("tr").build()
-        LocaleList(englishLocale, persianLocale, turkishLocale)
-    }
-    return (0 until locales.size()).map { locales.get(it) }
+    val locales =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            LocaleConfig(context).supportedLocales ?: LocaleList.getEmptyLocaleList()
+        } else {
+            val englishLocale = Locale.Builder().setLocale(Locale.ENGLISH).build()
+            val persianLocale = Locale.Builder().setLanguageTag("fa-IR").build()
+            val turkishLocale = Locale.Builder().setLanguageTag("tr").build()
+            LocaleList(englishLocale, persianLocale, turkishLocale)
+        }
+    return (0 until locales.size())
+        .map { locales.get(it) }
         .sortedBy { locale -> locale.getDisplayName((locale)) }
 }
 
@@ -328,20 +353,23 @@ private fun SettingsContentPreview() {
         Surface(modifier = Modifier.fillMaxSize()) {
             SettingsContent(
                 modifier = Modifier.fillMaxSize(),
-                uiState = (SettingsUiState(
-                    themeMode = Theme.Default,
-                    isDynamicColor = false,
-                    isTelemetryEnabled = false,
-                    isMonitoringEnabled = true,
-                    hostProvider = HostProvider.LITTERBOX
-                )),
+                uiState = (
+                    SettingsUiState(
+                        themeMode = Theme.Default,
+                        isDynamicColor = false,
+                        isTelemetryEnabled = false,
+                        isMonitoringEnabled = true,
+                        hostProvider = HostProvider.LITTERBOX,
+                    )
+                ),
                 appLocales = emptyList(),
                 currentAppLocale = LocalConfiguration.current.locales.get(0),
-                onThemeChanged = {},
-                onDynamicColorChanged = {},
-                onTelemetryChanged = {},
-                onMonitoringChanged = {},
-                onHostProviderChanged = {})
+                onThemeChange = {},
+                onDynamicColorChange = {},
+                onTelemetryChange = {},
+                onMonitoringChange = {},
+                onHostProviderChange = {},
+            )
         }
     }
 }
@@ -357,10 +385,9 @@ private fun SettingsItemPreview() {
                 description = stringResource(R.string.settings_label_system_default),
                 icon = Icons.Outlined.BrightnessMedium,
                 options = {
-                    Switch(
-                        checked = true, onCheckedChange = { })
+                    Switch(checked = true, onCheckedChange = { })
                 },
-                onClick = null
+                onClick = null,
             )
         }
     }

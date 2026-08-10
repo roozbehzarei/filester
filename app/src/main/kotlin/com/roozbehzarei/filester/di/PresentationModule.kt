@@ -5,7 +5,8 @@ import com.roozbehzarei.filester.presentation.screens.settings.SettingsViewModel
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
-val presentationModule = module {
-    viewModel<MainViewModel>()
-    viewModel<SettingsViewModel>()
-}
+val presentationModule =
+    module {
+        viewModel<MainViewModel>()
+        viewModel<SettingsViewModel>()
+    }
