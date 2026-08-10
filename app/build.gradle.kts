@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.spotless)
 }
 
 if (isProprietaryDistribution) {
@@ -123,6 +124,19 @@ dokka {
             // Hide any code in packages that match the regex
             suppress.set(true)
         }
+    }
+}
+
+spotless {
+    kotlin {
+        target("src/**/*.kt")
+        ktlint("1.8.0")
+            .setEditorConfigPath(file(".editorconfig"))
+            .customRuleSets(
+                listOf(
+                    "io.nlopez.compose.rules:ktlint:0.6.3",
+                ),
+            )
     }
 }
 

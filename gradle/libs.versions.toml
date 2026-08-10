@@ -22,6 +22,7 @@ navigation = "2.9.8"
 room = "2.8.4"
 slf4j = "1.7.36"
 splashScreen = "1.2.0"
+spotless = "8.9.0"
 work = "2.11.2"
 
 [libraries]
@@ -72,3 +73,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
