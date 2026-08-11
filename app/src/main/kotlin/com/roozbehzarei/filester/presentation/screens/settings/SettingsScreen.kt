@@ -4,6 +4,7 @@ import android.app.LocaleConfig
 import android.content.Context
 import android.os.Build
 import android.os.LocaleList
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -112,36 +113,16 @@ private fun SettingsContent(
     }
 
     if (shouldShowHostingDialog) {
-        val litterboxLabel = stringResource(R.string.settings_hosting_service_litterbox)
-        val litterboxDesc =
-            stringResource(
-                R.string.settings_hosting_service_litterbox_description,
-                HostProvider.LITTERBOX.expirationHours,
-            )
-        val uguuLabel = stringResource(R.string.settings_hosting_service_uguu)
-        val uguuDesc =
-            stringResource(
-                R.string.settings_hosting_service_uguu_description,
-                HostProvider.UGUU.expirationHours,
-            )
-        val providers = HostProvider.entries
+        // SingleChoiceDialog takes plain lambdas, so resolve through the context rather than
+        // stringResource.
+        val context = LocalContext.current
 
         SingleChoiceDialog(
             title = stringResource(R.string.settings_label_hosting_service),
-            options = providers,
+            options = HostProvider.entries,
             initialSelection = uiState.hostProvider,
-            optionLabel = { provider ->
-                when (provider) {
-                    HostProvider.LITTERBOX -> litterboxLabel
-                    HostProvider.UGUU -> uguuLabel
-                }
-            },
-            optionDescription = { provider ->
-                when (provider) {
-                    HostProvider.LITTERBOX -> litterboxDesc
-                    HostProvider.UGUU -> uguuDesc
-                }
-            },
+            optionLabel = { provider -> context.getString(provider.labelRes) },
+            optionDescription = { provider -> context.getString(provider.descriptionRes) },
             onDismissRequest = { shouldShowHostingDialog = false },
             onConfirm = { selectedProvider ->
                 onHostProviderChange(selectedProvider)
@@ -156,11 +137,7 @@ private fun SettingsContent(
                     .padding(bottom = 8.dp)
                     .defaultMinSize(minHeight = 64.dp),
             title = stringResource(R.string.settings_label_hosting_service),
-            description =
-                when (uiState.hostProvider) {
-                    HostProvider.LITTERBOX -> stringResource(R.string.settings_hosting_service_litterbox)
-                    HostProvider.UGUU -> stringResource(R.string.settings_hosting_service_uguu)
-                },
+            description = stringResource(uiState.hostProvider.labelRes),
             icon = Icons.Outlined.Cloud,
             options = null,
             onClick = { shouldShowHostingDialog = true },
@@ -328,6 +305,22 @@ private fun SettingsItem(
         if (options != null) options(Modifier.padding(horizontal = 18.dp))
     }
 }
+
+@get:StringRes
+private val HostProvider.labelRes: Int
+    get() =
+        when (this) {
+            HostProvider.LITTERBOX -> R.string.settings_hosting_service_litterbox
+            HostProvider.UGUU -> R.string.settings_hosting_service_uguu
+        }
+
+@get:StringRes
+private val HostProvider.descriptionRes: Int
+    get() =
+        when (this) {
+            HostProvider.LITTERBOX -> R.string.settings_hosting_service_litterbox_description
+            HostProvider.UGUU -> R.string.settings_hosting_service_uguu_description
+        }
 
 private fun getApplicationLocales(context: Context): List<Locale> {
     val locales =

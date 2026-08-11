@@ -2,7 +2,6 @@ package com.roozbehzarei.filester.data.network.litterbox
 
 import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
-import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.onUpload
@@ -22,8 +21,10 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.io.buffered
 import java.io.File
+import kotlin.time.Duration.Companion.hours
 
 private const val LITTERBOX_URL = "https://litterbox.catbox.moe"
+private const val RETENTION_HOURS = 72L
 
 class LitterboxApi(
     private val client: HttpClient,
@@ -39,7 +40,7 @@ class LitterboxApi(
                             MultiPartFormDataContent(
                                 formData {
                                     append("reqtype", "fileupload")
-                                    append("time", "${HostProvider.LITTERBOX.expirationHours}h")
+                                    append("time", "${RETENTION_HOURS}h")
                                     append(
                                         "fileToUpload",
                                         InputProvider(fileSize) {
@@ -68,7 +69,7 @@ class LitterboxApi(
                     send(
                         UploadResult.Success(
                             body,
-                            HostProvider.LITTERBOX.expirationHours,
+                            System.currentTimeMillis() + RETENTION_HOURS.hours.inWholeMilliseconds,
                         ),
                     )
                 } else {

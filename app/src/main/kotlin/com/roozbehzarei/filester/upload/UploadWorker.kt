@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import okio.FileNotFoundException
 import java.io.FileOutputStream
-import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 
 class UploadWorker(
@@ -106,17 +105,14 @@ class UploadWorker(
                 }
 
                 is UploadResult.Success -> {
-                    val uploadedTime = System.currentTimeMillis()
-                    val expirationTime =
-                        uploadedTime + TimeUnit.HOURS.toMillis(result.expiresInHours)
                     val uploadedFile =
                         File(
                             name = fileName,
                             downloadUrl = result.data,
                             size = fileSize,
                             mimeType = fileType,
-                            uploadedAt = uploadedTime,
-                            expiresAt = expirationTime,
+                            uploadedAt = System.currentTimeMillis(),
+                            expiresAt = result.expiresAt,
                         )
                     fileRepository.saveFile(uploadedFile)
                     notificationFactory.createResultAndNotify(
