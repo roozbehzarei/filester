@@ -359,12 +359,23 @@ private fun FileItem(
                 stringResource(R.string.main_text_expires_soon)
             }
 
+            // Hosts with size-derived retention hand out expiries months away, where an hour count
+            // stops being readable.
             else -> {
-                pluralStringResource(
-                    R.plurals.main_text_expires_hours,
-                    remainingHours,
-                    remainingHours,
-                )
+                if (remainingHours >= 48) {
+                    val remainingDays = remainingHours / 24
+                    pluralStringResource(
+                        R.plurals.main_text_expires_days,
+                        remainingDays,
+                        remainingDays,
+                    )
+                } else {
+                    pluralStringResource(
+                        R.plurals.main_text_expires_hours,
+                        remainingHours,
+                        remainingHours,
+                    )
+                }
             }
         }
 

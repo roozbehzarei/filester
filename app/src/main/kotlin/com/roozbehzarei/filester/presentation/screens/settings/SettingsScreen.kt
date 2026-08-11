@@ -312,6 +312,7 @@ private val HostProvider.labelRes: Int
         when (this) {
             HostProvider.LITTERBOX -> R.string.settings_hosting_service_litterbox
             HostProvider.UGUU -> R.string.settings_hosting_service_uguu
+            HostProvider.X0 -> R.string.settings_hosting_service_x0
         }
 
 @get:StringRes
@@ -320,6 +321,7 @@ private val HostProvider.descriptionRes: Int
         when (this) {
             HostProvider.LITTERBOX -> R.string.settings_hosting_service_litterbox_description
             HostProvider.UGUU -> R.string.settings_hosting_service_uguu_description
+            HostProvider.X0 -> R.string.settings_hosting_service_x0_description
         }
 
 private fun getApplicationLocales(context: Context): List<Locale> {

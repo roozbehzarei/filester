@@ -5,6 +5,7 @@ enum class HostProvider(
 ) {
     LITTERBOX("litterbox"),
     UGUU("uguu"),
+    X0("x0"),
     ;
 
     companion object {

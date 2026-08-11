@@ -5,6 +5,7 @@ import com.roozbehzarei.filester.data.mapper.toFile
 import com.roozbehzarei.filester.data.mapper.toFileEntity
 import com.roozbehzarei.filester.data.network.litterbox.LitterboxApi
 import com.roozbehzarei.filester.data.network.uguu.UguuApi
+import com.roozbehzarei.filester.data.network.x0.X0Api
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
@@ -16,6 +17,7 @@ class FileRepositoryImpl(
     private val fileDao: FileDao,
     private val litterboxApi: Lazy<LitterboxApi>,
     private val uguuApi: Lazy<UguuApi>,
+    private val x0Api: Lazy<X0Api>,
 ) : FileRepository {
     override fun getFiles(): Flow<List<File>> = fileDao.getAll().map { entities -> entities.map { entity -> entity.toFile() } }
 
@@ -26,6 +28,7 @@ class FileRepositoryImpl(
         when (hostProvider) {
             HostProvider.LITTERBOX -> litterboxApi.value.uploadFile(file)
             HostProvider.UGUU -> uguuApi.value.uploadFile(file)
+            HostProvider.X0 -> x0Api.value.uploadFile(file)
         }
 
     override suspend fun saveFile(file: File) {
