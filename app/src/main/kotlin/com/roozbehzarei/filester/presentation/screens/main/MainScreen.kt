@@ -85,7 +85,7 @@ import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -343,7 +343,7 @@ private fun FileItem(
                 null
             } else {
                 val remainingMs = expiresAt - now
-                if (remainingMs <= 0) -1 else TimeUnit.MILLISECONDS.toHours(remainingMs).toInt()
+                if (remainingMs <= 0) -1 else remainingMs.milliseconds.inWholeHours.toInt()
             }
         }
     val expiresText =
