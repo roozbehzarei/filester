@@ -153,6 +153,8 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     // Activity
     implementation(libs.androidx.activity.compose)
+    // AppCompat
+    implementation(libs.androidx.appcompat)
     // Navigation
     implementation(libs.androidx.navigation.compose)
     // Lifecycle
