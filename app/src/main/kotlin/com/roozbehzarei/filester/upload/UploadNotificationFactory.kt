@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.roozbehzarei.filester.R
 
@@ -20,16 +19,14 @@ class UploadNotificationFactory(
     }
 
     private fun createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = context.getString(R.string.notif_label_channel_name)
-            val descriptionText = context.getString(R.string.notif_description_channel)
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel =
-                NotificationChannel(channelId, name, importance).apply {
-                    description = descriptionText
-                }
-            notificationManager.createNotificationChannel(channel)
-        }
+        val name = context.getString(R.string.notif_label_channel_name)
+        val descriptionText = context.getString(R.string.notif_description_channel)
+        val importance = NotificationManager.IMPORTANCE_LOW
+        val channel =
+            NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+            }
+        notificationManager.createNotificationChannel(channel)
     }
 
     fun createOngoing(

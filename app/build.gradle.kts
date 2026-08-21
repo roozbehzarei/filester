@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 37
         versionCode = 21
         versionName = appVersionName
