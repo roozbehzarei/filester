@@ -188,8 +188,6 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
-    // Apache Log4j
-    implementation(libs.slf4j.android)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
     // Firebase

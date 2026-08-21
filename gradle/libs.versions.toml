@@ -20,7 +20,6 @@ lifecycle = "2.11.0"
 media3 = "1.10.1"
 navigation = "2.9.8"
 room = "2.8.4"
-slf4j = "1.7.36"
 splashScreen = "1.2.0"
 spotless = "8.9.0"
 work = "2.11.2"
@@ -62,7 +61,6 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
