@@ -170,8 +170,9 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     // Browser
     implementation(libs.androidx.browser)
-    // DocumentFile
-    implementation(libs.androidx.documentfile)
+    // FileKit
+    implementation(libs.filekit.core)
+    implementation(libs.filekit.dialogs.compose)
     // kotlinx.serialization
     implementation(libs.kotlinx.serialization.json)
     // Koin

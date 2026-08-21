@@ -1,6 +1,5 @@
 package com.roozbehzarei.filester.presentation.screens.main
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.roozbehzarei.filester.BuildConfig
@@ -11,6 +10,8 @@ import com.roozbehzarei.filester.presentation.UiText
 import com.roozbehzarei.filester.upload.UploadManager
 import com.roozbehzarei.filester.upload.UploadState
 import com.roozbehzarei.filester.upload.UploadStatus
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.name
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,15 +73,12 @@ class MainViewModel(
         }
     }
 
-    fun initializeUpload(
-        uri: Uri,
-        fileName: String,
-    ) {
+    fun initializeUpload(file: PlatformFile) {
         viewModelScope.launch {
-            uploadManager.start(uri)
+            uploadManager.start(file)
         }
         _mainUiState.update {
-            it.copy(uploadingFileName = fileName)
+            it.copy(uploadingFileName = file.name)
         }
     }
 

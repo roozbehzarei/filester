@@ -10,6 +10,7 @@ import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
 import com.roozbehzarei.filester.domain.repository.FileRepository
+import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -22,7 +23,7 @@ class FileRepositoryImpl(
     override fun getFiles(): Flow<List<File>> = fileDao.getAll().map { entities -> entities.map { entity -> entity.toFile() } }
 
     override fun uploadFile(
-        file: java.io.File,
+        file: PlatformFile,
         hostProvider: HostProvider,
     ): Flow<UploadResult<String>> =
         when (hostProvider) {

@@ -1,8 +1,12 @@
 package com.roozbehzarei.filester.data.network.x0
 
-import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.domain.model.UploadResult
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.mimeType
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.size
+import io.github.vinceglb.filekit.source
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.InputProvider
@@ -15,12 +19,10 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
-import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.io.buffered
-import java.io.File
 import kotlin.time.Duration.Companion.days
 
 private const val X0_URL = "https://x0.at/"
@@ -44,10 +46,10 @@ private fun retentionMillis(fileSize: Long): Long {
 class X0Api(
     private val client: HttpClient,
 ) {
-    fun uploadFile(file: File): Flow<UploadResult<String>> =
+    fun uploadFile(file: PlatformFile): Flow<UploadResult<String>> =
         channelFlow {
-            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
-            val fileSize = file.length()
+            val mimeType = file.mimeType()?.toString() ?: "application/octet-stream"
+            val fileSize = file.size()
             try {
                 val response: HttpResponse =
                     client.post(X0_URL) {
@@ -57,7 +59,7 @@ class X0Api(
                                     append(
                                         "file",
                                         InputProvider(fileSize) {
-                                            file.inputStream().asInput().buffered()
+                                            file.source().buffered()
                                         },
                                         Headers.build {
                                             append(HttpHeaders.ContentType, mimeType)

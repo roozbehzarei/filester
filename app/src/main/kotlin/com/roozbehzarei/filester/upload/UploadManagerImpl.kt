@@ -1,16 +1,18 @@
 package com.roozbehzarei.filester.upload
 
-import android.net.Uri
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.roozbehzarei.filester.domain.repository.UserPreferencesRepository
-import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_FILE_URI
+import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_FILE_PATH
 import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_HOST_PROVIDER
 import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_WORK_NAME
 import com.roozbehzarei.filester.upload.UploadWorker.Companion.KEY_WORK_PROGRESS
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.bookmarkData
+import io.github.vinceglb.filekit.path
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -38,11 +40,13 @@ class UploadManagerImpl(
             }
         }
 
-    override suspend fun start(uri: Uri) {
+    override suspend fun start(file: PlatformFile) {
+        runCatching { file.bookmarkData() }
+
         val hostProvider = userPreferencesRepository.getHostProviderPreference().first()
         val inputData =
             workDataOf(
-                KEY_FILE_URI to uri.toString(),
+                KEY_FILE_PATH to file.path,
                 KEY_HOST_PROVIDER to hostProvider.id,
             )
         val workRequest = OneTimeWorkRequestBuilder<UploadWorker>().setInputData(inputData).build()
