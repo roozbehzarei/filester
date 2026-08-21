@@ -19,12 +19,12 @@ import com.roozbehzarei.filester.R
 val bodyFontFamily =
     FontFamily(
         Font(
-            R.font.roboto_serif,
+            R.font.inter,
             weight = FontWeight.Normal,
             variationSettings = FontVariation.Settings(FontVariation.weight(400)),
         ),
         Font(
-            R.font.roboto_serif,
+            R.font.inter,
             weight = FontWeight.Medium,
             variationSettings = FontVariation.Settings(FontVariation.weight(500)),
         ),
@@ -33,12 +33,12 @@ val bodyFontFamily =
 val displayFontFamily =
     FontFamily(
         Font(
-            R.font.roboto_serif,
+            R.font.inter,
             weight = FontWeight.Normal,
             variationSettings = FontVariation.Settings(FontVariation.weight(400)),
         ),
         Font(
-            R.font.roboto_serif,
+            R.font.inter,
             weight = FontWeight.Medium,
             variationSettings = FontVariation.Settings(FontVariation.weight(500)),
         ),
@@ -47,7 +47,7 @@ val displayFontFamily =
 /**
  * Persian face.
  *
- * Roboto Serif carries no Arabic-script glyphs, and Compose resolves a [FontFamily] by weight
+ * Inter carries no Arabic-script glyphs, and Compose resolves a [FontFamily] by weight
  * and style alone — a second font added to the same family would never be consulted for the
  * codepoints the first one is missing. Persian therefore swaps the whole family rather than
  * falling back per glyph. Vazirmatn covers Latin and Turkish too, so a file name in Latin script
