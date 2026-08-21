@@ -168,8 +168,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     // SplashScreen
     implementation(libs.androidx.core.splashscreen)
-    // Google Fonts
-    implementation(libs.androidx.ui.text.google.fonts)
     // Browser
     implementation(libs.androidx.browser)
     // FileKit
