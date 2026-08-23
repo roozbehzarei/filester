@@ -1,0 +1,4 @@
+* NEW: x0 storage provider
+* IMPROVEMENT: Better UX for file hosting service selection in settings page
+* IMPROVEMENT: Refreshed typeface
+* NOTE: Android 7 and 7.1 devices are no longer supported
