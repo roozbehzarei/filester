@@ -1,9 +1,12 @@
 package com.roozbehzarei.filester.presentation.screens.settings
 
 import android.app.LocaleConfig
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.LocaleList
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
@@ -44,11 +47,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roozbehzarei.filester.BuildConfig
@@ -66,6 +71,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val appLocales = remember(context) { getApplicationLocales(context) }
     val currentLocale = LocalConfiguration.current.locales.get(0)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -80,6 +86,18 @@ fun SettingsScreen(
         onTelemetryChange = { viewModel.saveTelemetryPref(it) },
         onMonitoringChange = { viewModel.saveMonitoringPref(it) },
         onHostProviderChange = { viewModel.saveHostProviderPref(it) },
+        onHostWebsiteClick = { provider ->
+            try {
+                context.startActivity(Intent(Intent.ACTION_VIEW, provider.websiteUrl.toUri()))
+            } catch (_: ActivityNotFoundException) {
+                Toast
+                    .makeText(
+                        context,
+                        resources.getString(R.string.toast_app_not_found),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+            }
+        },
     )
 }
 
@@ -93,8 +111,10 @@ private fun SettingsContent(
     onTelemetryChange: (Boolean) -> Unit,
     onMonitoringChange: (Boolean) -> Unit,
     onHostProviderChange: (HostProvider) -> Unit,
+    onHostWebsiteClick: (HostProvider) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val resources = LocalResources.current
     var shouldShowLanguageDialog by remember { mutableStateOf(false) }
     var shouldShowHostingDialog by remember { mutableStateOf(false) }
 
@@ -113,20 +133,18 @@ private fun SettingsContent(
     }
 
     if (shouldShowHostingDialog) {
-        // SingleChoiceDialog takes plain lambdas, so resolve through the context rather than
-        // stringResource.
-        val context = LocalContext.current
-
         SingleChoiceDialog(
             title = stringResource(R.string.settings_label_hosting_service),
             options = HostProvider.entries,
             initialSelection = uiState.hostProvider,
-            optionLabel = { provider -> context.getString(provider.labelRes) },
-            optionDescription = { provider -> context.getString(provider.descriptionRes) },
+            optionLabel = { provider -> resources.getString(provider.labelRes) },
+            optionDescription = { provider -> resources.getString(provider.descriptionRes) },
             onDismissRequest = { shouldShowHostingDialog = false },
             onConfirm = { selectedProvider ->
                 onHostProviderChange(selectedProvider)
             },
+            onOptionLinkClick = onHostWebsiteClick,
+            applyOnSelect = true,
         )
     }
     Column(modifier = modifier) {
@@ -315,6 +333,14 @@ private val HostProvider.labelRes: Int
             HostProvider.X0 -> R.string.settings_hosting_service_x0
         }
 
+private val HostProvider.websiteUrl: String
+    get() =
+        when (this) {
+            HostProvider.LITTERBOX -> "https://litterbox.catbox.moe/"
+            HostProvider.UGUU -> "https://uguu.se/"
+            HostProvider.X0 -> "https://x0.at/"
+        }
+
 @get:StringRes
 private val HostProvider.descriptionRes: Int
     get() =
@@ -364,6 +390,7 @@ private fun SettingsContentPreview() {
                 onTelemetryChange = {},
                 onMonitoringChange = {},
                 onHostProviderChange = {},
+                onHostWebsiteClick = {},
             )
         }
     }
