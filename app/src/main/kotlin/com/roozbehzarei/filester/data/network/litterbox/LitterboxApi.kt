@@ -1,9 +1,12 @@
 package com.roozbehzarei.filester.data.network.litterbox
 
-import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
-import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.mimeType
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.size
+import io.github.vinceglb.filekit.source
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.InputProvider
@@ -16,22 +19,22 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
-import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.io.buffered
-import java.io.File
+import kotlin.time.Duration.Companion.hours
 
 private const val LITTERBOX_URL = "https://litterbox.catbox.moe"
+private const val RETENTION_HOURS = 72L
 
 class LitterboxApi(
     private val client: HttpClient,
 ) {
-    fun uploadFile(file: File): Flow<UploadResult<String>> =
+    fun uploadFile(file: PlatformFile): Flow<UploadResult<String>> =
         channelFlow {
-            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
-            val fileSize = file.length()
+            val mimeType = file.mimeType()?.toString() ?: "application/octet-stream"
+            val fileSize = file.size()
             try {
                 val response: HttpResponse =
                     client.post("${LITTERBOX_URL}/resources/internals/api.php") {
@@ -39,11 +42,11 @@ class LitterboxApi(
                             MultiPartFormDataContent(
                                 formData {
                                     append("reqtype", "fileupload")
-                                    append("time", "${HostProvider.LITTERBOX.expirationHours}h")
+                                    append("time", "${RETENTION_HOURS}h")
                                     append(
                                         "fileToUpload",
                                         InputProvider(fileSize) {
-                                            file.inputStream().asInput().buffered()
+                                            file.source().buffered()
                                         },
                                         Headers.build {
                                             append(HttpHeaders.ContentType, mimeType)
@@ -68,7 +71,7 @@ class LitterboxApi(
                     send(
                         UploadResult.Success(
                             body,
-                            HostProvider.LITTERBOX.expirationHours,
+                            System.currentTimeMillis() + RETENTION_HOURS.hours.inWholeMilliseconds,
                         ),
                     )
                 } else {

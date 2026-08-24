@@ -2,10 +2,10 @@ package com.roozbehzarei.filester.domain.model
 
 enum class HostProvider(
     val id: String,
-    val expirationHours: Long,
 ) {
-    LITTERBOX("litterbox", 72),
-    UGUU("uguu", 3),
+    LITTERBOX("litterbox"),
+    UGUU("uguu"),
+    X0("x0"),
     ;
 
     companion object {

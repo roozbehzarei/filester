@@ -1,4 +1,4 @@
-val appVersionName = "3.1.1"
+val appVersionName = "3.2.0"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
@@ -28,9 +28,9 @@ android {
 
     defaultConfig {
         applicationId = "com.roozbehzarei.filester"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 37
-        versionCode = 21
+        versionCode = 22
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -153,6 +153,8 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     // Activity
     implementation(libs.androidx.activity.compose)
+    // AppCompat
+    implementation(libs.androidx.appcompat)
     // Navigation
     implementation(libs.androidx.navigation.compose)
     // Lifecycle
@@ -166,12 +168,11 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     // SplashScreen
     implementation(libs.androidx.core.splashscreen)
-    // Google Fonts
-    implementation(libs.androidx.ui.text.google.fonts)
     // Browser
     implementation(libs.androidx.browser)
-    // DocumentFile
-    implementation(libs.androidx.documentfile)
+    // FileKit
+    implementation(libs.filekit.core)
+    implementation(libs.filekit.dialogs.compose)
     // kotlinx.serialization
     implementation(libs.kotlinx.serialization.json)
     // Koin
@@ -187,8 +188,6 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
-    // Apache Log4j
-    implementation(libs.slf4j.android)
     // Media3
     implementation(libs.androidx.media3.common.ktx)
     // Firebase

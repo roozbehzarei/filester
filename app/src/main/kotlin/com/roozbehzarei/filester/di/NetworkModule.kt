@@ -3,6 +3,7 @@ package com.roozbehzarei.filester.di
 import com.roozbehzarei.filester.BuildConfig
 import com.roozbehzarei.filester.data.network.litterbox.LitterboxApi
 import com.roozbehzarei.filester.data.network.uguu.UguuApi
+import com.roozbehzarei.filester.data.network.x0.X0Api
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
@@ -47,4 +48,5 @@ val networkModule =
         single { create(::createHttpClient) }
         single<LitterboxApi>()
         single<UguuApi>()
+        single<X0Api>()
     }

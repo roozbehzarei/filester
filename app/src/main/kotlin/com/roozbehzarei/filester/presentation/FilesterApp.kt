@@ -112,7 +112,7 @@ fun FilesterApp(
  * @param shouldShowMenu Whether to show the overflow menu (for main screen)
  * @param canNavigateUp Whether to show back navigation arrow
  * @param onNavigateUp Callback for back navigation
- * @param onNetworkStatusClicked Callback for handling network status icon clicks.
+ * @param onNetworkStatusClick Callback for handling network status icon clicks.
  *                                Launches a Custom Tab with the status page URL.
  * @param onNavigateToSettings Callback for navigating to settings screen
  * @param onNavigateToAbout Callback for navigating to about screen

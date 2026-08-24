@@ -5,9 +5,7 @@ import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
-import android.provider.OpenableColumns
 import android.text.format.Formatter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -81,10 +79,13 @@ import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import com.roozbehzarei.filester.upload.UploadState
 import com.roozbehzarei.filester.upload.UploadStatus
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -148,7 +149,7 @@ private fun MainContent(
     onShowSnackbar: (String) -> Unit,
     onUploadCancel: () -> Unit,
     onFileRemove: (File) -> Unit,
-    onInitializeUpload: (Uri, String) -> Unit,
+    onInitializeUpload: (PlatformFile) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(modifier = modifier, floatingActionButton = {
@@ -342,7 +343,7 @@ private fun FileItem(
                 null
             } else {
                 val remainingMs = expiresAt - now
-                if (remainingMs <= 0) -1 else TimeUnit.MILLISECONDS.toHours(remainingMs).toInt()
+                if (remainingMs <= 0) -1 else remainingMs.milliseconds.inWholeHours.toInt()
             }
         }
     val expiresText =
@@ -359,12 +360,23 @@ private fun FileItem(
                 stringResource(R.string.main_text_expires_soon)
             }
 
+            // Hosts with size-derived retention hand out expiries months away, where an hour count
+            // stops being readable.
             else -> {
-                pluralStringResource(
-                    R.plurals.main_text_expires_hours,
-                    remainingHours,
-                    remainingHours,
-                )
+                if (remainingHours >= 48) {
+                    val remainingDays = remainingHours / 24
+                    pluralStringResource(
+                        R.plurals.main_text_expires_days,
+                        remainingDays,
+                        remainingDays,
+                    )
+                } else {
+                    pluralStringResource(
+                        R.plurals.main_text_expires_hours,
+                        remainingHours,
+                        remainingHours,
+                    )
+                }
             }
         }
 
@@ -547,30 +559,18 @@ private fun FileRemoverDialog(
 /**
  * Displays a Floating Action Button (FAB) for uploading files.
  *
- * When clicked, it launches a file picker allowing the user to select a file.
- * Upon selection, it extracts the file's URI and name and invokes the provided `onUpload` callback.
+ * When clicked, it launches the platform file picker. Upon selection, it invokes the provided
+ * `onUpload` callback with the picked file.
  *
  * @param onUpload A lambda function that is invoked when a file is selected.
  */
 @Composable
-private fun UploadFab(onUpload: (uri: Uri, name: String) -> Unit) {
-    val context = LocalContext.current
+private fun UploadFab(onUpload: (PlatformFile) -> Unit) {
     val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) {
-                context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    cursor.moveToFirst()
-                    val name = cursor.getString(nameIndex)
-                    onUpload(uri, name)
-                }
-            }
+        rememberFilePickerLauncher(type = FileKitType.File()) { file ->
+            file?.let(onUpload)
         }
-    FloatingActionButton(
-        onClick = {
-            launcher.launch("*/*")
-        },
-    ) {
+    FloatingActionButton(onClick = launcher::launch) {
         Icon(Icons.Filled.Add, contentDescription = "Upload File")
     }
 }
@@ -586,7 +586,7 @@ private fun MainContentPreview() {
                 onShowSnackbar = {},
                 onUploadCancel = {},
                 onFileRemove = {},
-                onInitializeUpload = { _, _ -> },
+                onInitializeUpload = {},
             )
         }
     }
@@ -626,7 +626,7 @@ private fun MainContentPreview2Preview() {
                 onShowSnackbar = {},
                 onUploadCancel = {},
                 onFileRemove = {},
-                onInitializeUpload = { _, _ -> },
+                onInitializeUpload = {},
             )
         }
     }

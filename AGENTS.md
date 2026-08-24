@@ -1,42 +1,67 @@
 ## Overview
 
-Filester is a secure, privacy-first, ad-free cloud storage application for Android that uploads
-files to third-party cloud storage services for temporary hosting.
+Filester is a temporary cloud storage for fast, private file sharing currently available on Android.
 
 ### 1. Designs and Patterns
 
 - **Presentation Layer**: Built completely in Jetpack Compose.
     - ViewModels emit state via Kotlin `StateFlow` and handle incoming user events.
-    - Navigation uses type-safe route objects (`MainRoute`, `SettingsRoute`, `AboutRoute`) with
-      Jetpack Navigation Compose.
-- **Domain Layer**: Clean Kotlin components containing business logic models, repository interfaces,
-  and service definitions.
-- **Data Layer**: Coordinates data flows between local SQLite database, network APIs, and settings
-  preferences.
-
-**Instruction**: Always follow Google-recommended architectural and design patterns
+    - Navigation is defined in navigation package.
+- **Domain Layer**: Clean Kotlin components containing business logic models, repository interfaces, and service definitions.
+- **Data Layer**: Coordinates data flows between local SQLite database, network APIs, and settings preferences.
 
 ### 2. Dependency Injection
 
-- Powered by Koin, using Compiler Plugin DSL approach which provides auto-wiring and compile-time
-  safety. Setup modules are declared
-  under di package.
+- Powered by Koin, using Compiler Plugin DSL approach which provides auto-wiring and compile-time safety. Setup modules are declared under di package.
 
-### 3. Background Upload & Notifications
+### 3. Background Upload
 
-- Upload operations are executed via
-  `WorkManager` (UploadWorker.kt)
-  running as a Foreground Service with type `ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC`.
-- Real-time progress updates are shown in notification drawer
-  through UploadNotificationHelper.kt
-  and can be canceled
-  via FilesterBroadcastReceiver.kt.
+- Upload operations are executed via `WorkManager` (UploadWorker.kt) running as a Foreground Service with type `ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC`.
 
 ### 4. Build Configuration
 
-Gradle build scripts are written in Kotlin DSL. Also, the project divides flavor-specific
-dependencies and source implementations:
+Gradle build scripts are written in Kotlin DSL. Also, the project divides flavor-specific dependencies and source implementations:
 
 - **`proprietary` Flavor**: Depends on Firebase (Analytics) and Kotzilla monitoring. Built with `-PisProprietaryDistribution=true` argument. Kotzilla runs behind its consent gate (`consentRequired`, set in build.gradle.kts): monitoring defaults to enabled and users opt out from the settings screen.
-- **`foss` Flavor**: Exclusive to F-Droid/IzzyOnDroid distribution.
+- **`foss` Flavor**: Exclusive to distributing on F-Droid and IzzyOnDroid.
   Uses a stubbed/no-op implementation of AnalyticsServiceImpl.kt. Every flavor-split function in Extensions.kt has a no-op counterpart here so this flavor references no Kotzilla symbol.
+
+### 5. Host Providers
+
+Adding or removing a file host touches six places, all under `app/src/main/kotlin/com/roozbehzarei/filester/`:
+
+| File | Change                                                                                                                                                                           |
+| --- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `domain/model/HostProvider.kt` | Enum entry with a stable `id`. The `id` is persisted in DataStore, so never rename an existing one.                                                                              |
+| `data/network/<provider>/<Name>Api.kt` | Ktor multipart `post` returning `Flow<UploadResult<String>>`, progress reported via `onUpload`. Retention is computed here and emitted as `expiresAt` in `UploadResult.Success`. |
+| `di/NetworkModule.kt` | Registered with `single<XApi>()`.                                                                                                                                                |
+| `data/repository/FileRepositoryImpl.kt` | A `Lazy<XApi>` constructor parameter and a `when` branch.                                                                                                                        |
+| `res/values/strings.xml` | `settings_hosting_service_<id>` (`translatable="false"`) plus a `..._description` listing additional information.                                                                |
+| `presentation/screens/settings/SettingsScreen.kt` | `HostProvider.labelRes` and `HostProvider.descriptionRes` mappings.                                                                                                              |
+
+The exhaustive `when` expressions only cover the repository and the two `SettingsScreen` mappings — a missing DI registration or missing string resource compiles fine and fails at runtime.
+
+### 6. Database
+
+Room is configured with `exportSchema = true`, and the generated schema JSON is committed under `app/schemas/com.roozbehzarei.filester.data.local.FileDatabase/`.
+
+Any change to `FileEntity` requires all four of:
+
+1. Bump `version` in the `@Database` annotation (`data/local/FileDatabase.kt`).
+2. Add a `Migration` beside `MIGRATION_2_3`.
+3. Register it in `di/DatabaseModule.kt` via `addMigrations(...)`.
+4. Commit the newly generated schema JSON.
+
+Shipping a schema change without its migration crashes every existing install on upgrade.
+
+### 7. Documentation
+
+The `docs/` directory is generated by Dokka (`./gradlew dokkaGenerate`), not hand-written. `failOnWarning` is enabled, so malformed KDoc fails the task, and only the `proprietaryRelease` source set is documented.
+
+### Instructions
+
+- Always follow Google-recommended architectural and design patterns.
+- In case the changes made to the project are flavor-neutral, skip building `proprietary` variants in order to verify if the build process succeeds. Use `./gradlew assembleFossDebug` or `./gradlew assembleFossRelease`.
+- Before making a git commit, run `spotlessCheck` gradle task to ensure following linting rules.
+- Commit messages use conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`).
+- Releasing pairs a `versionCode` / `appVersionName` bump in `app/build.gradle.kts` with a new `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`.

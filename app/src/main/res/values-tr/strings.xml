@@ -5,6 +5,7 @@
     <string name="settings">Ayarlar</string>
     <string name="cancel">İptal</string>
     <string name="apply">Uygula</string>
+    <string name="close">Kapat</string>
     <string name="toast_app_not_found">Bağlantı açılamadı</string>
     <string name="title_upload_error">Yükleme başarısız</string>
 
@@ -27,6 +28,10 @@
         <item quantity="one">%1$d saat içinde süresi dolacak</item>
         <item quantity="other">%1$d saat içinde süresi dolacak</item>
     </plurals>
+    <plurals name="main_text_expires_days">
+        <item quantity="one">%1$d gün içinde süresi dolacak</item>
+        <item quantity="other">%1$d gün içinde süresi dolacak</item>
+    </plurals>
     <string name="main_text_expires_soon">Yakında dolacak</string>
     <string name="main_text_expired">Süresi doldu</string>
 
@@ -37,8 +42,10 @@
 
     <!-- Settings Screen -->
     <string name="settings_label_hosting_service">Dosya barındırma hizmeti</string>
-    <string name="settings_hosting_service_litterbox_description">• 1 GB\'a kadar dosya boyutuna izin verilir\n• Yüklemelerin süresi %1$d saat sonra dolar\n✗ exe, scr, cpl, doc* ve jar uzantılarına izin verilmez</string>
-    <string name="settings_hosting_service_uguu_description">• 128 MiB\'a kadar dosya boyutuna izin verilir\n• Dosyaların süresi %1$d saat sonra dolar\n✗ zip, 7z, rar, pdf, exe, msi, html, svg ve jar uzantılarına izin verilmez</string>
+    <string name="settings_action_open_website">%1$s web sitesini aç</string>
+    <string name="settings_hosting_service_litterbox_description">• 1 GB\'a kadar dosya boyutuna izin verilir\n• Yüklemelerin süresi 72 saat sonra dolar\n✗ exe, scr, cpl, doc* ve jar uzantılarına izin verilmez</string>
+    <string name="settings_hosting_service_uguu_description">• 128 MiB\'a kadar dosya boyutuna izin verilir\n• Dosyaların süresi 3 saat sonra dolar\n✗ zip, 7z, rar, pdf, exe, msi, html, svg ve jar uzantılarına izin verilmez</string>
+    <string name="settings_hosting_service_x0_description">• 1024 MiB\'a kadar dosya boyutuna izin verilir\n• Dosyaların süresi boyutuna göre 3 ila 100 gün arasında dolar; daha küçük dosyalar daha uzun süre saklanır</string>
     <string name="settings_label_language">Dil</string>
     <string name="settings_label_theme">Tema</string>
     <string name="settings_label_dark">Koyu</string>

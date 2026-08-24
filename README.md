@@ -2,7 +2,7 @@
      Filester
 </h1>
 <p align="center">
-     A secure, accessible cloud storage app for android.
+     Temporary cloud storage for fast, private file sharing
 </p>
 <p align="center">
      <a style="text-decoration:none" href="LICENSE">
@@ -43,10 +43,11 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 
 ## Download
 
-[<img src=".assets/F-Droid.webp" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/com.roozbehzarei.filester)
-[<img src=".assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="60">](https://apt.izzysoft.de/fdroid/index/apk/com.roozbehzarei.filester)
-[<img src=".assets/GetApps.webp" alt="Get it on GetApps" height="60">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)
-[<img src=".assets/GitHub.webp" alt="Download APK" height="60">](https://github.com/roozbehzarei/filester/releases/latest/download/filester-universal.apk)
+[<img src=".assets/F-Droid.webp" alt="Get it on F-Droid" height="56">](https://f-droid.org/packages/com.roozbehzarei.filester)&nbsp;&nbsp;
+[<img src=".assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="56">](https://apt.izzysoft.de/fdroid/index/apk/com.roozbehzarei.filester)&nbsp;&nbsp;
+[<img src=".assets/Obtainium.webp" alt="Get it on Obtainium" height="56">](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22com.roozbehzarei.filester%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Froozbehzarei%2Ffilester%22%2C%22author%22%3A%22Roozbeh%20Zarei%22%2C%22name%22%3A%22Filester%22%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%2C%5C%22fallbackToOlderReleases%5C%22%3Atrue%2C%5C%22filterReleaseTitlesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22filterReleaseNotesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22verifyLatestTag%5C%22%3Atrue%2C%5C%22sortMethodChoice%5C%22%3A%5C%22date%5C%22%2C%5C%22useLatestAssetDateAsReleaseDate%5C%22%3Afalse%2C%5C%22releaseTitleAsVersion%5C%22%3Afalse%2C%5C%22trackOnly%5C%22%3Afalse%2C%5C%22versionExtractionRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22matchGroupToUse%5C%22%3A%5C%22%5C%22%2C%5C%22versionDetection%5C%22%3Atrue%2C%5C%22releaseDateAsVersion%5C%22%3Afalse%2C%5C%22useVersionCodeAsOSVersion%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22filester-universal%5C%22%2C%5C%22invertAPKFilter%5C%22%3Afalse%2C%5C%22autoApkFilterByArch%5C%22%3Afalse%2C%5C%22appName%5C%22%3A%5C%22Filester%5C%22%2C%5C%22appAuthor%5C%22%3A%5C%22Roozbeh%20Zarei%5C%22%2C%5C%22shizukuPretendToBeGooglePlay%5C%22%3Afalse%2C%5C%22allowInsecure%5C%22%3Afalse%2C%5C%22exemptFromBackgroundUpdates%5C%22%3Afalse%2C%5C%22skipUpdateNotifications%5C%22%3Afalse%2C%5C%22about%5C%22%3A%5C%22Temporary%20cloud%20storage%20for%20fast%2C%20private%20file%20sharing%5C%22%2C%5C%22refreshBeforeDownload%5C%22%3Afalse%2C%5C%22includeZips%5C%22%3Afalse%2C%5C%22zippedApkFilterRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22includeTarballs%5C%22%3Afalse%2C%5C%22tarballedApkFilterRegEx%5C%22%3A%5C%22%5C%22%7D%22%7D)&nbsp;&nbsp;
+[<img src=".assets/GitHub.webp" alt="Download APK" height="56">](https://github.com/roozbehzarei/filester/releases/latest/download/filester-universal.apk)&nbsp;&nbsp;
+[<img src=".assets/GetApps.webp" alt="Get it on GetApps" height="56">](https://global.app.mi.com/details?id=com.roozbehzarei.filester)&nbsp;&nbsp;
 
 ## Build
 

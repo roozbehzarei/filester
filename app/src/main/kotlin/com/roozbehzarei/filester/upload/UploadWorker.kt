@@ -3,8 +3,6 @@ package com.roozbehzarei.filester.upload
 import android.content.Context
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
-import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
@@ -17,21 +15,21 @@ import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
 import com.roozbehzarei.filester.domain.repository.FileRepository
 import com.roozbehzarei.filester.domain.service.AnalyticsService
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.mimeType
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.releaseBookmark
+import io.github.vinceglb.filekit.size
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
-import okio.FileNotFoundException
-import java.io.FileOutputStream
-import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.milliseconds
 
 class UploadWorker(
-    private val context: Context,
+    context: Context,
     private val notificationFactory: UploadNotificationFactory,
     private val fileRepository: FileRepository,
     private val analyticsService: AnalyticsService,
@@ -49,36 +47,18 @@ class UploadWorker(
             ),
         )
 
-        val inputFileUri = inputData.getString(KEY_FILE_URI)?.toUri() ?: return Result.failure()
-        val hostProvider =
-            HostProvider.fromId(inputData.getString(KEY_HOST_PROVIDER))
-                ?: return Result.failure()
-        val inputFile = DocumentFile.fromSingleUri(context, inputFileUri) ?: return Result.failure()
-        val fileName =
-            inputFile.name?.takeIf { it.isNotBlank() } ?: "file_${System.currentTimeMillis()}"
-        val fileSize = inputFile.length()
-        val fileType = inputFile.type
-        val fileToUpload = java.io.File(context.cacheDir, fileName)
+        val inputFile = PlatformFile(inputData.getString(KEY_FILE_PATH) ?: return Result.failure())
         try {
-            withContext(Dispatchers.IO) {
-                val inputStream =
-                    context.contentResolver.openInputStream(inputFileUri)
-                        ?: throw FileNotFoundException()
-                inputStream.use {
-                    FileOutputStream(fileToUpload).use { outputStream ->
-                        val buffer = ByteArray(8192)
-                        var bytesRead = inputStream.read(buffer)
-                        while (bytesRead >= 0) {
-                            ensureActive()
-                            outputStream.write(buffer, 0, bytesRead)
-                            bytesRead = inputStream.read(buffer)
-                        }
-                    }
-                }
-            }
+            val hostProvider =
+                HostProvider.fromId(inputData.getString(KEY_HOST_PROVIDER))
+                    ?: return Result.failure()
+            val fileName =
+                inputFile.name.takeIf { it.isNotBlank() } ?: "file_${System.currentTimeMillis()}"
+            val fileSize = inputFile.size().takeIf { it >= 0 } ?: return Result.failure()
+            val fileType = inputFile.mimeType()?.toString()
             val result =
                 fileRepository
-                    .uploadFile(fileToUpload, hostProvider)
+                    .uploadFile(inputFile, hostProvider)
                     .onEach { result ->
                         if (result is UploadResult.Loading) {
                             setForeground(
@@ -92,8 +72,6 @@ class UploadWorker(
                         }
                     }.first { it !is UploadResult.Loading }
 
-            fileToUpload.delete()
-
             return when (result) {
                 is UploadResult.Error -> {
                     notificationFactory.createResultAndNotify(
@@ -106,17 +84,14 @@ class UploadWorker(
                 }
 
                 is UploadResult.Success -> {
-                    val uploadedTime = System.currentTimeMillis()
-                    val expirationTime =
-                        uploadedTime + TimeUnit.HOURS.toMillis(result.expiresInHours)
                     val uploadedFile =
                         File(
                             name = fileName,
                             downloadUrl = result.data,
                             size = fileSize,
                             mimeType = fileType,
-                            uploadedAt = uploadedTime,
-                            expiresAt = expirationTime,
+                            uploadedAt = System.currentTimeMillis(),
+                            expiresAt = result.expiresAt,
                         )
                     fileRepository.saveFile(uploadedFile)
                     notificationFactory.createResultAndNotify(
@@ -135,7 +110,6 @@ class UploadWorker(
             }
         } catch (e: Exception) {
             withContext(NonCancellable) {
-                fileToUpload.delete()
                 if (e is CancellationException) {
                     notificationFactory.createResultAndNotify(
                         id = resultNotificationId,
@@ -156,6 +130,8 @@ class UploadWorker(
             }
             if (BuildConfig.DEBUG) e.printStackTrace()
             return Result.failure()
+        } finally {
+            runCatching { inputFile.releaseBookmark() }
         }
     }
 
@@ -190,7 +166,7 @@ class UploadWorker(
     }
 
     companion object {
-        const val KEY_FILE_URI = "file_uri"
+        const val KEY_FILE_PATH = "file_path"
         const val KEY_HOST_PROVIDER = "host_provider"
         const val KEY_WORK_NAME = "upload_work_name"
         const val KEY_WORK_PROGRESS = "upload_work_progress"

@@ -6,6 +6,7 @@
     <string name="settings">تنظیمات</string>
     <string name="cancel">لغو</string>
     <string name="apply">اعمال</string>
+    <string name="close">بستن</string>
     <string name="toast_app_not_found">برنامه‌ای برای باز کردن پیوند یافت نشد</string>
     <string name="title_upload_error">بارگذاری ناموفق بود</string>
 
@@ -28,6 +29,10 @@
         <item quantity="one">%1$d ساعت دیگر منقضی می‌شود</item>
         <item quantity="other">%1$d ساعت دیگر منقضی می‌شود</item>
     </plurals>
+    <plurals name="main_text_expires_days">
+        <item quantity="one">%1$d روز دیگر منقضی می‌شود</item>
+        <item quantity="other">%1$d روز دیگر منقضی می‌شود</item>
+    </plurals>
     <string name="main_text_expires_soon">به‌زودی منقضی می‌شود</string>
     <string name="main_text_expired">منقضی‌شده</string>
 
@@ -38,8 +43,10 @@
 
     <!-- Settings Screen -->
     <string name="settings_label_hosting_service">سرویس میزبانی فایل</string>
-    <string name="settings_hosting_service_litterbox_description">• فایل تا حجم ۱ گیگابایت مجاز است\n• فایل‌های بارگذاری‌شده پس از %1$d ساعت منقضی می‌شوند\n✗ پسوندهای .exe، .scr، .cpl، .doc* و .jar مجاز نیستند</string>
-    <string name="settings_hosting_service_uguu_description">• حداکثر حجم مجاز فایل ۱۲۸ مگابایت است\n• انقضای فایل‌ها پس از %1$d ساعت\n✗ پسوندهای zip، 7z، rar، pdf، exe، msi، html، svg و jar مجاز نیستند</string>
+    <string name="settings_action_open_website">باز کردن وب‌سایت %1$s</string>
+    <string name="settings_hosting_service_litterbox_description">• فایل تا حجم ۱ گیگابایت مجاز است\n• فایل‌های بارگذاری‌شده پس از ۷۲ ساعت منقضی می‌شوند\n✗ پسوندهای .exe، .scr، .cpl، .doc* و .jar مجاز نیستند</string>
+    <string name="settings_hosting_service_uguu_description">• حداکثر حجم مجاز فایل ۱۲۸ مگابایت است\n• انقضای فایل‌ها پس از ۳ ساعت\n✗ پسوندهای zip، 7z، rar، pdf، exe، msi، html، svg و jar مجاز نیستند</string>
+    <string name="settings_hosting_service_x0_description">• حداکثر حجم مجاز فایل ۱۰۲۴ مگابایت است\n• انقضای فایل‌ها بسته به حجم، بین ۳ تا ۱۰۰ روز است؛ فایل‌های کوچک‌تر بیشتر نگهداری می‌شوند</string>
     <string name="settings_label_language">زبان</string>
     <string name="settings_label_theme">پوسته</string>
     <string name="settings_label_dark">تاریک</string>

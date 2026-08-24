@@ -1,6 +1,7 @@
 # Gradle files
 .gradle/
 build/
+gradle-daemon-jvm.properties
 
 # Local configuration files (sdk path, etc)
 local.properties
@@ -39,6 +40,7 @@ kotzilla.json
 
 # AI related files and folders
 .agent
+.claude
 .gemini
 .codegraph
 /openspec/

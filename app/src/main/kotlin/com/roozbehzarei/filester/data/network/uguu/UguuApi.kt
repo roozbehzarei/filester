@@ -1,9 +1,12 @@
 package com.roozbehzarei.filester.data.network.uguu
 
-import android.webkit.MimeTypeMap
 import com.roozbehzarei.filester.BuildConfig
-import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.mimeType
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.size
+import io.github.vinceglb.filekit.source
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onUpload
@@ -15,22 +18,22 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import io.ktor.utils.io.streams.asInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.io.buffered
-import java.io.File
+import kotlin.time.Duration.Companion.hours
 
 private const val UGUU_URL = "https://uguu.se/upload"
+private const val RETENTION_HOURS = 3L
 
 class UguuApi(
     private val client: HttpClient,
 ) {
-    fun uploadFile(file: File): Flow<UploadResult<String>> =
+    fun uploadFile(file: PlatformFile): Flow<UploadResult<String>> =
         channelFlow {
-            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension) ?: "application/octet-stream"
-            val fileSize = file.length()
+            val mimeType = file.mimeType()?.toString() ?: "application/octet-stream"
+            val fileSize = file.size()
             try {
                 val response: HttpResponse =
                     client.post(UGUU_URL) {
@@ -40,7 +43,7 @@ class UguuApi(
                                     append(
                                         "files[]",
                                         InputProvider(fileSize) {
-                                            file.inputStream().asInput().buffered()
+                                            file.source().buffered()
                                         },
                                         Headers.build {
                                             append(HttpHeaders.ContentType, mimeType)
@@ -62,7 +65,10 @@ class UguuApi(
 
                 if (responseBody.success && !uploadedUrl.isNullOrBlank()) {
                     send(
-                        UploadResult.Success(uploadedUrl, HostProvider.UGUU.expirationHours),
+                        UploadResult.Success(
+                            uploadedUrl,
+                            System.currentTimeMillis() + RETENTION_HOURS.hours.inWholeMilliseconds,
+                        ),
                     )
                 } else {
                     send(UploadResult.Error())

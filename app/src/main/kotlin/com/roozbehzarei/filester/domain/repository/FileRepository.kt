@@ -3,13 +3,14 @@ package com.roozbehzarei.filester.domain.repository
 import com.roozbehzarei.filester.domain.model.File
 import com.roozbehzarei.filester.domain.model.HostProvider
 import com.roozbehzarei.filester.domain.model.UploadResult
+import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.coroutines.flow.Flow
 
 interface FileRepository {
     fun getFiles(): Flow<List<File>>
 
     fun uploadFile(
-        file: java.io.File,
+        file: PlatformFile,
         hostProvider: HostProvider,
     ): Flow<UploadResult<String>>
 

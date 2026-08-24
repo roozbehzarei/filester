@@ -302,7 +302,7 @@ fun FilesterAppTheme(
     CompositionLocalProvider(LocalIsDarkTheme provides darkTheme) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = AppTypography,
+            typography = appTypography(),
             content = content,
         )
     }
