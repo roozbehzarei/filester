@@ -1,7 +1,14 @@
 package com.roozbehzarei.filester.presentation.navigation
 
+import androidx.navigation3.runtime.NavKey
 import com.roozbehzarei.filester.R
 import kotlinx.serialization.Serializable
+
+/**
+ * Sealed interface representing all navigation routes in the application.
+ */
+@Serializable
+sealed interface Route : NavKey
 
 /**
  * Serializable route object representing the main screen destination.
@@ -10,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @see FilesterNavHost for usage in navigation graph
  */
 @Serializable
-data object MainRoute
+data object MainRoute : Route
 
 /**
  * Serializable route object representing the settings screen destination.
@@ -19,7 +26,7 @@ data object MainRoute
  * @see FilesterNavHost for usage in navigation graph
  */
 @Serializable
-data object SettingsRoute
+data object SettingsRoute : Route
 
 /**
  * Serializable route object representing the about screen destination.
@@ -28,7 +35,7 @@ data object SettingsRoute
  * @see FilesterNavHost for usage in navigation graph
  */
 @Serializable
-data object AboutRoute
+data object AboutRoute : Route
 
 /**
  * Represents top-level navigation destinations in the app.
@@ -42,7 +49,7 @@ data object AboutRoute
  */
 enum class TopLevelDestination(
     val labelResource: Int,
-    val route: Any,
+    val route: Route,
 ) {
     MAIN(
         labelResource = R.string.app_name,

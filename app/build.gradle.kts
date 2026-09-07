@@ -156,7 +156,8 @@ dependencies {
     // AppCompat
     implementation(libs.androidx.appcompat)
     // Navigation
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.jetbrains.navigation3.ui)
+    implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)
     // Lifecycle
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     // WorkManager
@@ -180,6 +181,7 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation(libs.koin.compose.navigation3)
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.androidx.workmanager)
     // Ktor

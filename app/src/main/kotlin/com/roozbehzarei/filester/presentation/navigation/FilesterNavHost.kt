@@ -1,39 +1,54 @@
 package com.roozbehzarei.filester.presentation.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.roozbehzarei.filester.presentation.screens.about.AboutScreen
-import com.roozbehzarei.filester.presentation.screens.main.MainScreen
-import com.roozbehzarei.filester.presentation.screens.settings.SettingsScreen
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import org.koin.compose.navigation3.koinEntryProvider
+import org.koin.core.annotation.KoinExperimentalAPI
 
 /**
- * Serves as the navigation host for the application.
+ * Serves as the navigation host for the application using Navigation 3.
  *
- * Uses type-safe navigation with dedicated route classes/objects to represent
- * each destination, providing compile-time safety for navigation arguments.
+ * Uses type-safe navigation with dedicated route classes/objects implementing [NavKey],
+ * integrated with Koin entry providers and entry decorators for ViewModel and state retention.
+ *
+ * @param backStack Navigation back stack containing the current stack of [NavKey] entries
+ * @param onBack Callback invoked when navigating back
+ * @param modifier Optional modifier for the layout
  */
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun FilesterNavHost(
-    navController: NavHostController,
-    snackbarHostState: SnackbarHostState,
+    backStack: NavBackStack<NavKey>,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
-) = NavHost(
-    modifier = modifier,
-    navController = navController,
-    startDestination = MainRoute,
 ) {
-    composable<MainRoute> {
-        MainScreen(modifier = Modifier.fillMaxSize(), snackbarHostState = snackbarHostState)
-    }
-    composable<SettingsRoute> {
-        SettingsScreen(Modifier.fillMaxSize())
-    }
-    composable<AboutRoute> {
-        AboutScreen(Modifier.fillMaxSize())
-    }
+    NavDisplay(
+        backStack = backStack,
+        modifier = modifier,
+        onBack = onBack,
+        entryDecorators =
+            listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator(),
+            ),
+        transitionSpec = {
+            slideInHorizontally(initialOffsetX = { it }) + fadeIn() togetherWith
+                slideOutHorizontally(targetOffsetX = { -it }) + fadeOut()
+        },
+        popTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) + fadeIn() togetherWith
+                slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+        },
+        entryProvider = koinEntryProvider(),
+    )
 }

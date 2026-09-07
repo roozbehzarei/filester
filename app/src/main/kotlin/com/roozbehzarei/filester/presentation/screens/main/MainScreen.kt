@@ -76,6 +76,7 @@ import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.domain.model.File
+import com.roozbehzarei.filester.presentation.LocalSnackbarHostState
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
 import com.roozbehzarei.filester.upload.UploadState
 import com.roozbehzarei.filester.upload.UploadStatus
@@ -90,8 +91,8 @@ import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun MainScreen(
-    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
     viewModel: MainViewModel = koinViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
