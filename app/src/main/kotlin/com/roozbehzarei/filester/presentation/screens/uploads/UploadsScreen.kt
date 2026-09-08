@@ -255,6 +255,18 @@ private fun FilesList(
     val copiedToClipboardMessage = stringResource(R.string.main_snackbar_clipboard)
     var fileToRemove by rememberSaveable { mutableStateOf<File?>(null) }
     var selectedFileId by rememberSaveable { mutableIntStateOf(-1) }
+    val hasExpiringFiles = remember(files) { files.any { it.expiresAt > 0L } }
+    val currentTimeMillis by produceState(
+        initialValue = System.currentTimeMillis(),
+        key1 = hasExpiringFiles,
+    ) {
+        if (hasExpiringFiles) {
+            while (true) {
+                delay(1.minutes)
+                value = System.currentTimeMillis()
+            }
+        }
+    }
 
     LaunchedEffect(isUploadingFile) {
         if (isUploadingFile) {
@@ -287,6 +299,7 @@ private fun FilesList(
                 name = file.name,
                 size = file.size,
                 expiresAt = file.expiresAt,
+                currentTime = currentTimeMillis,
                 icon = fileIconByMimeType(file.mimeType),
                 isExpanded = selectedFileId == file.id,
                 onClick = {
@@ -330,21 +343,16 @@ private fun FileItem(
     onCopy: () -> Unit,
     onRemove: () -> Unit,
     modifier: Modifier = Modifier,
+    currentTime: Long = System.currentTimeMillis(),
 ) {
     val context = LocalContext.current
-    val formattedSize = remember { Formatter.formatFileSize(context, size) }
-    val now by produceState(initialValue = System.currentTimeMillis()) {
-        while (true) {
-            delay(1.minutes)
-            value = System.currentTimeMillis()
-        }
-    }
+    val formattedSize = remember(size) { Formatter.formatFileSize(context, size) }
     val remainingHours =
-        remember(expiresAt, now) {
+        remember(expiresAt, currentTime) {
             if (expiresAt <= 0L) {
                 null
             } else {
-                val remainingMs = expiresAt - now
+                val remainingMs = expiresAt - currentTime
                 if (remainingMs <= 0) -1 else remainingMs.milliseconds.inWholeHours.toInt()
             }
         }
