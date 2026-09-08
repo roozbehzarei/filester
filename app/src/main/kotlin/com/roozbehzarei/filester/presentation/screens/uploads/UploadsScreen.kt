@@ -253,7 +253,11 @@ private fun FilesList(
     val listState = rememberLazyListState()
     val clipboard = LocalClipboard.current
     val copiedToClipboardMessage = stringResource(R.string.main_snackbar_clipboard)
-    var fileToRemove by rememberSaveable { mutableStateOf<File?>(null) }
+    var fileToRemoveId by rememberSaveable { mutableIntStateOf(-1) }
+    val fileToRemove =
+        remember(fileToRemoveId, files) {
+            if (fileToRemoveId != -1) files.find { it.id == fileToRemoveId } else null
+        }
     var selectedFileId by rememberSaveable { mutableIntStateOf(-1) }
     val hasExpiringFiles = remember(files) { files.any { it.expiresAt > 0L } }
     val currentTimeMillis by produceState(
@@ -313,7 +317,7 @@ private fun FilesList(
                     onShowSnackbar(copiedToClipboardMessage)
                 },
                 onRemove = {
-                    fileToRemove = file
+                    fileToRemoveId = file.id
                 },
             )
         }
@@ -322,10 +326,10 @@ private fun FilesList(
     fileToRemove?.let { file ->
         FileRemoverDialog(
             fileName = file.name,
-            onDismissRequest = { fileToRemove = null },
+            onDismissRequest = { fileToRemoveId = -1 },
             onConfirmation = {
                 onRemoveFile(file)
-                fileToRemove = null
+                fileToRemoveId = -1
             },
         )
     }
