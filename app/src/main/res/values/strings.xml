@@ -13,9 +13,7 @@
 
     <!-- Main Screen -->
     <string name="main_menu_about">About</string>
-    <string name="main_text_upload_success">File uploaded successfully.</string>
     <string name="main_text_upload_error">Something went wrong. Please try again.</string>
-    <string name="main_text_upload_cancelled">You have canceled the upload process.</string>
     <string name="main_snackbar_clipboard">Link copied to clipboard</string>
     <string name="main_text_empty_history">You haven\'t uploaded any files yet.\nTry uploading a file first.</string>
     <string name="main_button_delete">Remove</string>
@@ -40,7 +38,6 @@
     <!-- About Screen -->
     <string name="about_text_copyleft" translatable="false">Copyleft © 2026 by Roozbeh Zarei</string>
     <string name="about_button_donate">Donate</string>
-    <string name="about_button_source_code">Source Code</string>
     <string name="about_button_privacy_policy">Privacy Policy</string>
 
     <!-- Settings Screen -->
@@ -72,12 +69,5 @@
     <string name="notif_title_upload_success">Upload successful</string>
     <string name="notif_title_upload_cancelled">Upload canceled</string>
     <string name="notif_title_upload_failed">Upload failure</string>
-
-    <!-- Crash Reporting -->
-    <string name="crash_text_mail_subject">Filester Crash Report</string>
-    <string name="crash_text_mail_body">The report file is attached to this email.</string>
-    <string name="crash_button_send">Send</string>
-    <string name="crash_title_notification">Application crashed</string>
-    <string name="crash_text_notification">Please send a report to the developer.</string>
 
 </resources>
