@@ -1,43 +1,35 @@
-package com.roozbehzarei.filester.presentation
+package com.roozbehzarei.filester.presentation.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.roozbehzarei.filester.data.repository.UserPreferencesRepositoryImpl
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roozbehzarei.filester.domain.model.Theme
+import com.roozbehzarei.filester.presentation.FilesterApp
 import com.roozbehzarei.filester.presentation.theme.FilesterAppTheme
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Main Activity and entry point for the app.
  */
 class MainActivity : AppCompatActivity() {
-    private val userPreferencesRepository: UserPreferencesRepositoryImpl by inject()
+    private val viewModel: MainViewModel by viewModel()
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { viewModel.uiState.value.isLoading }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val isDynamicColor by userPreferencesRepository
-                .getDynamicColorsPreference()
-                .collectAsState(
-                    false,
-                )
-            val userThemePreference by userPreferencesRepository
-                .getThemePreference()
-                .collectAsState(Theme.Default)
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val isDarkTheme =
-                when (userThemePreference) {
+                when (uiState.theme) {
                     Theme.Light -> false
                     Theme.Dark -> true
                     Theme.Default -> isSystemInDarkTheme()
@@ -47,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             // Dynamically modify the foreground color of status bar to align with app theme
             insetsController.isAppearanceLightStatusBars = isDarkTheme.not()
             FilesterAppTheme(
-                dynamicColor = isDynamicColor,
+                dynamicColor = uiState.isDynamicColor,
                 darkTheme = isDarkTheme,
             ) {
                 FilesterApp(context = this)

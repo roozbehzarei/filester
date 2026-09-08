@@ -1,4 +1,4 @@
-package com.roozbehzarei.filester.presentation.screens.main
+package com.roozbehzarei.filester.presentation.screens.uploads
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,12 +18,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class UploadsViewModel(
     private val fileRepository: FileRepository,
     private val uploadManager: UploadManager,
 ) : ViewModel() {
-    private val _mainUiState = MutableStateFlow(MainUiState())
-    val mainUiState: StateFlow<MainUiState> = _mainUiState.asStateFlow()
+    private val _uploadsUiState = MutableStateFlow(UploadsUiState())
+    val uploadsUiState: StateFlow<UploadsUiState> = _uploadsUiState.asStateFlow()
 
     init {
         getFiles()
@@ -33,7 +33,7 @@ class MainViewModel(
     private fun updateUploadStatus() {
         viewModelScope.launch {
             uploadManager.status.collect { newStatus ->
-                _mainUiState.update {
+                _uploadsUiState.update {
                     it.copy(uploadStatus = newStatus)
                 }
             }
@@ -42,7 +42,7 @@ class MainViewModel(
 
     fun resetUploadStatus() {
         uploadManager.prune()
-        _mainUiState.update {
+        _uploadsUiState.update {
             it.copy(
                 uploadStatus =
                     UploadStatus(
@@ -56,7 +56,7 @@ class MainViewModel(
     private fun getFiles() {
         viewModelScope.launch {
             fileRepository.getFiles().collect { filesList ->
-                _mainUiState.update { it.copy(files = filesList) }
+                _uploadsUiState.update { it.copy(files = filesList) }
             }
         }
     }
@@ -65,7 +65,7 @@ class MainViewModel(
         viewModelScope.launch {
             try {
                 fileRepository.deleteFile(file)
-                _mainUiState.update { it.copy(message = UiText.StringResource(R.string.main_snackbar_delete_successful)) }
+                _uploadsUiState.update { it.copy(message = UiText.StringResource(R.string.main_snackbar_delete_successful)) }
             } catch (e: Exception) {
                 if (BuildConfig.DEBUG) e.printStackTrace()
                 // TODO: Show deletion failure message
@@ -77,13 +77,13 @@ class MainViewModel(
         viewModelScope.launch {
             uploadManager.start(file)
         }
-        _mainUiState.update {
+        _uploadsUiState.update {
             it.copy(uploadingFileName = file.name)
         }
     }
 
     fun messageShown() {
-        _mainUiState.update { it.copy(message = null) }
+        _uploadsUiState.update { it.copy(message = null) }
     }
 
     fun cancelUpload() {

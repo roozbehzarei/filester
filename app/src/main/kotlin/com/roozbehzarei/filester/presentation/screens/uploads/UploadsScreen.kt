@@ -1,4 +1,4 @@
-package com.roozbehzarei.filester.presentation.screens.main
+package com.roozbehzarei.filester.presentation.screens.uploads
 
 import android.Manifest
 import android.content.ClipData
@@ -9,6 +9,7 @@ import android.os.Build
 import android.text.format.Formatter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -90,13 +91,13 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
-fun MainScreen(
+fun UploadsScreen(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
-    viewModel: MainViewModel = koinViewModel(),
+    viewModel: UploadsViewModel = koinViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val uiState by viewModel.mainUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uploadsUiState.collectAsStateWithLifecycle()
     var showUploadFailDialog by rememberSaveable { mutableStateOf(false) }
 
     uiState.message?.let { uiText ->
@@ -134,7 +135,7 @@ fun MainScreen(
         })
     }
 
-    MainContent(
+    UploadsContent(
         modifier = modifier.fillMaxSize(),
         uiState = uiState,
         onShowSnackbar = { message -> coroutineScope.launch { snackbarHostState.showSnackbar(message) } },
@@ -145,8 +146,8 @@ fun MainScreen(
 }
 
 @Composable
-private fun MainContent(
-    uiState: MainUiState,
+private fun UploadsContent(
+    uiState: UploadsUiState,
     onShowSnackbar: (String) -> Unit,
     onUploadCancel: () -> Unit,
     onFileRemove: (File) -> Unit,
@@ -578,12 +579,12 @@ private fun UploadFab(onUpload: (PlatformFile) -> Unit) {
 
 @Preview
 @Composable
-private fun MainContentPreview() {
+private fun UploadsContentPreview() {
     FilesterAppTheme {
         Surface {
-            MainContent(
+            UploadsContent(
                 modifier = Modifier.fillMaxSize(),
-                uiState = MainUiState(),
+                uiState = UploadsUiState(),
                 onShowSnackbar = {},
                 onUploadCancel = {},
                 onFileRemove = {},
@@ -595,7 +596,7 @@ private fun MainContentPreview() {
 
 @Preview
 @Composable
-private fun MainContentPreview2Preview() {
+private fun UploadsContentPreview2Preview() {
     val videoFile =
         File(
             id = 0,
@@ -616,10 +617,10 @@ private fun MainContentPreview2Preview() {
 
     FilesterAppTheme {
         Surface {
-            MainContent(
+            UploadsContent(
                 modifier = Modifier.fillMaxSize(),
                 uiState =
-                    MainUiState(
+                    UploadsUiState(
                         files = previewFiles,
                         uploadStatus = UploadStatus(state = UploadState.RUNNING, 33),
                         uploadingFileName = "filester.apk",
@@ -702,7 +703,7 @@ private suspend fun copyFileLink(
     clipboard.setClipEntry(clipEntry)
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
+@OptIn(UnstableApi::class)
 @Composable
 private fun fileIconByMimeType(mimeType: String?): Painter =
     when {

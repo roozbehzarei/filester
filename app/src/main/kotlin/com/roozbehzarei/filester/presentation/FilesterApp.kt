@@ -35,9 +35,9 @@ import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.presentation.components.rememberCustomTabsIntent
 import com.roozbehzarei.filester.presentation.navigation.AboutRoute
 import com.roozbehzarei.filester.presentation.navigation.FilesterNavHost
-import com.roozbehzarei.filester.presentation.navigation.MainRoute
 import com.roozbehzarei.filester.presentation.navigation.SettingsRoute
 import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
+import com.roozbehzarei.filester.presentation.navigation.UploadsRoute
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
@@ -48,7 +48,7 @@ private val navSavedStateConfiguration =
         serializersModule =
             SerializersModule {
                 polymorphic(NavKey::class) {
-                    subclass(MainRoute::class, MainRoute.serializer())
+                    subclass(UploadsRoute::class, UploadsRoute.serializer())
                     subclass(SettingsRoute::class, SettingsRoute.serializer())
                     subclass(AboutRoute::class, AboutRoute.serializer())
                 }
@@ -79,10 +79,10 @@ fun FilesterApp(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val customTabsIntent = rememberCustomTabsIntent()
-    val backStack = rememberNavBackStack(navSavedStateConfiguration, MainRoute)
+    val backStack = rememberNavBackStack(navSavedStateConfiguration, UploadsRoute)
     val currentRoute = backStack.lastOrNull()
-    // Check if current route is the main screen
-    val isMainRoute = currentRoute == MainRoute
+    // Check if current route is the uploads screen
+    val isUploadsRoute = currentRoute == UploadsRoute
     // Find matching top-level destination for current route
     val currentDestination =
         TopLevelDestination.entries.firstOrNull {
@@ -96,8 +96,8 @@ fun FilesterApp(
             topBar = {
                 TopBar(
                     title = stringResource(currentDestination?.labelResource ?: R.string.empty),
-                    shouldShowMenu = isMainRoute,
-                    canNavigateUp = isMainRoute.not(),
+                    shouldShowMenu = isUploadsRoute,
+                    canNavigateUp = isUploadsRoute.not(),
                     onNavigateUp = { backStack.removeLastOrNull() },
                     onNetworkStatusClick = {
                         try {
