@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -35,9 +36,10 @@ class MainActivity : AppCompatActivity() {
                     Theme.Default -> isSystemInDarkTheme()
                 }
             val view = LocalView.current
-            val insetsController = WindowCompat.getInsetsController(this@MainActivity.window, view)
-            // Dynamically modify the foreground color of status bar to align with app theme
-            insetsController.isAppearanceLightStatusBars = isDarkTheme.not()
+            SideEffect {
+                val insetsController = WindowCompat.getInsetsController(this@MainActivity.window, view)
+                insetsController.isAppearanceLightStatusBars = isDarkTheme.not()
+            }
             FilesterAppTheme(
                 dynamicColor = uiState.isDynamicColor,
                 darkTheme = isDarkTheme,
