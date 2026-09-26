@@ -43,7 +43,7 @@
         </button>
         <div class="navigation-controls--break ui-kit_mobile-only"></div>
         <div class="library-version" id="library-version">
-3.2.0        </div>
+3.3.0        </div>
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
                 <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
@@ -123,22 +123,22 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">data </span><span class="token keyword">object </span><a href="-about-route/index.html">AboutRoute</a></div><div class="brief "><p class="paragraph">Serializable route object representing the about screen destination. Used for type-safe navigation.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">data </span><span class="token keyword">object </span><a href="-about-route/index.html">AboutRoute</a> : <a href="-route/index.html">Route</a></div><div class="brief "><p class="paragraph">Serializable route object representing the about screen destination. Used for type-safe navigation.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1293623075%2FClasslikes%2F-812328141" anchor-label="MainRoute" id="-1293623075%2FClasslikes%2F-812328141" data-filterable-set=":app/proprietaryRelease"></a>
+<a data-name="880481988%2FClasslikes%2F-812328141" anchor-label="Route" id="880481988%2FClasslikes%2F-812328141" data-filterable-set=":app/proprietaryRelease"></a>
           <div class="table-row table-row_content" data-filterable-current=":app/proprietaryRelease" data-filterable-set=":app/proprietaryRelease">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="-main-route/index.html"><span>Main</span><wbr></wbr><span><span>Route</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1293623075%2FClasslikes%2F-812328141"></span>
+                  <div><a href="-route/index.html"><span><span>Route</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="880481988%2FClasslikes%2F-812328141"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">data </span><span class="token keyword">object </span><a href="-main-route/index.html">MainRoute</a></div><div class="brief "><p class="paragraph">Serializable route object representing the main screen destination. Used for type-safe navigation.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-route/index.html">Route</a> : <a href="https://developer.android.com/reference/kotlin/androidx/navigation3/runtime/NavKey.html">NavKey</a></div><div class="brief "><p class="paragraph">Sealed interface representing all navigation routes in the application.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -153,7 +153,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">data </span><span class="token keyword">object </span><a href="-settings-route/index.html">SettingsRoute</a></div><div class="brief "><p class="paragraph">Serializable route object representing the settings screen destination. Used for type-safe navigation.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">data </span><span class="token keyword">object </span><a href="-settings-route/index.html">SettingsRoute</a> : <a href="-route/index.html">Route</a></div><div class="brief "><p class="paragraph">Serializable route object representing the settings screen destination. Used for type-safe navigation.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -173,21 +173,36 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div data-togglable="FUNCTION">
-        <h2 class="tableheader">Functions</h2>
-        <div class="table"><a data-name="-156593486%2FFunctions%2F-812328141" anchor-label="FilesterNavHost" id="-156593486%2FFunctions%2F-812328141" data-filterable-set=":app/proprietaryRelease"></a>
+<a data-name="424165630%2FClasslikes%2F-812328141" anchor-label="UploadsRoute" id="424165630%2FClasslikes%2F-812328141" data-filterable-set=":app/proprietaryRelease"></a>
           <div class="table-row table-row_content" data-filterable-current=":app/proprietaryRelease" data-filterable-set=":app/proprietaryRelease">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="-filester-nav-host.html"><span>Filester</span><wbr></wbr><span>Nav</span><wbr></wbr><span><span>Host</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-156593486%2FFunctions%2F-812328141"></span>
+                  <div><a href="-uploads-route/index.html"><span>Uploads</span><wbr></wbr><span><span>Route</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="424165630%2FClasslikes%2F-812328141"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-filester-nav-host.html"><span class="token function">FilesterNavHost</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">navController<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/navigation/NavHostController.html">NavHostController</a><span class="token punctuation">, </span></span><span class="parameter ">snackbarHostState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/material3/SnackbarHostState.html">SnackbarHostState</a><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Serves as the navigation host for the application.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.serialization/Serializable///PointingToDeclaration/"><span class="token annotation builtin">Serializable</span></span></div></div><span class="token keyword">data </span><span class="token keyword">object </span><a href="-uploads-route/index.html">UploadsRoute</a> : <a href="-route/index.html">Route</a></div><div class="brief "><p class="paragraph">Serializable route object representing the uploads screen destination. Used for type-safe navigation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1838249475%2FFunctions%2F-812328141" anchor-label="FilesterNavHost" id="1838249475%2FFunctions%2F-812328141" data-filterable-set=":app/proprietaryRelease"></a>
+          <div class="table-row table-row_content" data-filterable-current=":app/proprietaryRelease" data-filterable-set=":app/proprietaryRelease">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-filester-nav-host.html"><span>Filester</span><wbr></wbr><span>Nav</span><wbr></wbr><span><span>Host</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1838249475%2FFunctions%2F-812328141"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":app/proprietaryRelease"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-filester-nav-host.html"><span class="token function">FilesterNavHost</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">backStack<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/navigation3/runtime/NavBackStack.html">NavBackStack</a><span class="token operator">&lt;</span><a href="https://developer.android.com/reference/kotlin/androidx/navigation3/runtime/NavKey.html">NavKey</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">onBack<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter ">modifier<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier.html">Modifier</a><span class="token operator"> = </span>Modifier</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Serves as the navigation host for the application using Navigation 3.</p></div></div></div>
                 </div>
               </div>
             </div>
