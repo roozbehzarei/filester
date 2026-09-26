@@ -1,6 +1,15 @@
+/*
+ * Copyright 2026 Roozbeh Zarei
+ *
+ * Licensed under the GNU General Public License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
 package com.roozbehzarei.filester.presentation
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,23 +29,49 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.roozbehzarei.filester.R
 import com.roozbehzarei.filester.presentation.components.rememberCustomTabsIntent
+import com.roozbehzarei.filester.presentation.navigation.AboutRoute
 import com.roozbehzarei.filester.presentation.navigation.FilesterNavHost
 import com.roozbehzarei.filester.presentation.navigation.SettingsRoute
 import com.roozbehzarei.filester.presentation.navigation.TopLevelDestination
+import com.roozbehzarei.filester.presentation.navigation.UploadsRoute
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 
 private const val STATUS_URL = "https://filester.roozbehzarei.com/status"
+
+private val navSavedStateConfiguration =
+    SavedStateConfiguration {
+        serializersModule =
+            SerializersModule {
+                polymorphic(NavKey::class) {
+                    subclass(UploadsRoute::class, UploadsRoute.serializer())
+                    subclass(SettingsRoute::class, SettingsRoute.serializer())
+                    subclass(AboutRoute::class, AboutRoute.serializer())
+                }
+            }
+    }
+
+/**
+ * CompositionLocal providing [SnackbarHostState] to composable screens within the app hierarchy.
+ */
+val LocalSnackbarHostState =
+    staticCompositionLocalOf<SnackbarHostState> {
+        error("No SnackbarHostState provided")
+    }
 
 /**
  * Main composable function that serves as the entry point for the Filester application.
@@ -46,7 +81,6 @@ private const val STATUS_URL = "https://filester.roozbehzarei.com/status"
  * @see TopBar
  * @see FilesterNavHost
  */
-@SuppressLint("RestrictedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilesterApp(
@@ -55,55 +89,56 @@ fun FilesterApp(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val customTabsIntent = rememberCustomTabsIntent()
-    val navController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    // Check if current route is the main screen
-    val isMainRoute =
-        backStackEntry?.destination?.hasRoute(TopLevelDestination.MAIN.route::class) == true
+    val backStack = rememberNavBackStack(navSavedStateConfiguration, UploadsRoute)
+    val currentRoute = backStack.lastOrNull()
+    // Check if current route is the uploads screen
+    val isUploadsRoute = currentRoute == UploadsRoute
     // Find matching top-level destination for current route
     val currentDestination =
         TopLevelDestination.entries.firstOrNull {
-            backStackEntry?.destination?.hasRoute(it.route::class) == true
+            it.route == currentRoute
         }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        topBar = {
-            TopBar(
-                title = stringResource(currentDestination?.labelResource ?: R.string.empty),
-                shouldShowMenu = isMainRoute,
-                canNavigateUp = isMainRoute.not(),
-                onNavigateUp = { navController.navigateUp() },
-                onNetworkStatusClick = {
-                    try {
-                        customTabsIntent.launchUrl(
-                            context,
-                            STATUS_URL
-                                .toUri()
-                                .buildUpon()
-                                .appendQueryParameter("app", "true")
-                                .build(),
-                        )
-                    } catch (_: Exception) {
-                        Toast
-                            .makeText(
+    CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+        Scaffold(
+            modifier = modifier.fillMaxSize(),
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+            topBar = {
+                TopBar(
+                    title = stringResource(currentDestination?.labelResource ?: R.string.empty),
+                    shouldShowMenu = isUploadsRoute,
+                    canNavigateUp = isUploadsRoute.not(),
+                    onNavigateUp = { backStack.removeLastOrNull() },
+                    onNetworkStatusClick = {
+                        try {
+                            customTabsIntent.launchUrl(
                                 context,
-                                context.getString(R.string.toast_app_not_found),
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                    }
-                },
-                onNavigateToSettings = { navController.navigate(SettingsRoute) },
-                onNavigateToAbout = { navController.navigate(TopLevelDestination.ABOUT.route) },
+                                STATUS_URL
+                                    .toUri()
+                                    .buildUpon()
+                                    .appendQueryParameter("app", "true")
+                                    .build(),
+                            )
+                        } catch (_: Exception) {
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.toast_app_not_found),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                        }
+                    },
+                    onNavigateToSettings = { backStack.add(SettingsRoute) },
+                    onNavigateToAbout = { backStack.add(AboutRoute) },
+                )
+            },
+        ) { innerPadding ->
+            FilesterNavHost(
+                modifier = Modifier.padding(innerPadding),
+                backStack = backStack,
+                onBack = { backStack.removeLastOrNull() },
             )
-        },
-    ) { innerPadding ->
-        FilesterNavHost(
-            modifier = Modifier.padding(innerPadding),
-            navController = navController,
-            snackbarHostState = snackbarHostState,
-        )
+        }
     }
 }
 

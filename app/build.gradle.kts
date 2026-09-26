@@ -1,4 +1,14 @@
-val appVersionName = "3.2.0"
+/*
+ * Copyright 2026 Roozbeh Zarei
+ *
+ * Licensed under the GNU General Public License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
+val appVersionName = "3.3.0"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
@@ -10,7 +20,6 @@ plugins {
     alias(libs.plugins.koin.compiler)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.dokka)
-    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
@@ -30,7 +39,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 26
         targetSdk = 37
-        versionCode = 22
+        versionCode = 23
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -128,8 +137,14 @@ dokka {
 }
 
 spotless {
+    val licenseNotice = rootProject.file("gradle/license-notice.txt").readText().trimEnd()
+    val kotlinHeader = "/*\n" + licenseNotice.lineSequence().joinToString("\n") { " * $it".trimEnd() } + "\n */\n\n"
+    // Recognize our headers by author name without consuming other leading comments.
+    val kotlinHeaderDelimiter = "(?!/\\*\\n \\* .*Roozbeh Zarei|[ \\t]*\\*).*\\S"
+
     kotlin {
         target("src/**/*.kt")
+        licenseHeader(kotlinHeader, kotlinHeaderDelimiter)
         ktlint("1.8.0")
             .setEditorConfigPath(file(".editorconfig"))
             .customRuleSets(
@@ -137,6 +152,21 @@ spotless {
                     "io.nlopez.compose.rules:ktlint:0.6.3",
                 ),
             )
+    }
+
+    format("xml") {
+        target("src/**/*.xml")
+        licenseHeader(
+            "<!--\n$licenseNotice\n-->\n\n",
+            "<(?!!--\\n.*Roozbeh Zarei)",
+        )
+            .skipLinesMatching("^<\\?xml.*\\?>$")
+    }
+
+    format("gradle") {
+        // Root Gradle scripts keep manual headers; Spotless targets must stay within this module.
+        target("*.gradle.kts")
+        licenseHeader(kotlinHeader, kotlinHeaderDelimiter)
     }
 }
 
@@ -156,7 +186,8 @@ dependencies {
     // AppCompat
     implementation(libs.androidx.appcompat)
     // Navigation
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.jetbrains.navigation3.ui)
+    implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)
     // Lifecycle
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     // WorkManager
@@ -180,6 +211,7 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation(libs.koin.compose.navigation3)
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.androidx.workmanager)
     // Ktor

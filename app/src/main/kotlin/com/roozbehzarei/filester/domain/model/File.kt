@@ -1,9 +1,15 @@
+/*
+ * Copyright 2026 Roozbeh Zarei
+ *
+ * Licensed under the GNU General Public License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
 package com.roozbehzarei.filester.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class File(
     val id: Int = 0,
     val name: String,
@@ -12,4 +18,4 @@ data class File(
     val mimeType: String?,
     val uploadedAt: Long = 0L,
     val expiresAt: Long = 0L,
-) : Parcelable
+)

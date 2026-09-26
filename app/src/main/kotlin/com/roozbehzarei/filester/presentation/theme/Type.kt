@@ -1,3 +1,13 @@
+/*
+ * Copyright 2026 Roozbeh Zarei
+ *
+ * Licensed under the GNU General Public License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
 // The Font() overload taking variationSettings is @ExperimentalTextApi in compose-ui 1.11.
 // It is required: the stable overload passes empty settings, which would render every
 // weight at the variable font's default 400.

@@ -6,4 +6,4 @@ ktlint_function_naming_ignore_when_annotated_with = Composable
 compose_disallow_material2 = true
 compose_preview_naming_enabled = true
 compose_preview_naming_strategy = suffix
-
+compose_allowed_composition_locals = LocalSnackbarHostState
