@@ -1,3 +1,13 @@
+/*
+ * Copyright 2026 Roozbeh Zarei
+ *
+ * Licensed under the GNU General Public License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
 val appVersionName = "3.2.0"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
@@ -127,8 +137,14 @@ dokka {
 }
 
 spotless {
+    val licenseNotice = rootProject.file("gradle/license-notice.txt").readText().trimEnd()
+    val kotlinHeader = "/*\n" + licenseNotice.lineSequence().joinToString("\n") { " * $it".trimEnd() } + "\n */\n\n"
+    // Recognize our headers by author name without consuming other leading comments.
+    val kotlinHeaderDelimiter = "(?!/\\*\\n \\* .*Roozbeh Zarei|[ \\t]*\\*).*\\S"
+
     kotlin {
         target("src/**/*.kt")
+        licenseHeader(kotlinHeader, kotlinHeaderDelimiter)
         ktlint("1.8.0")
             .setEditorConfigPath(file(".editorconfig"))
             .customRuleSets(
@@ -136,6 +152,21 @@ spotless {
                     "io.nlopez.compose.rules:ktlint:0.6.3",
                 ),
             )
+    }
+
+    format("xml") {
+        target("src/**/*.xml")
+        licenseHeader(
+            "<!--\n$licenseNotice\n-->\n\n",
+            "<(?!!--\\n.*Roozbeh Zarei)",
+        )
+            .skipLinesMatching("^<\\?xml.*\\?>$")
+    }
+
+    format("gradle") {
+        // Root Gradle scripts keep manual headers; Spotless targets must stay within this module.
+        target("*.gradle.kts")
+        licenseHeader(kotlinHeader, kotlinHeaderDelimiter)
     }
 }
 
