@@ -8,7 +8,7 @@
  *     https://www.gnu.org/licenses/gpl-3.0.en.html
  */
 
-val appVersionName = "3.2.0"
+val appVersionName = "3.3.0"
 val isProprietaryDistribution =
     providers.gradleProperty("isProprietaryDistribution")
         .map { it.toBoolean() }
@@ -39,7 +39,7 @@ android {
         applicationId = "com.roozbehzarei.filester"
         minSdk = 26
         targetSdk = 37
-        versionCode = 22
+        versionCode = 23
         versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
