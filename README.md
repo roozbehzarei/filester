@@ -9,7 +9,7 @@
           <img src="https://img.shields.io/github/license/roozbehzarei/filester" alt="License" />
      </a>
      <a style="text-decoration:none" href="CODE_OF_CONDUCT.md">
-          <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct" />
+          <img src="https://img.shields.io/badge/Contributor%20Covenant-3.0-4baaaa.svg" alt="Code of Conduct" />
      </a>
      <a style="text-decoration:none" href="https://github.com/roozbehzarei/filester/releases">
           <img src="https://img.shields.io/github/v/release/roozbehzarei/filester?label=latest%20version" alt="GitHub release (latest by date)">
