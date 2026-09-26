@@ -8,9 +8,7 @@
     <string name="toast_app_not_found">Lingi avamiseks ei leidu sobilikku rakendust</string>
     <string name="title_upload_error">Üleslaadimine ei õnnestunud</string>
     <string name="main_menu_about">Rakenduse teave</string>
-    <string name="main_text_upload_success">Faili üleslaadimine õnnestus.</string>
     <string name="main_text_upload_error">Midagi läks valesti. Palun proovi uuesti.</string>
-    <string name="main_text_upload_cancelled">Sa oled üleslaadimise katkestanud.</string>
     <string name="main_snackbar_clipboard">Link on kopeeritud lõikelauale</string>
     <string name="main_text_empty_history">Sa pole veel ühtegi faili üles laadinud.\nProovi esmalt midagi üles laadida.</string>
     <string name="main_button_delete">Eemalda</string>
@@ -32,7 +30,6 @@
     <string name="main_text_expires_soon">Aegub õige pea</string>
     <string name="main_text_expired">Aegunud</string>
     <string name="about_button_donate">Toeta meid rahaliselt</string>
-    <string name="about_button_source_code">Lähtekood</string>
     <string name="about_button_privacy_policy">Andmekaitsepõhimõtted</string>
     <string name="settings_label_hosting_service">Teenus, kus failid on hostitud</string>
     <string name="settings_action_open_website">Ava veebisait: %1$s</string>
@@ -57,9 +54,4 @@
     <string name="notif_title_upload_success">Üleslaadimine õnnestus</string>
     <string name="notif_title_upload_cancelled">Üleslaadimine on katkestatud</string>
     <string name="notif_title_upload_failed">Üleslaadimine ei õnnestunud</string>
-    <string name="crash_text_mail_subject">Filesteri kokkujooksmise aruanne</string>
-    <string name="crash_text_mail_body">See aruanne on lisatud antud kirjale.</string>
-    <string name="crash_button_send">Saada</string>
-    <string name="crash_title_notification">Rakendus jooksis kokku</string>
-    <string name="crash_text_notification">Palun saada kokkujooksmise aruanne arendajale.</string>
 </resources>
