@@ -61,11 +61,21 @@ Filester is the cloud storage solution that respects your privacy and puts you i
 7. Wait for Android Studio to open the project.
 8. Click the **assemble 'app' Run Configuration** button to build the app.
 
-## Contributors
+## Contributing
 
-* [Ahoora Fakhrian](https://www.linkedin.com/in/ahoorafakhrian) (logo design)
-* [Open source community](https://github.com/roozbehzarei/filester/graphs/contributors)
+Issue submissions and pull requests are welcome!
+
+### Translation
+
+Filester not available in your language? Translate it on [Hosted Weblate](https://hosted.weblate.org/engage/filester/).
+
+[![Translation status](https://hosted.weblate.org/widget/filester/application/multi-auto.svg)](https://hosted.weblate.org/engage/filester/)
 
 ## License
 
 Filester is licensed under [GNU General Public License v3.0](LICENSE).
+
+## Special Thanks
+
+* **Weblate** for hosting project translations for free
+* **Ahoora Fakhrian** for logo design
