@@ -1,0 +1,3 @@
+* Tere! Filester now speaks Estonian
+* Various stability and under-the-hood improvements
+* Fixed a crash affecting users upgrading from v2.3.4 and earlier
