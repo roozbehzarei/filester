@@ -276,8 +276,8 @@ private fun FilesList(
     ) {
         if (hasExpiringFiles) {
             while (true) {
-                delay(1.minutes)
                 value = System.currentTimeMillis()
+                delay(1.minutes)
             }
         }
     }
