@@ -1,0 +1,3 @@
+* Filester is on a language-learning streak, now available in Indonesian and Russian as well
+* Fixed not being able to switch to Estonian language on devices running Android 12 or older
+* Possible fix for reproducible build error (IzzyOnDroid only)
