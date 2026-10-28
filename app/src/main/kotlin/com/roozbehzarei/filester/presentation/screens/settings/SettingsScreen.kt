@@ -366,9 +366,12 @@ private fun getApplicationLocales(context: Context): List<Locale> {
             LocaleConfig(context).supportedLocales ?: LocaleList.getEmptyLocaleList()
         } else {
             val englishLocale = Locale.Builder().setLocale(Locale.ENGLISH).build()
-            val persianLocale = Locale.Builder().setLanguageTag("fa-IR").build()
+            val indonesianLocale = Locale.Builder().setLanguageTag("in").build()
             val turkishLocale = Locale.Builder().setLanguageTag("tr").build()
-            LocaleList(englishLocale, persianLocale, turkishLocale)
+            val estonianLocale = Locale.Builder().setLanguageTag("et").build()
+            val russianLocale = Locale.Builder().setLanguageTag("ru").build()
+            val persianLocale = Locale.Builder().setLanguageTag("fa-IR").build()
+            LocaleList(englishLocale, indonesianLocale, turkishLocale, estonianLocale, russianLocale, persianLocale)
         }
     return (0 until locales.size())
         .map { locales.get(it) }
