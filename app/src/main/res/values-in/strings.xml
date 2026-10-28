@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2026 Roozbeh Zarei
+
+Licensed under the GNU General Public License, Version 3.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.gnu.org/licenses/gpl-3.0.en.html
+-->
+
+<resources>
+    <string name="app_name">Filester</string>
+    <string name="settings">Pengaturan</string>
+    <string name="cancel">Batal</string>
+    <string name="apply">Terapkan</string>
+    <string name="close">Tutup</string>
+    <string name="main_menu_about">Tentang</string>
+    <string name="main_button_delete">Hapus</string>
+    <string name="main_button_copy">Salin Tautan</string>
+    <string name="main_snackbar_clipboard">Tautan disalin ke papan klip</string>
+    <string name="main_button_share">Bagikan</string>
+    <string name="main_button_close">Tutup</string>
+    <string name="settings_action_open_website">Buka situs web %1$s</string>
+    <string name="about_button_donate">Donasi</string>
+    <string name="about_button_privacy_policy">Kebijakan Privasi</string>
+    <string name="toast_app_not_found">Tidak ditemukan aplikasi untuk membuka tautan</string>
+    <string name="settings_label_language">Bahasa</string>
+    <string name="settings_label_theme">Tema</string>
+    <string name="settings_label_dark">Gelap</string>
+    <string name="settings_label_light">Terang</string>
+    <string name="settings_label_system_default">Bawaan sistem</string>
+    <string name="settings_label_dynamic_colors">Warna dinamis</string>
+    <string name="settings_description_dynamic_colors">Sesuaikan warna agar cocok dengan wallpaper perangkat Anda secara otomatis</string>
+    <string name="main_text_upload_error">Terjadi kesalahan. Silahkan coba lagi.</string>
+    <string name="settings_label_telemetry">Analitik</string>
+    <string name="settings_label_crash_report">Diagnostik</string>
+    <string name="settings_description_telemetry">Bagikan data penggunaan anonim untuk membantu kami memahami cara aplikasi digunakan dan meningkatkan fitur.</string>
+    <string name="settings_description_crash_report">Kirimkan laporan kerusakan dan data kinerja secara anonim agar kami dapat memperbaiki bug dan meningkatkan stabilitas.</string>
+    <string name="notif_label_channel_name">Status kemajuan pengunggahan</string>
+    <string name="notif_description_channel">Beritahu saat unggahan sedang berlangsung, berhasil atau gagal.</string>
+    <string name="notif_title_start">Menginisialisasi unggahan…</string>
+    <string name="notif_title_in_progress">Mengunggah…</string>
+    <string name="notif_title_upload_success">Unggahan berhasil</string>
+    <string name="notif_title_upload_cancelled">Unggahan dibatalkan</string>
+    <string name="notif_title_upload_failed">Kegagalan pengunggahan</string>
+    <string name="title_upload_error">Gagal mengunggah</string>
+    <string name="main_text_empty_history">Anda belum mengunggah berkas apapun.\nCobalah mengunggah berkas terlebih dahulu.</string>
+    <string name="main_dialog_title_delete">Hapus berkas ini?</string>
+    <string name="main_dialog_text_delete">\"%1$s\" akan dihapus dari riwayat unggahan Anda.</string>
+    <string name="main_snackbar_delete_successful">Berkas dihapus dari riwayat.</string>
+    <string name="main_text_shared_with_filester">Dibagikan dengan pengunggah aman Filester.</string>
+    <plurals name="main_text_expires_hours">
+        <item quantity="other">Kedaluwarsa dalam %1$d jam</item>
+    </plurals>
+    <plurals name="main_text_expires_days">
+        <item quantity="other">Kedaluwarsa dalam %1$d hari</item>
+    </plurals>
+    <string name="main_text_expires_soon">Segera kedaluwarsa</string>
+    <string name="main_text_expired">Kedaluwarsa</string>
+    <string name="settings_hosting_service_litterbox_description">• Ukuran berkas maksimum yang diperbolehkan adalah 1 GB\n• Berkas akan kedaluwarsa setelah 72 jam\n✗ Ekstensi exe, scr, cpl, doc*, dan jar tidak diperbolehkan</string>
+    <string name="settings_hosting_service_uguu_description">• Ukuran berkas maksimum yang diperbolehkan adalah 128 MiB\n• Berkas akan kedaluwarsa setelah 3 jam\n✗ Ekstensi zip, 7z, rar, pdf, exe, msi, html, svg dan jar tidak diperbolehkan</string>
+    <string name="settings_hosting_service_x0_description">• Ukuran berkas maksimum yang diperbolehkan adalah 1024 MiB\n• Berkas akan kedaluwarsa setelah 3 hingga 100 hari, tergantung ukurannya (berkas yang lebih kecil akan disimpan lebih lama)</string>
+    <string name="settings_label_hosting_service">Layanan hosting berkas</string>
+</resources>

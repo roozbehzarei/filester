@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright 2026 Roozbeh Zarei
+
+Licensed under the GNU General Public License, Version 3.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.gnu.org/licenses/gpl-3.0.en.html
+-->
+
+<resources>
+    <string name="app_name">Filester</string>
+    <string name="settings">Настройки</string>
+    <string name="cancel">Отмена</string>
+    <string name="apply">Применить</string>
+    <string name="close">Закрыть</string>
+    <string name="toast_app_not_found">Не найдено приложение для открытия ссылки</string>
+    <string name="title_upload_error">Ошибка загрузки</string>
+    <string name="main_menu_about">О приложении</string>
+    <string name="main_text_upload_error">Что-то пошло не так. Повторите попытку.</string>
+    <string name="main_snackbar_clipboard">Ссылка скопирована в буфер обмена</string>
+    <string name="main_text_empty_history">Вы ещё не загружали файлов.\nСначала попробуйте загрузить файл.</string>
+    <string name="main_button_delete">Удалить</string>
+    <string name="main_text_shared_with_filester">Отправлено через защищённый загрузчик Filester.</string>
+    <string name="main_dialog_title_delete">Удалить этот файл?</string>
+    <string name="main_dialog_text_delete">«%1$s» будет удалён из истории загрузок.</string>
+    <string name="main_snackbar_delete_successful">Файл удалён из истории.</string>
+    <string name="main_button_copy">Копировать ссылку</string>
+    <string name="main_button_share">Поделиться</string>
+    <string name="main_button_close">Закрыть</string>
+    <plurals name="main_text_expires_hours">
+        <item quantity="one">Истекает через %1$d час</item>
+        <item quantity="few">Истекает через %1$d часа</item>
+        <item quantity="many">Истекает через %1$d часов</item>
+        <item quantity="other">Истекает через %1$d часов</item>
+    </plurals>
+    <plurals name="main_text_expires_days">
+        <item quantity="one">Истекает через %1$d день</item>
+        <item quantity="few">Истекает через %1$d дня</item>
+        <item quantity="many">Истекает через %1$d дней</item>
+        <item quantity="other">Истекает через %1$d дней</item>
+    </plurals>
+    <string name="main_text_expires_soon">Скоро истекает</string>
+    <string name="main_text_expired">Истёк</string>
+    <string name="about_button_donate">Поддержать</string>
+    <string name="about_button_privacy_policy">Политика конфиденциальности</string>
+    <string name="settings_label_hosting_service">Сервис для хранения файлов</string>
+    <string name="settings_action_open_website">Открыть сайт %1$s</string>
+    <string name="settings_hosting_service_litterbox_description">• Максимальный размер файла — 1 ГБ\n• Файлы удаляются через 72 часа\n✗ Расширения exe, scr, cpl, doc* и jar запрещены</string>
+    <string name="settings_hosting_service_uguu_description">• Максимальный размер файла — 128 МиБ\n• Файлы удаляются через 3 часа\n✗ Расширения zip, 7z, rar, pdf, exe, msi, html, svg и jar запрещены</string>
+    <string name="settings_hosting_service_x0_description">• Максимальный размер файла — 1024 МиБ\n• Файлы удаляются через 3–100 дней в зависимости от размера (меньшие файлы хранятся дольше)</string>
+    <string name="settings_label_language">Язык</string>
+    <string name="settings_label_theme">Тема</string>
+    <string name="settings_label_dark">Тёмная</string>
+    <string name="settings_label_light">Светлая</string>
+    <string name="settings_label_system_default">Как в системе</string>
+    <string name="settings_label_dynamic_colors">Динамические цвета</string>
+    <string name="settings_description_dynamic_colors">Автоматически подстраивать цвета под обои устройства</string>
+    <string name="settings_label_telemetry">Аналитика</string>
+    <string name="settings_description_telemetry">Делиться анонимными данными об использовании, чтобы помочь нам понять, как используется приложение, и улучшать функции.</string>
+    <string name="settings_label_crash_report">Диагностика</string>
+    <string name="settings_description_crash_report">Отправлять анонимные отчёты о сбоях и данные о производительности, чтобы мы могли исправлять ошибки и повышать стабильность.</string>
+    <string name="notif_label_channel_name">Состояние загрузки</string>
+    <string name="notif_description_channel">Уведомлять о ходе загрузки, её успехе или ошибке.</string>
+    <string name="notif_title_start">Подготовка загрузки…</string>
+    <string name="notif_title_in_progress">Загрузка…</string>
+    <string name="notif_title_upload_success">Загрузка завершена</string>
+    <string name="notif_title_upload_cancelled">Загрузка отменена</string>
+    <string name="notif_title_upload_failed">Ошибка загрузки</string>
+</resources>
